@@ -1,11 +1,11 @@
-# 🏟️ Bet2Win – Web Challenge (Hard)
+# Bet2Win – Web Challenge (Hard)
 
 Un challenge web inspiré de l’univers des paris sportifs, avec une belle victoire du PSG 5-0 sur l’Inter Milan comme toile de fond 🏆  
 Les joueurs devront faire preuve de curiosité, d’observation, et de maîtrise des commandes shell pour obtenir le flag.
 
 ---
 
-## 🧩 Description (pour le portail CTF)
+## Description 
 
 > Le PSG a explosé l’Inter Milan 5–0. Pour fêter ça, *Bet2Win* vous propose de miser grâce à une IA qui calcule les meilleures cotes automatiquement.
 >
@@ -20,9 +20,9 @@ Les joueurs devront faire preuve de curiosité, d’observation, et de maîtrise
 
 ---
 
-## 🛠️ Déploiement
+## Déploiement
 
-### 🔧 Build Docker
+### Build Docker
 
 ```bash
 docker build -t bet2win .
@@ -30,19 +30,34 @@ docker run --rm -p 5000:5000 --name bet2win_ctf bet2win
 ```
 
 
-Solution (résumé)
+### Solution (résumé)
 
-    Les promo cachent un header. Trouve le.
+En explorant l'application, on découvre une interface assez basique. Mais en analysant les requêtes réseau associées, un fichier script.js attire l’attention : il y fait référence à deux headers spécifiques.
 
-    Envoie un header spécial X-BET-STAFF: 1 pour accéder à /staff et aux vraies cotes.
+Parmi eux, un particulièrement intrigant : X-BET-STAFF. En testant différentes valeurs (on, 1, oui etc.), on finit par remarquer un comportement différent. Pour aller plus loin, un scan avec Gobuster révèle une route cachée : /staff.
 
-    La route /generate-odds appelle un script avec des paramètres non filtrés.
+Cette route, visiblement réservée aux employés, donne accès à une interface interne pour générer des cotes via l’endpoint /generate-odds.
 
-    Le paramètre team est vulnérable à une command injection.
+En observant les requêtes envoyées à ce dernier, on identifie un paramètre vulnérable : team. Ce paramètre est directement injecté dans un script bash côté serveur, sans aucune validation ou filtrage.
 
-    Injecte ;cat /app/flag.txt# pour exécuter une commande shell et lire le flag.
+On est donc en présence d’une vulnérabilité de type Command Injection.
 
-✅ Payload final
+Le param 'team' permet d’exécuter des commandes système.
+
+Exploitation
+
+Il suffit d'injecter une commande shell comme suit :
+
+```
+;cat /app/flag.txt
+```
+
+Le point-virgule termine la commande initiale, `cat /app/flag.txt` affiche le contenu du flag, et `#` commente tout ce qui pourrait suivre.
+
+Et voilà, le flag s’affiche dans la réponse.
+
+Payload final
+```
 curl -H "X-BET-STAFF: 1" \
 "http://localhost:5000/generate-odds?team=psg;cat%20/app/flag.txt%23&form=4-4-2"
-
+```
