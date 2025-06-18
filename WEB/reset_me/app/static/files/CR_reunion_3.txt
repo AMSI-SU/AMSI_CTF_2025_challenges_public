@@ -1,0 +1,13 @@
+--- COMPTE-RENDU BDE CYBER - AVRIL 2019 ---
+
+Présents : Daniel, Tedi, Hexwreaker  
+Lieu : Sorbonne - Salle B-107
+
+- hexwreaker : "Mets une clé temporaire genre resetbde2025."
+- Ela : "OK, mais on la changera avant prod."
+- Daniel : "On note ça dans un fichier, discret."
+
+---
+
+🕵️ Clé temporaire utilisée pour signer les tokens : **resetbde2025**  
+⚠️ Ne pas référencer ce fichier. Pour usage interne uniquement.

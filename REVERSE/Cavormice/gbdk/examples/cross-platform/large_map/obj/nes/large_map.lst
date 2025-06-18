@@ -1,0 +1,1218 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module large_map
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _main
+                                     23 	.globl _init_camera
+                                     24 	.globl _set_camera
+                                     25 	.globl _set_bkg_native_data
+                                     26 	.globl _set_bkg_submap
+                                     27 	.globl _set_bkg_submap_attributes_nes16x16
+                                     28 	.globl _display_off
+                                     29 	.globl _display_on
+                                     30 	.globl _vsync
+                                     31 	.globl _joypad
+                                     32 	.globl _set_bkg_palette
+                                     33 	.globl _redraw
+                                     34 	.globl _old_map_pos_y
+                                     35 	.globl _old_map_pos_x
+                                     36 	.globl _map_pos_y
+                                     37 	.globl _map_pos_x
+                                     38 	.globl _old_camera_y
+                                     39 	.globl _old_camera_x
+                                     40 	.globl _camera_y
+                                     41 	.globl _camera_x
+                                     42 	.globl _joy
+                                     43 	.globl _OAMDMA
+                                     44 	.globl _PPUDATA
+                                     45 	.globl _PPUADDR
+                                     46 	.globl _PPUSCROLL
+                                     47 	.globl _OAMDATA
+                                     48 	.globl _OAMADDR
+                                     49 	.globl _PPUSTATUS
+                                     50 	.globl _PPUMASK
+                                     51 	.globl _PPUCTRL
+                                     52 ;--------------------------------------------------------
+                                     53 ; ZP ram data
+                                     54 ;--------------------------------------------------------
+                                     55 	.area _ZP      (PAG)
+    00000000                         56 _set_camera_sloc0_1_0:
+    00000000                         57 	.ds 2
+    00000002                         58 _init_camera_sloc0_1_0:
+    00000002                         59 	.ds 1
+    00000003                         60 _init_camera_sloc1_1_0:
+    00000003                         61 	.ds 1
+                                     62 ;--------------------------------------------------------
+                                     63 ; overlayable items in ram
+                                     64 ;--------------------------------------------------------
+                                     65 ;--------------------------------------------------------
+                                     66 ; uninitialized external ram data
+                                     67 ;--------------------------------------------------------
+                                     68 	.area _BSS
+                         00002000    69 _PPUCTRL	=	0x2000
+                         00002001    70 _PPUMASK	=	0x2001
+                         00002002    71 _PPUSTATUS	=	0x2002
+                         00002003    72 _OAMADDR	=	0x2003
+                         00002004    73 _OAMDATA	=	0x2004
+                         00002005    74 _PPUSCROLL	=	0x2005
+                         00002006    75 _PPUADDR	=	0x2006
+                         00002007    76 _PPUDATA	=	0x2007
+                         00004014    77 _OAMDMA	=	0x4014
+    00000000                         78 _joy::
+    00000000                         79 	.ds 1
+    00000001                         80 _camera_x::
+    00000001                         81 	.ds 2
+    00000003                         82 _camera_y::
+    00000003                         83 	.ds 2
+    00000005                         84 _old_camera_x::
+    00000005                         85 	.ds 2
+    00000007                         86 _old_camera_y::
+    00000007                         87 	.ds 2
+    00000009                         88 _map_pos_x::
+    00000009                         89 	.ds 1
+    0000000A                         90 _map_pos_y::
+    0000000A                         91 	.ds 1
+    0000000B                         92 _old_map_pos_x::
+    0000000B                         93 	.ds 1
+    0000000C                         94 _old_map_pos_y::
+    0000000C                         95 	.ds 1
+    0000000D                         96 _redraw::
+    0000000D                         97 	.ds 1
+    0000000E                         98 _init_camera_y_10000_172:
+    0000000E                         99 	.ds 1
+                                    100 ;--------------------------------------------------------
+                                    101 ; absolute external ram data
+                                    102 ;--------------------------------------------------------
+                                    103 	.area _DABS    (ABS)
+                                    104 ;--------------------------------------------------------
+                                    105 ; initialized external ram data
+                                    106 ;--------------------------------------------------------
+                                    107 	.area _DATA
+                                    108 ;--------------------------------------------------------
+                                    109 ; global & static initialisations
+                                    110 ;--------------------------------------------------------
+                                    111 	.area _HOME
+                                    112 	.area _GSINIT
+                                    113 	.area _GSFINAL
+                                    114 	.area _GSINIT
+                                    115 ;--------------------------------------------------------
+                                    116 ; Home
+                                    117 ;--------------------------------------------------------
+                                    118 	.area _HOME
+                                    119 	.area _HOME
+                                    120 ;--------------------------------------------------------
+                                    121 ; code
+                                    122 ;--------------------------------------------------------
+                                    123 	.area _CODE
+                                    124 ;------------------------------------------------------------
+                                    125 ;Allocation info for local variables in function 'set_camera'
+                                    126 ;------------------------------------------------------------
+                                    127 ;sloc0                     Allocated with name '_set_camera_sloc0_1_0'
+                                    128 ;__200000006               Allocated to registers 
+                                    129 ;__200000007               Allocated to registers a 
+                                    130 ;x                         Allocated to registers 
+                                    131 ;y                         Allocated to registers 
+                                    132 ;__400000009               Allocated to registers y 
+                                    133 ;__400000010               Allocated to registers y 
+                                    134 ;map_pos_y                 Allocated to registers 
+                                    135 ;__400000019               Allocated to registers y 
+                                    136 ;__400000012               Allocated to registers 
+                                    137 ;__400000013               Allocated to registers 
+                                    138 ;__400000014               Allocated to registers x 
+                                    139 ;__400000015               Allocated to registers 
+                                    140 ;__400000016               Allocated to registers 
+                                    141 ;__400000017               Allocated to registers 
+                                    142 ;__500000020               Allocated to registers 
+                                    143 ;map_pos_y                 Allocated to registers 
+                                    144 ;x                         Allocated to registers 
+                                    145 ;y                         Allocated to registers 
+                                    146 ;w                         Allocated to registers 
+                                    147 ;h                         Allocated to registers 
+                                    148 ;attributes                Allocated to registers 
+                                    149 ;map_w                     Allocated to registers 
+                                    150 ;__500000022               Allocated to registers y 
+                                    151 ;__500000023               Allocated to registers a 
+                                    152 ;map_pos_y                 Allocated to registers 
+                                    153 ;__500000032               Allocated to registers a 
+                                    154 ;__500000025               Allocated to registers 
+                                    155 ;__500000026               Allocated to registers 
+                                    156 ;__500000027               Allocated to registers x 
+                                    157 ;__500000028               Allocated to registers 
+                                    158 ;__500000029               Allocated to registers 
+                                    159 ;__500000030               Allocated to registers 
+                                    160 ;__600000033               Allocated to registers 
+                                    161 ;map_pos_y                 Allocated to registers 
+                                    162 ;x                         Allocated to registers 
+                                    163 ;y                         Allocated to registers 
+                                    164 ;w                         Allocated to registers 
+                                    165 ;h                         Allocated to registers 
+                                    166 ;attributes                Allocated to registers 
+                                    167 ;map_w                     Allocated to registers 
+                                    168 ;__400000035               Allocated to registers y 
+                                    169 ;__400000036               Allocated to registers y 
+                                    170 ;map_pos_x                 Allocated to registers 
+                                    171 ;__400000045               Allocated to registers y 
+                                    172 ;__400000038               Allocated to registers 
+                                    173 ;__400000039               Allocated to registers 
+                                    174 ;__400000040               Allocated to registers 
+                                    175 ;__400000041               Allocated to registers x 
+                                    176 ;__400000042               Allocated to registers 
+                                    177 ;__400000043               Allocated to registers 
+                                    178 ;__500000046               Allocated to registers 
+                                    179 ;map_pos_x                 Allocated to registers 
+                                    180 ;x                         Allocated to registers 
+                                    181 ;y                         Allocated to registers 
+                                    182 ;w                         Allocated to registers 
+                                    183 ;h                         Allocated to registers 
+                                    184 ;attributes                Allocated to registers 
+                                    185 ;map_w                     Allocated to registers 
+                                    186 ;__500000048               Allocated to registers y 
+                                    187 ;__500000049               Allocated to registers a 
+                                    188 ;map_pos_x                 Allocated to registers 
+                                    189 ;__500000058               Allocated to registers a 
+                                    190 ;__500000051               Allocated to registers 
+                                    191 ;__500000052               Allocated to registers 
+                                    192 ;__500000053               Allocated to registers 
+                                    193 ;__500000054               Allocated to registers x 
+                                    194 ;__500000055               Allocated to registers 
+                                    195 ;__500000056               Allocated to registers 
+                                    196 ;__600000059               Allocated to registers 
+                                    197 ;map_pos_x                 Allocated to registers 
+                                    198 ;x                         Allocated to registers 
+                                    199 ;y                         Allocated to registers 
+                                    200 ;w                         Allocated to registers 
+                                    201 ;h                         Allocated to registers 
+                                    202 ;attributes                Allocated to registers 
+                                    203 ;map_w                     Allocated to registers 
+                                    204 ;------------------------------------------------------------
+                                    205 ;	src/large_map.c: 82: void set_camera(void)
+                                    206 ;	-----------------------------------------
+                                    207 ;	 function set_camera
+                                    208 ;	-----------------------------------------
+                                    209 ;	Register assignment might be sub-optimal.
+                                    210 ;	Stack space usage: 0 bytes.
+    00000000                        211 _set_camera:
+                                    212 ;	src/large_map.c: 85: move_bkg(camera_x, WRAP_SCROLL_Y(camera_y + SCROLL_Y_OFFSET));
+    00000000 AEr04r00         [ 4]  213 	ldx	(_camera_y + 1)
+    00000003 ADr03r00         [ 4]  214 	lda	_camera_y
+    00000006 18               [ 2]  215 	clc
+    00000007 69 04            [ 2]  216 	adc	#0x04
+    00000009 90 01            [ 4]  217 	bcc	00230$
+    0000000B E8               [ 2]  218 	inx
+    0000000C                        219 00230$:
+    0000000C A0 F0            [ 2]  220 	ldy	#0xf0
+    0000000E 8Cr00r00         [ 4]  221 	sty	__moduint_PARM_2
+    00000011 A0 00            [ 2]  222 	ldy	#0x00
+    00000013 8Cr01r00         [ 4]  223 	sty	(__moduint_PARM_2 + 1)
+    00000016 20r00r00         [ 6]  224 	jsr	__moduint
+    00000019 AEr01r00         [ 4]  225 	ldx	_camera_x
+    0000001C 8Er00r00         [ 4]  226 	stx	_bkg_scroll_x
+                                    227 ;	../../../include/nes/nes.h: 918: bkg_scroll_x = x, bkg_scroll_y = y;
+    0000001F 8Dr00r00         [ 4]  228 	sta	_bkg_scroll_y
+                                    229 ;	src/large_map.c: 87: map_pos_y = (uint8_t)(camera_y >> 3u);
+    00000022 AEr04r00         [ 4]  230 	ldx	(_camera_y + 1)
+    00000025 ADr03r00         [ 4]  231 	lda	_camera_y
+    00000028 86*00            [ 3]  232 	stx	*(REGTEMP+0)
+    0000002A 46*00            [ 5]  233 	lsr	*(REGTEMP+0)
+    0000002C 6A               [ 2]  234 	ror	a
+    0000002D 46*00            [ 5]  235 	lsr	*(REGTEMP+0)
+    0000002F 6A               [ 2]  236 	ror	a
+    00000030 46*00            [ 5]  237 	lsr	*(REGTEMP+0)
+    00000032 6A               [ 2]  238 	ror	a
+    00000033 A6*00            [ 3]  239 	ldx	*(REGTEMP+0)
+    00000035 A8               [ 2]  240 	tay
+    00000036 8Cr0Ar00         [ 4]  241 	sty	_map_pos_y
+                                    242 ;	src/large_map.c: 88: if (map_pos_y != old_map_pos_y)
+    00000039 CCr0Cr00         [ 4]  243 	cpy	_old_map_pos_y
+    0000003C D0 03            [ 4]  244 	bne	00231$
+    0000003E 4CrE7r01         [ 3]  245 	jmp	00107$
+    00000041                        246 00231$:
+                                    247 ;	src/large_map.c: 90: if (camera_y < old_camera_y)
+    00000041 ADr03r00         [ 4]  248 	lda	_camera_y
+    00000044 38               [ 2]  249 	sec
+    00000045 EDr07r00         [ 4]  250 	sbc	_old_camera_y
+    00000048 ADr04r00         [ 4]  251 	lda	(_camera_y + 1)
+    0000004B EDr08r00         [ 4]  252 	sbc	(_old_camera_y + 1)
+    0000004E 90 03            [ 4]  253 	bcc	00232$
+    00000050 4Cr16r01         [ 3]  254 	jmp	00104$
+    00000053                        255 00232$:
+                                    256 ;	src/large_map.c: 92: set_submap_indices(
+                                    257 ;	src/large_map.c: 71: return map_pos_y + 1;
+    00000053 C8               [ 2]  258 	iny
+                                    259 ;	src/large_map.c: 92: set_submap_indices(
+    00000054 A2 00            [ 2]  260 	ldx	#0x00
+    00000056 ADr09r00         [ 4]  261 	lda	_map_pos_x
+    00000059 85*00            [ 3]  262 	sta	*(REGTEMP+0)
+    0000005B A9 9C            [ 2]  263 	lda	#0x9c
+    0000005D 38               [ 2]  264 	sec
+    0000005E E5*00            [ 3]  265 	sbc	*(REGTEMP+0)
+    00000060 85*00            [ 3]  266 	sta	*_set_camera_sloc0_1_0
+    00000062 8A               [ 2]  267 	txa
+    00000063 86*00            [ 3]  268 	stx	*(REGTEMP+0)
+    00000065 E5*00            [ 3]  269 	sbc	*(REGTEMP+0)
+    00000067 85*01            [ 3]  270 	sta	*(_set_camera_sloc0_1_0 + 1)
+    00000069 A9 21            [ 2]  271 	lda	#0x21
+    0000006B 38               [ 2]  272 	sec
+    0000006C E5*00            [ 3]  273 	sbc	*_set_camera_sloc0_1_0
+    0000006E 8A               [ 2]  274 	txa
+    0000006F E5*01            [ 3]  275 	sbc	*(_set_camera_sloc0_1_0 + 1)
+    00000071 50 04            [ 4]  276 	bvc	00234$
+    00000073 10 04            [ 4]  277 	bpl	00233$
+    00000075 30 07            [ 4]  278 	bmi	00130$
+    00000077                        279 00234$:
+    00000077 10 05            [ 4]  280 	bpl	00130$
+    00000079                        281 00233$:
+    00000079 A9 21            [ 2]  282 	lda	#0x21
+    0000007B 4Cr84r00         [ 3]  283 	jmp	00131$
+    0000007E                        284 00130$:
+    0000007E A9 9C            [ 2]  285 	lda	#0x9c
+    00000080 38               [ 2]  286 	sec
+    00000081 EDr09r00         [ 4]  287 	sbc	_map_pos_x
+    00000084                        288 00131$:
+    00000084 A2s00            [ 2]  289 	ldx	#>_bigmap_map
+    00000086 8Er01r00         [ 4]  290 	stx	(_set_bkg_submap_PARM_5 + 1)
+    00000089 A2r00            [ 2]  291 	ldx	#_bigmap_map
+    0000008B 8Er00r00         [ 4]  292 	stx	_set_bkg_submap_PARM_5
+    0000008E 8Dr00r00         [ 4]  293 	sta	_set_bkg_submap_PARM_3
+    00000091 A2 01            [ 2]  294 	ldx	#0x01
+    00000093 8Er00r00         [ 4]  295 	stx	_set_bkg_submap_PARM_4
+    00000096 A2 9C            [ 2]  296 	ldx	#0x9c
+    00000098 8Er00r00         [ 4]  297 	stx	_set_bkg_submap_PARM_6
+    0000009B ADr09r00         [ 4]  298 	lda	_map_pos_x
+    0000009E 84*00            [ 3]  299 	sty	*(REGTEMP+0)
+    000000A0 A6*00            [ 3]  300 	ldx	*(REGTEMP+0)
+    000000A2 20r00r00         [ 6]  301 	jsr	_set_bkg_submap
+                                    302 ;	src/large_map.c: 99: set_submap_attributes(
+    000000A5 A2 00            [ 2]  303 	ldx	#0x00
+    000000A7 ADr09r00         [ 4]  304 	lda	_map_pos_x
+    000000AA 85*00            [ 3]  305 	sta	*(REGTEMP+0)
+    000000AC A9 9C            [ 2]  306 	lda	#0x9c
+    000000AE 38               [ 2]  307 	sec
+    000000AF E5*00            [ 3]  308 	sbc	*(REGTEMP+0)
+    000000B1 85*00            [ 3]  309 	sta	*_set_camera_sloc0_1_0
+    000000B3 8A               [ 2]  310 	txa
+    000000B4 86*00            [ 3]  311 	stx	*(REGTEMP+0)
+    000000B6 E5*00            [ 3]  312 	sbc	*(REGTEMP+0)
+    000000B8 85*01            [ 3]  313 	sta	*(_set_camera_sloc0_1_0 + 1)
+    000000BA A9 21            [ 2]  314 	lda	#0x21
+    000000BC 38               [ 2]  315 	sec
+    000000BD E5*00            [ 3]  316 	sbc	*_set_camera_sloc0_1_0
+    000000BF 8A               [ 2]  317 	txa
+    000000C0 E5*01            [ 3]  318 	sbc	*(_set_camera_sloc0_1_0 + 1)
+    000000C2 50 04            [ 4]  319 	bvc	00237$
+    000000C4 10 04            [ 4]  320 	bpl	00236$
+    000000C6 30 07            [ 4]  321 	bmi	00132$
+    000000C8                        322 00237$:
+    000000C8 10 05            [ 4]  323 	bpl	00132$
+    000000CA                        324 00236$:
+    000000CA A2 21            [ 2]  325 	ldx	#0x21
+    000000CC 4CrD6r00         [ 3]  326 	jmp	00133$
+    000000CF                        327 00132$:
+    000000CF A9 9C            [ 2]  328 	lda	#0x9c
+    000000D1 38               [ 2]  329 	sec
+    000000D2 EDr09r00         [ 4]  330 	sbc	_map_pos_x
+    000000D5 AA               [ 2]  331 	tax
+    000000D6                        332 00133$:
+                                    333 ;	src/large_map.c: 71: return map_pos_y + 1;
+    000000D6 ACr0Ar00         [ 4]  334 	ldy	_map_pos_y
+    000000D9 C8               [ 2]  335 	iny
+                                    336 ;	../../../include/nes/nes.h: 753: set_bkg_submap_attributes_nes16x16(x >> 1, y >> 1, (w + 1) >> 1, (h + 1) >> 1, attributes, map_w >> 1);
+    000000DA ADr09r00         [ 4]  337 	lda	_map_pos_x
+    000000DD 4A               [ 2]  338 	lsr	a
+    000000DE 85*00            [ 3]  339 	sta	*_set_camera_sloc0_1_0
+    000000E0 98               [ 2]  340 	tya
+    000000E1 4A               [ 2]  341 	lsr	a
+    000000E2 A8               [ 2]  342 	tay
+    000000E3 8A               [ 2]  343 	txa
+    000000E4 A2 00            [ 2]  344 	ldx	#0x00
+    000000E6 18               [ 2]  345 	clc
+    000000E7 69 01            [ 2]  346 	adc	#0x01
+    000000E9 90 01            [ 4]  347 	bcc	00239$
+    000000EB E8               [ 2]  348 	inx
+    000000EC                        349 00239$:
+    000000EC 86*00            [ 3]  350 	stx	*(REGTEMP+0)
+    000000EE E0 80            [ 2]  351 	cpx	#0x80
+    000000F0 66*00            [ 5]  352 	ror	*(REGTEMP+0)
+    000000F2 6A               [ 2]  353 	ror	a
+    000000F3 8Dr00r00         [ 4]  354 	sta	_set_bkg_submap_attributes_nes16x16_PARM_3
+    000000F6 A2 01            [ 2]  355 	ldx	#0x01
+    000000F8 8Er00r00         [ 4]  356 	stx	_set_bkg_submap_attributes_nes16x16_PARM_4
+    000000FB A9s00            [ 2]  357 	lda	#>_bigmap_map_attributes
+    000000FD 8Dr01r00         [ 4]  358 	sta	(_set_bkg_submap_attributes_nes16x16_PARM_5 + 1)
+    00000100 A9r00            [ 2]  359 	lda	#_bigmap_map_attributes
+    00000102 8Dr00r00         [ 4]  360 	sta	_set_bkg_submap_attributes_nes16x16_PARM_5
+    00000105 A2 4E            [ 2]  361 	ldx	#0x4e
+    00000107 8Er00r00         [ 4]  362 	stx	_set_bkg_submap_attributes_nes16x16_PARM_6
+    0000010A A5*00            [ 3]  363 	lda	*_set_camera_sloc0_1_0
+    0000010C 84*00            [ 3]  364 	sty	*(REGTEMP+0)
+    0000010E A6*00            [ 3]  365 	ldx	*(REGTEMP+0)
+    00000110 20r00r00         [ 6]  366 	jsr	_set_bkg_submap_attributes_nes16x16
+                                    367 ;	src/large_map.c: 99: set_submap_attributes(
+    00000113 4CrE1r01         [ 3]  368 	jmp	00105$
+    00000116                        369 00104$:
+                                    370 ;	src/large_map.c: 109: if ((bigmap_mapHeight - DEVICE_SCREEN_HEIGHT) > map_pos_y)
+    00000116 C0 24            [ 2]  371 	cpy	#0x24
+    00000118 90 03            [ 4]  372 	bcc	00240$
+    0000011A 4CrE1r01         [ 3]  373 	jmp	00105$
+    0000011D                        374 00240$:
+                                    375 ;	src/large_map.c: 111: set_submap_indices(
+    0000011D 98               [ 2]  376 	tya
+                                    377 ;	src/large_map.c: 79: return map_pos_y + DEVICE_SCREEN_HEIGHT;
+    0000011E 18               [ 2]  378 	clc
+    0000011F 69 1E            [ 2]  379 	adc	#0x1e
+    00000121 A8               [ 2]  380 	tay
+                                    381 ;	src/large_map.c: 111: set_submap_indices(
+    00000122 A2 00            [ 2]  382 	ldx	#0x00
+    00000124 ADr09r00         [ 4]  383 	lda	_map_pos_x
+    00000127 85*00            [ 3]  384 	sta	*(REGTEMP+0)
+    00000129 A9 9C            [ 2]  385 	lda	#0x9c
+    0000012B 38               [ 2]  386 	sec
+    0000012C E5*00            [ 3]  387 	sbc	*(REGTEMP+0)
+    0000012E 85*00            [ 3]  388 	sta	*_set_camera_sloc0_1_0
+    00000130 8A               [ 2]  389 	txa
+    00000131 86*00            [ 3]  390 	stx	*(REGTEMP+0)
+    00000133 E5*00            [ 3]  391 	sbc	*(REGTEMP+0)
+    00000135 85*01            [ 3]  392 	sta	*(_set_camera_sloc0_1_0 + 1)
+    00000137 A9 21            [ 2]  393 	lda	#0x21
+    00000139 38               [ 2]  394 	sec
+    0000013A E5*00            [ 3]  395 	sbc	*_set_camera_sloc0_1_0
+    0000013C 8A               [ 2]  396 	txa
+    0000013D E5*01            [ 3]  397 	sbc	*(_set_camera_sloc0_1_0 + 1)
+    0000013F 50 04            [ 4]  398 	bvc	00242$
+    00000141 10 04            [ 4]  399 	bpl	00241$
+    00000143 30 07            [ 4]  400 	bmi	00134$
+    00000145                        401 00242$:
+    00000145 10 05            [ 4]  402 	bpl	00134$
+    00000147                        403 00241$:
+    00000147 A9 21            [ 2]  404 	lda	#0x21
+    00000149 4Cr52r01         [ 3]  405 	jmp	00135$
+    0000014C                        406 00134$:
+    0000014C A9 9C            [ 2]  407 	lda	#0x9c
+    0000014E 38               [ 2]  408 	sec
+    0000014F EDr09r00         [ 4]  409 	sbc	_map_pos_x
+    00000152                        410 00135$:
+    00000152 A2s00            [ 2]  411 	ldx	#>_bigmap_map
+    00000154 8Er01r00         [ 4]  412 	stx	(_set_bkg_submap_PARM_5 + 1)
+    00000157 A2r00            [ 2]  413 	ldx	#_bigmap_map
+    00000159 8Er00r00         [ 4]  414 	stx	_set_bkg_submap_PARM_5
+    0000015C 8Dr00r00         [ 4]  415 	sta	_set_bkg_submap_PARM_3
+    0000015F A2 01            [ 2]  416 	ldx	#0x01
+    00000161 8Er00r00         [ 4]  417 	stx	_set_bkg_submap_PARM_4
+    00000164 A2 9C            [ 2]  418 	ldx	#0x9c
+    00000166 8Er00r00         [ 4]  419 	stx	_set_bkg_submap_PARM_6
+    00000169 ADr09r00         [ 4]  420 	lda	_map_pos_x
+    0000016C 84*00            [ 3]  421 	sty	*(REGTEMP+0)
+    0000016E A6*00            [ 3]  422 	ldx	*(REGTEMP+0)
+    00000170 20r00r00         [ 6]  423 	jsr	_set_bkg_submap
+                                    424 ;	src/large_map.c: 118: set_submap_attributes(
+    00000173 A2 00            [ 2]  425 	ldx	#0x00
+    00000175 ADr09r00         [ 4]  426 	lda	_map_pos_x
+    00000178 85*00            [ 3]  427 	sta	*(REGTEMP+0)
+    0000017A A9 9C            [ 2]  428 	lda	#0x9c
+    0000017C 38               [ 2]  429 	sec
+    0000017D E5*00            [ 3]  430 	sbc	*(REGTEMP+0)
+    0000017F 85*00            [ 3]  431 	sta	*_set_camera_sloc0_1_0
+    00000181 8A               [ 2]  432 	txa
+    00000182 86*00            [ 3]  433 	stx	*(REGTEMP+0)
+    00000184 E5*00            [ 3]  434 	sbc	*(REGTEMP+0)
+    00000186 85*01            [ 3]  435 	sta	*(_set_camera_sloc0_1_0 + 1)
+    00000188 A9 21            [ 2]  436 	lda	#0x21
+    0000018A 38               [ 2]  437 	sec
+    0000018B E5*00            [ 3]  438 	sbc	*_set_camera_sloc0_1_0
+    0000018D 8A               [ 2]  439 	txa
+    0000018E E5*01            [ 3]  440 	sbc	*(_set_camera_sloc0_1_0 + 1)
+    00000190 50 04            [ 4]  441 	bvc	00245$
+    00000192 10 04            [ 4]  442 	bpl	00244$
+    00000194 30 07            [ 4]  443 	bmi	00136$
+    00000196                        444 00245$:
+    00000196 10 05            [ 4]  445 	bpl	00136$
+    00000198                        446 00244$:
+    00000198 A2 21            [ 2]  447 	ldx	#0x21
+    0000019A 4CrA4r01         [ 3]  448 	jmp	00137$
+    0000019D                        449 00136$:
+    0000019D A9 9C            [ 2]  450 	lda	#0x9c
+    0000019F 38               [ 2]  451 	sec
+    000001A0 EDr09r00         [ 4]  452 	sbc	_map_pos_x
+    000001A3 AA               [ 2]  453 	tax
+    000001A4                        454 00137$:
+                                    455 ;	src/large_map.c: 79: return map_pos_y + DEVICE_SCREEN_HEIGHT;
+    000001A4 ADr0Ar00         [ 4]  456 	lda	_map_pos_y
+    000001A7 18               [ 2]  457 	clc
+    000001A8 69 1E            [ 2]  458 	adc	#0x1e
+                                    459 ;	../../../include/nes/nes.h: 753: set_bkg_submap_attributes_nes16x16(x >> 1, y >> 1, (w + 1) >> 1, (h + 1) >> 1, attributes, map_w >> 1);
+    000001AA 48               [ 3]  460 	pha
+    000001AB ADr09r00         [ 4]  461 	lda	_map_pos_x
+    000001AE 4A               [ 2]  462 	lsr	a
+    000001AF A8               [ 2]  463 	tay
+    000001B0 68               [ 4]  464 	pla
+    000001B1 4A               [ 2]  465 	lsr	a
+    000001B2 85*00            [ 3]  466 	sta	*_set_camera_sloc0_1_0
+    000001B4 8A               [ 2]  467 	txa
+    000001B5 A2 00            [ 2]  468 	ldx	#0x00
+    000001B7 18               [ 2]  469 	clc
+    000001B8 69 01            [ 2]  470 	adc	#0x01
+    000001BA 90 01            [ 4]  471 	bcc	00247$
+    000001BC E8               [ 2]  472 	inx
+    000001BD                        473 00247$:
+    000001BD 86*00            [ 3]  474 	stx	*(REGTEMP+0)
+    000001BF E0 80            [ 2]  475 	cpx	#0x80
+    000001C1 66*00            [ 5]  476 	ror	*(REGTEMP+0)
+    000001C3 6A               [ 2]  477 	ror	a
+    000001C4 8Dr00r00         [ 4]  478 	sta	_set_bkg_submap_attributes_nes16x16_PARM_3
+    000001C7 A2 01            [ 2]  479 	ldx	#0x01
+    000001C9 8Er00r00         [ 4]  480 	stx	_set_bkg_submap_attributes_nes16x16_PARM_4
+    000001CC A9s00            [ 2]  481 	lda	#>_bigmap_map_attributes
+    000001CE 8Dr01r00         [ 4]  482 	sta	(_set_bkg_submap_attributes_nes16x16_PARM_5 + 1)
+    000001D1 A9r00            [ 2]  483 	lda	#_bigmap_map_attributes
+    000001D3 8Dr00r00         [ 4]  484 	sta	_set_bkg_submap_attributes_nes16x16_PARM_5
+    000001D6 A2 4E            [ 2]  485 	ldx	#0x4e
+    000001D8 8Er00r00         [ 4]  486 	stx	_set_bkg_submap_attributes_nes16x16_PARM_6
+    000001DB 98               [ 2]  487 	tya
+    000001DC A6*00            [ 3]  488 	ldx	*_set_camera_sloc0_1_0
+    000001DE 20r00r00         [ 6]  489 	jsr	_set_bkg_submap_attributes_nes16x16
+                                    490 ;	src/large_map.c: 118: set_submap_attributes(
+    000001E1                        491 00105$:
+                                    492 ;	src/large_map.c: 127: old_map_pos_y = map_pos_y; 
+    000001E1 ADr0Ar00         [ 4]  493 	lda	_map_pos_y
+    000001E4 8Dr0Cr00         [ 4]  494 	sta	_old_map_pos_y
+    000001E7                        495 00107$:
+                                    496 ;	src/large_map.c: 130: map_pos_x = (uint8_t)(camera_x >> 3u);
+    000001E7 AEr02r00         [ 4]  497 	ldx	(_camera_x + 1)
+    000001EA ADr01r00         [ 4]  498 	lda	_camera_x
+    000001ED 86*00            [ 3]  499 	stx	*(REGTEMP+0)
+    000001EF 46*00            [ 5]  500 	lsr	*(REGTEMP+0)
+    000001F1 6A               [ 2]  501 	ror	a
+    000001F2 46*00            [ 5]  502 	lsr	*(REGTEMP+0)
+    000001F4 6A               [ 2]  503 	ror	a
+    000001F5 46*00            [ 5]  504 	lsr	*(REGTEMP+0)
+    000001F7 6A               [ 2]  505 	ror	a
+    000001F8 A6*00            [ 3]  506 	ldx	*(REGTEMP+0)
+    000001FA A8               [ 2]  507 	tay
+    000001FB 8Cr09r00         [ 4]  508 	sty	_map_pos_x
+                                    509 ;	src/large_map.c: 131: if (map_pos_x != old_map_pos_x)
+    000001FE CCr0Br00         [ 4]  510 	cpy	_old_map_pos_x
+    00000201 D0 03            [ 4]  511 	bne	00248$
+    00000203 4CrA1r03         [ 3]  512 	jmp	00114$
+    00000206                        513 00248$:
+                                    514 ;	src/large_map.c: 133: if (camera_x < old_camera_x)
+    00000206 ADr01r00         [ 4]  515 	lda	_camera_x
+    00000209 38               [ 2]  516 	sec
+    0000020A EDr05r00         [ 4]  517 	sbc	_old_camera_x
+    0000020D ADr02r00         [ 4]  518 	lda	(_camera_x + 1)
+    00000210 EDr06r00         [ 4]  519 	sbc	(_old_camera_x + 1)
+    00000213 90 03            [ 4]  520 	bcc	00249$
+    00000215 4CrD5r02         [ 3]  521 	jmp	00111$
+    00000218                        522 00249$:
+                                    523 ;	src/large_map.c: 135: set_submap_indices(
+                                    524 ;	src/large_map.c: 57: return map_pos_x + 1;
+    00000218 C8               [ 2]  525 	iny
+                                    526 ;	src/large_map.c: 135: set_submap_indices(
+    00000219 A2 00            [ 2]  527 	ldx	#0x00
+    0000021B ADr0Ar00         [ 4]  528 	lda	_map_pos_y
+    0000021E 85*00            [ 3]  529 	sta	*(REGTEMP+0)
+    00000220 A9 42            [ 2]  530 	lda	#0x42
+    00000222 38               [ 2]  531 	sec
+    00000223 E5*00            [ 3]  532 	sbc	*(REGTEMP+0)
+    00000225 85*00            [ 3]  533 	sta	*_set_camera_sloc0_1_0
+    00000227 8A               [ 2]  534 	txa
+    00000228 86*00            [ 3]  535 	stx	*(REGTEMP+0)
+    0000022A E5*00            [ 3]  536 	sbc	*(REGTEMP+0)
+    0000022C 85*01            [ 3]  537 	sta	*(_set_camera_sloc0_1_0 + 1)
+    0000022E A9 1F            [ 2]  538 	lda	#0x1f
+    00000230 38               [ 2]  539 	sec
+    00000231 E5*00            [ 3]  540 	sbc	*_set_camera_sloc0_1_0
+    00000233 8A               [ 2]  541 	txa
+    00000234 E5*01            [ 3]  542 	sbc	*(_set_camera_sloc0_1_0 + 1)
+    00000236 50 04            [ 4]  543 	bvc	00251$
+    00000238 10 04            [ 4]  544 	bpl	00250$
+    0000023A 30 07            [ 4]  545 	bmi	00138$
+    0000023C                        546 00251$:
+    0000023C 10 05            [ 4]  547 	bpl	00138$
+    0000023E                        548 00250$:
+    0000023E A9 1F            [ 2]  549 	lda	#0x1f
+    00000240 4Cr49r02         [ 3]  550 	jmp	00139$
+    00000243                        551 00138$:
+    00000243 A9 42            [ 2]  552 	lda	#0x42
+    00000245 38               [ 2]  553 	sec
+    00000246 EDr0Ar00         [ 4]  554 	sbc	_map_pos_y
+    00000249                        555 00139$:
+    00000249 A2s00            [ 2]  556 	ldx	#>_bigmap_map
+    0000024B 8Er01r00         [ 4]  557 	stx	(_set_bkg_submap_PARM_5 + 1)
+    0000024E A2r00            [ 2]  558 	ldx	#_bigmap_map
+    00000250 8Er00r00         [ 4]  559 	stx	_set_bkg_submap_PARM_5
+    00000253 A2 01            [ 2]  560 	ldx	#0x01
+    00000255 8Er00r00         [ 4]  561 	stx	_set_bkg_submap_PARM_3
+    00000258 8Dr00r00         [ 4]  562 	sta	_set_bkg_submap_PARM_4
+    0000025B A2 9C            [ 2]  563 	ldx	#0x9c
+    0000025D 8Er00r00         [ 4]  564 	stx	_set_bkg_submap_PARM_6
+    00000260 98               [ 2]  565 	tya
+    00000261 AEr0Ar00         [ 4]  566 	ldx	_map_pos_y
+    00000264 20r00r00         [ 6]  567 	jsr	_set_bkg_submap
+                                    568 ;	src/large_map.c: 142: set_submap_attributes(
+    00000267 A2 00            [ 2]  569 	ldx	#0x00
+    00000269 ADr0Ar00         [ 4]  570 	lda	_map_pos_y
+    0000026C 85*00            [ 3]  571 	sta	*(REGTEMP+0)
+    0000026E A9 42            [ 2]  572 	lda	#0x42
+    00000270 38               [ 2]  573 	sec
+    00000271 E5*00            [ 3]  574 	sbc	*(REGTEMP+0)
+    00000273 85*00            [ 3]  575 	sta	*_set_camera_sloc0_1_0
+    00000275 8A               [ 2]  576 	txa
+    00000276 86*00            [ 3]  577 	stx	*(REGTEMP+0)
+    00000278 E5*00            [ 3]  578 	sbc	*(REGTEMP+0)
+    0000027A 85*01            [ 3]  579 	sta	*(_set_camera_sloc0_1_0 + 1)
+    0000027C A9 1F            [ 2]  580 	lda	#0x1f
+    0000027E 38               [ 2]  581 	sec
+    0000027F E5*00            [ 3]  582 	sbc	*_set_camera_sloc0_1_0
+    00000281 8A               [ 2]  583 	txa
+    00000282 E5*01            [ 3]  584 	sbc	*(_set_camera_sloc0_1_0 + 1)
+    00000284 50 04            [ 4]  585 	bvc	00254$
+    00000286 10 04            [ 4]  586 	bpl	00253$
+    00000288 30 07            [ 4]  587 	bmi	00140$
+    0000028A                        588 00254$:
+    0000028A 10 05            [ 4]  589 	bpl	00140$
+    0000028C                        590 00253$:
+    0000028C A2 1F            [ 2]  591 	ldx	#0x1f
+    0000028E 4Cr98r02         [ 3]  592 	jmp	00141$
+    00000291                        593 00140$:
+    00000291 A9 42            [ 2]  594 	lda	#0x42
+    00000293 38               [ 2]  595 	sec
+    00000294 EDr0Ar00         [ 4]  596 	sbc	_map_pos_y
+    00000297 AA               [ 2]  597 	tax
+    00000298                        598 00141$:
+                                    599 ;	src/large_map.c: 57: return map_pos_x + 1;
+    00000298 ACr09r00         [ 4]  600 	ldy	_map_pos_x
+    0000029B C8               [ 2]  601 	iny
+                                    602 ;	../../../include/nes/nes.h: 753: set_bkg_submap_attributes_nes16x16(x >> 1, y >> 1, (w + 1) >> 1, (h + 1) >> 1, attributes, map_w >> 1);
+    0000029C 98               [ 2]  603 	tya
+    0000029D 4A               [ 2]  604 	lsr	a
+    0000029E A8               [ 2]  605 	tay
+    0000029F ADr0Ar00         [ 4]  606 	lda	_map_pos_y
+    000002A2 4A               [ 2]  607 	lsr	a
+    000002A3 85*00            [ 3]  608 	sta	*_set_camera_sloc0_1_0
+    000002A5 8A               [ 2]  609 	txa
+    000002A6 A2 00            [ 2]  610 	ldx	#0x00
+    000002A8 18               [ 2]  611 	clc
+    000002A9 69 01            [ 2]  612 	adc	#0x01
+    000002AB 90 01            [ 4]  613 	bcc	00256$
+    000002AD E8               [ 2]  614 	inx
+    000002AE                        615 00256$:
+    000002AE 86*00            [ 3]  616 	stx	*(REGTEMP+0)
+    000002B0 E0 80            [ 2]  617 	cpx	#0x80
+    000002B2 66*00            [ 5]  618 	ror	*(REGTEMP+0)
+    000002B4 6A               [ 2]  619 	ror	a
+    000002B5 8Dr00r00         [ 4]  620 	sta	_set_bkg_submap_attributes_nes16x16_PARM_4
+    000002B8 A2 01            [ 2]  621 	ldx	#0x01
+    000002BA 8Er00r00         [ 4]  622 	stx	_set_bkg_submap_attributes_nes16x16_PARM_3
+    000002BD A9s00            [ 2]  623 	lda	#>_bigmap_map_attributes
+    000002BF 8Dr01r00         [ 4]  624 	sta	(_set_bkg_submap_attributes_nes16x16_PARM_5 + 1)
+    000002C2 A9r00            [ 2]  625 	lda	#_bigmap_map_attributes
+    000002C4 8Dr00r00         [ 4]  626 	sta	_set_bkg_submap_attributes_nes16x16_PARM_5
+    000002C7 A2 4E            [ 2]  627 	ldx	#0x4e
+    000002C9 8Er00r00         [ 4]  628 	stx	_set_bkg_submap_attributes_nes16x16_PARM_6
+    000002CC 98               [ 2]  629 	tya
+    000002CD A6*00            [ 3]  630 	ldx	*_set_camera_sloc0_1_0
+    000002CF 20r00r00         [ 6]  631 	jsr	_set_bkg_submap_attributes_nes16x16
+                                    632 ;	src/large_map.c: 142: set_submap_attributes(
+    000002D2 4Cr9Br03         [ 3]  633 	jmp	00112$
+    000002D5                        634 00111$:
+                                    635 ;	src/large_map.c: 152: if ((bigmap_mapWidth - DEVICE_SCREEN_WIDTH) > map_pos_x)
+    000002D5 C0 7C            [ 2]  636 	cpy	#0x7c
+    000002D7 90 03            [ 4]  637 	bcc	00257$
+    000002D9 4Cr9Br03         [ 3]  638 	jmp	00112$
+    000002DC                        639 00257$:
+                                    640 ;	src/large_map.c: 154: set_submap_indices(
+    000002DC 98               [ 2]  641 	tya
+                                    642 ;	src/large_map.c: 65: return map_pos_x + DEVICE_SCREEN_WIDTH;
+    000002DD 18               [ 2]  643 	clc
+    000002DE 69 20            [ 2]  644 	adc	#0x20
+    000002E0 A8               [ 2]  645 	tay
+                                    646 ;	src/large_map.c: 154: set_submap_indices(
+    000002E1 A2 00            [ 2]  647 	ldx	#0x00
+    000002E3 ADr0Ar00         [ 4]  648 	lda	_map_pos_y
+    000002E6 85*00            [ 3]  649 	sta	*(REGTEMP+0)
+    000002E8 A9 42            [ 2]  650 	lda	#0x42
+    000002EA 38               [ 2]  651 	sec
+    000002EB E5*00            [ 3]  652 	sbc	*(REGTEMP+0)
+    000002ED 85*00            [ 3]  653 	sta	*_set_camera_sloc0_1_0
+    000002EF 8A               [ 2]  654 	txa
+    000002F0 86*00            [ 3]  655 	stx	*(REGTEMP+0)
+    000002F2 E5*00            [ 3]  656 	sbc	*(REGTEMP+0)
+    000002F4 85*01            [ 3]  657 	sta	*(_set_camera_sloc0_1_0 + 1)
+    000002F6 A9 1F            [ 2]  658 	lda	#0x1f
+    000002F8 38               [ 2]  659 	sec
+    000002F9 E5*00            [ 3]  660 	sbc	*_set_camera_sloc0_1_0
+    000002FB 8A               [ 2]  661 	txa
+    000002FC E5*01            [ 3]  662 	sbc	*(_set_camera_sloc0_1_0 + 1)
+    000002FE 50 04            [ 4]  663 	bvc	00259$
+    00000300 10 04            [ 4]  664 	bpl	00258$
+    00000302 30 07            [ 4]  665 	bmi	00142$
+    00000304                        666 00259$:
+    00000304 10 05            [ 4]  667 	bpl	00142$
+    00000306                        668 00258$:
+    00000306 A9 1F            [ 2]  669 	lda	#0x1f
+    00000308 4Cr11r03         [ 3]  670 	jmp	00143$
+    0000030B                        671 00142$:
+    0000030B A9 42            [ 2]  672 	lda	#0x42
+    0000030D 38               [ 2]  673 	sec
+    0000030E EDr0Ar00         [ 4]  674 	sbc	_map_pos_y
+    00000311                        675 00143$:
+    00000311 A2s00            [ 2]  676 	ldx	#>_bigmap_map
+    00000313 8Er01r00         [ 4]  677 	stx	(_set_bkg_submap_PARM_5 + 1)
+    00000316 A2r00            [ 2]  678 	ldx	#_bigmap_map
+    00000318 8Er00r00         [ 4]  679 	stx	_set_bkg_submap_PARM_5
+    0000031B A2 01            [ 2]  680 	ldx	#0x01
+    0000031D 8Er00r00         [ 4]  681 	stx	_set_bkg_submap_PARM_3
+    00000320 8Dr00r00         [ 4]  682 	sta	_set_bkg_submap_PARM_4
+    00000323 A2 9C            [ 2]  683 	ldx	#0x9c
+    00000325 8Er00r00         [ 4]  684 	stx	_set_bkg_submap_PARM_6
+    00000328 98               [ 2]  685 	tya
+    00000329 AEr0Ar00         [ 4]  686 	ldx	_map_pos_y
+    0000032C 20r00r00         [ 6]  687 	jsr	_set_bkg_submap
+                                    688 ;	src/large_map.c: 161: set_submap_attributes(
+    0000032F A2 00            [ 2]  689 	ldx	#0x00
+    00000331 ADr0Ar00         [ 4]  690 	lda	_map_pos_y
+    00000334 85*00            [ 3]  691 	sta	*(REGTEMP+0)
+    00000336 A9 42            [ 2]  692 	lda	#0x42
+    00000338 38               [ 2]  693 	sec
+    00000339 E5*00            [ 3]  694 	sbc	*(REGTEMP+0)
+    0000033B 85*00            [ 3]  695 	sta	*_set_camera_sloc0_1_0
+    0000033D 8A               [ 2]  696 	txa
+    0000033E 86*00            [ 3]  697 	stx	*(REGTEMP+0)
+    00000340 E5*00            [ 3]  698 	sbc	*(REGTEMP+0)
+    00000342 85*01            [ 3]  699 	sta	*(_set_camera_sloc0_1_0 + 1)
+    00000344 A9 1F            [ 2]  700 	lda	#0x1f
+    00000346 38               [ 2]  701 	sec
+    00000347 E5*00            [ 3]  702 	sbc	*_set_camera_sloc0_1_0
+    00000349 8A               [ 2]  703 	txa
+    0000034A E5*01            [ 3]  704 	sbc	*(_set_camera_sloc0_1_0 + 1)
+    0000034C 50 04            [ 4]  705 	bvc	00262$
+    0000034E 10 04            [ 4]  706 	bpl	00261$
+    00000350 30 07            [ 4]  707 	bmi	00144$
+    00000352                        708 00262$:
+    00000352 10 05            [ 4]  709 	bpl	00144$
+    00000354                        710 00261$:
+    00000354 A2 1F            [ 2]  711 	ldx	#0x1f
+    00000356 4Cr60r03         [ 3]  712 	jmp	00145$
+    00000359                        713 00144$:
+    00000359 A9 42            [ 2]  714 	lda	#0x42
+    0000035B 38               [ 2]  715 	sec
+    0000035C EDr0Ar00         [ 4]  716 	sbc	_map_pos_y
+    0000035F AA               [ 2]  717 	tax
+    00000360                        718 00145$:
+                                    719 ;	src/large_map.c: 65: return map_pos_x + DEVICE_SCREEN_WIDTH;
+    00000360 ADr09r00         [ 4]  720 	lda	_map_pos_x
+    00000363 18               [ 2]  721 	clc
+    00000364 69 20            [ 2]  722 	adc	#0x20
+                                    723 ;	../../../include/nes/nes.h: 753: set_bkg_submap_attributes_nes16x16(x >> 1, y >> 1, (w + 1) >> 1, (h + 1) >> 1, attributes, map_w >> 1);
+    00000366 4A               [ 2]  724 	lsr	a
+    00000367 A8               [ 2]  725 	tay
+    00000368 ADr0Ar00         [ 4]  726 	lda	_map_pos_y
+    0000036B 4A               [ 2]  727 	lsr	a
+    0000036C 85*00            [ 3]  728 	sta	*_set_camera_sloc0_1_0
+    0000036E 8A               [ 2]  729 	txa
+    0000036F A2 00            [ 2]  730 	ldx	#0x00
+    00000371 18               [ 2]  731 	clc
+    00000372 69 01            [ 2]  732 	adc	#0x01
+    00000374 90 01            [ 4]  733 	bcc	00264$
+    00000376 E8               [ 2]  734 	inx
+    00000377                        735 00264$:
+    00000377 86*00            [ 3]  736 	stx	*(REGTEMP+0)
+    00000379 E0 80            [ 2]  737 	cpx	#0x80
+    0000037B 66*00            [ 5]  738 	ror	*(REGTEMP+0)
+    0000037D 6A               [ 2]  739 	ror	a
+    0000037E 8Dr00r00         [ 4]  740 	sta	_set_bkg_submap_attributes_nes16x16_PARM_4
+    00000381 A2 01            [ 2]  741 	ldx	#0x01
+    00000383 8Er00r00         [ 4]  742 	stx	_set_bkg_submap_attributes_nes16x16_PARM_3
+    00000386 A9s00            [ 2]  743 	lda	#>_bigmap_map_attributes
+    00000388 8Dr01r00         [ 4]  744 	sta	(_set_bkg_submap_attributes_nes16x16_PARM_5 + 1)
+    0000038B A9r00            [ 2]  745 	lda	#_bigmap_map_attributes
+    0000038D 8Dr00r00         [ 4]  746 	sta	_set_bkg_submap_attributes_nes16x16_PARM_5
+    00000390 A2 4E            [ 2]  747 	ldx	#0x4e
+    00000392 8Er00r00         [ 4]  748 	stx	_set_bkg_submap_attributes_nes16x16_PARM_6
+    00000395 98               [ 2]  749 	tya
+    00000396 A6*00            [ 3]  750 	ldx	*_set_camera_sloc0_1_0
+    00000398 20r00r00         [ 6]  751 	jsr	_set_bkg_submap_attributes_nes16x16
+                                    752 ;	src/large_map.c: 161: set_submap_attributes(
+    0000039B                        753 00112$:
+                                    754 ;	src/large_map.c: 170: old_map_pos_x = map_pos_x;
+    0000039B ADr09r00         [ 4]  755 	lda	_map_pos_x
+    0000039E 8Dr0Br00         [ 4]  756 	sta	_old_map_pos_x
+    000003A1                        757 00114$:
+                                    758 ;	src/large_map.c: 173: old_camera_x = camera_x, old_camera_y = camera_y;
+    000003A1 ADr02r00         [ 4]  759 	lda	(_camera_x + 1)
+    000003A4 8Dr06r00         [ 4]  760 	sta	(_old_camera_x + 1)
+    000003A7 ADr01r00         [ 4]  761 	lda	_camera_x
+    000003AA 8Dr05r00         [ 4]  762 	sta	_old_camera_x
+    000003AD ADr04r00         [ 4]  763 	lda	(_camera_y + 1)
+    000003B0 8Dr08r00         [ 4]  764 	sta	(_old_camera_y + 1)
+    000003B3 ADr03r00         [ 4]  765 	lda	_camera_y
+    000003B6 8Dr07r00         [ 4]  766 	sta	_old_camera_y
+                                    767 ;	src/large_map.c: 174: }
+    000003B9 60               [ 6]  768 	rts
+                                    769 ;------------------------------------------------------------
+                                    770 ;Allocation info for local variables in function 'init_camera'
+                                    771 ;------------------------------------------------------------
+                                    772 ;sloc0                     Allocated with name '_init_camera_sloc0_1_0'
+                                    773 ;sloc1                     Allocated with name '_init_camera_sloc1_1_0'
+                                    774 ;y                         Allocated with name '_init_camera_y_10000_172'
+                                    775 ;x                         Allocated to registers a 
+                                    776 ;__200000061               Allocated to registers 
+                                    777 ;__200000062               Allocated to registers 
+                                    778 ;__200000063               Allocated to registers 
+                                    779 ;first_tile                Allocated to registers 
+                                    780 ;nb_tiles                  Allocated to registers 
+                                    781 ;data                      Allocated to registers 
+                                    782 ;__200000065               Allocated to registers 
+                                    783 ;__200000066               Allocated to registers a 
+                                    784 ;x                         Allocated to registers 
+                                    785 ;y                         Allocated to registers 
+                                    786 ;__200000068               Allocated to registers 
+                                    787 ;__200000069               Allocated to registers 
+                                    788 ;__200000070               Allocated to registers x 
+                                    789 ;__200000071               Allocated to registers y 
+                                    790 ;__200000072               Allocated to registers 
+                                    791 ;__200000073               Allocated to registers 
+                                    792 ;x                         Allocated to registers 
+                                    793 ;y                         Allocated to registers 
+                                    794 ;w                         Allocated to registers 
+                                    795 ;h                         Allocated to registers 
+                                    796 ;attributes                Allocated to registers 
+                                    797 ;map_w                     Allocated to registers 
+                                    798 ;__200000075               Allocated to registers 
+                                    799 ;__200000076               Allocated to registers a 
+                                    800 ;x                         Allocated to registers 
+                                    801 ;y                         Allocated to registers 
+                                    802 ;------------------------------------------------------------
+                                    803 ;	src/large_map.c: 177: void init_camera(uint8_t x, uint8_t y) {
+                                    804 ;	-----------------------------------------
+                                    805 ;	 function init_camera
+                                    806 ;	-----------------------------------------
+                                    807 ;	Register assignment is optimal.
+                                    808 ;	Stack space usage: 0 bytes.
+    000003BA                        809 _init_camera:
+    000003BA 8Er0Er00         [ 4]  810 	stx	_init_camera_y_10000_172
+                                    811 ;	src/large_map.c: 180: set_native_tile_data(0, bigmap_TILE_COUNT, bigmap_tiles);
+    000003BD A2s00            [ 2]  812 	ldx	#>_bigmap_tiles
+    000003BF 8Er01r00         [ 4]  813 	stx	(_set_bkg_native_data_PARM_3 + 1)
+    000003C2 A2r00            [ 2]  814 	ldx	#_bigmap_tiles
+    000003C4 8Er00r00         [ 4]  815 	stx	_set_bkg_native_data_PARM_3
+                                    816 ;	../../../include/nes/nes.h: 1207: set_bkg_native_data(first_tile, nb_tiles, data);
+    000003C7 48               [ 3]  817 	pha
+    000003C8 A9 00            [ 2]  818 	lda	#0x00
+    000003CA A2 E1            [ 2]  819 	ldx	#0xe1
+    000003CC 20r00r00         [ 6]  820 	jsr	_set_bkg_native_data
+    000003CF 68               [ 4]  821 	pla
+                                    822 ;	src/large_map.c: 192: set_bkg_palette(0, bigmap_PALETTE_COUNT, bigmap_palettes);
+    000003D0 A2s00            [ 2]  823 	ldx	#>_bigmap_palettes
+    000003D2 8Er01r00         [ 4]  824 	stx	(_set_bkg_palette_PARM_3 + 1)
+    000003D5 A2r00            [ 2]  825 	ldx	#_bigmap_palettes
+    000003D7 8Er00r00         [ 4]  826 	stx	_set_bkg_palette_PARM_3
+    000003DA 48               [ 3]  827 	pha
+    000003DB A9 00            [ 2]  828 	lda	#0x00
+    000003DD A2 04            [ 2]  829 	ldx	#0x04
+    000003DF 20r00r00         [ 6]  830 	jsr	_set_bkg_palette
+    000003E2 68               [ 4]  831 	pla
+                                    832 ;	src/large_map.c: 197: camera_x = x;
+    000003E3 8Dr01r00         [ 4]  833 	sta	_camera_x
+    000003E6 A2 00            [ 2]  834 	ldx	#0x00
+    000003E8 8Er02r00         [ 4]  835 	stx	(_camera_x + 1)
+                                    836 ;	src/large_map.c: 198: camera_y = y;
+    000003EB ADr0Er00         [ 4]  837 	lda	_init_camera_y_10000_172
+    000003EE 8Dr03r00         [ 4]  838 	sta	_camera_y
+    000003F1 8Er04r00         [ 4]  839 	stx	(_camera_y + 1)
+                                    840 ;	src/large_map.c: 202: old_camera_x = camera_x; old_camera_y = camera_y;
+    000003F4 ADr02r00         [ 4]  841 	lda	(_camera_x + 1)
+    000003F7 8Dr06r00         [ 4]  842 	sta	(_old_camera_x + 1)
+    000003FA ADr01r00         [ 4]  843 	lda	_camera_x
+    000003FD 8Dr05r00         [ 4]  844 	sta	_old_camera_x
+    00000400 ADr04r00         [ 4]  845 	lda	(_camera_y + 1)
+    00000403 8Dr08r00         [ 4]  846 	sta	(_old_camera_y + 1)
+    00000406 ADr03r00         [ 4]  847 	lda	_camera_y
+    00000409 8Dr07r00         [ 4]  848 	sta	_old_camera_y
+                                    849 ;	src/large_map.c: 204: map_pos_x = camera_x >> 3;
+    0000040C AEr02r00         [ 4]  850 	ldx	(_camera_x + 1)
+    0000040F ADr01r00         [ 4]  851 	lda	_camera_x
+    00000412 86*00            [ 3]  852 	stx	*(REGTEMP+0)
+    00000414 46*00            [ 5]  853 	lsr	*(REGTEMP+0)
+    00000416 6A               [ 2]  854 	ror	a
+    00000417 46*00            [ 5]  855 	lsr	*(REGTEMP+0)
+    00000419 6A               [ 2]  856 	ror	a
+    0000041A 46*00            [ 5]  857 	lsr	*(REGTEMP+0)
+    0000041C 6A               [ 2]  858 	ror	a
+    0000041D A6*00            [ 3]  859 	ldx	*(REGTEMP+0)
+    0000041F 85*02            [ 3]  860 	sta	*_init_camera_sloc0_1_0
+    00000421 8Dr09r00         [ 4]  861 	sta	_map_pos_x
+                                    862 ;	src/large_map.c: 205: map_pos_y = camera_y >> 3;
+    00000424 AEr04r00         [ 4]  863 	ldx	(_camera_y + 1)
+    00000427 ADr03r00         [ 4]  864 	lda	_camera_y
+    0000042A 86*00            [ 3]  865 	stx	*(REGTEMP+0)
+    0000042C 46*00            [ 5]  866 	lsr	*(REGTEMP+0)
+    0000042E 6A               [ 2]  867 	ror	a
+    0000042F 46*00            [ 5]  868 	lsr	*(REGTEMP+0)
+    00000431 6A               [ 2]  869 	ror	a
+    00000432 46*00            [ 5]  870 	lsr	*(REGTEMP+0)
+    00000434 6A               [ 2]  871 	ror	a
+    00000435 A6*00            [ 3]  872 	ldx	*(REGTEMP+0)
+    00000437 85*03            [ 3]  873 	sta	*_init_camera_sloc1_1_0
+    00000439 8Dr0Ar00         [ 4]  874 	sta	_map_pos_y
+                                    875 ;	src/large_map.c: 206: old_map_pos_x = old_map_pos_y = 255;
+    0000043C A2 FF            [ 2]  876 	ldx	#0xff
+    0000043E 8Er0Cr00         [ 4]  877 	stx	_old_map_pos_y
+    00000441 8Er0Br00         [ 4]  878 	stx	_old_map_pos_x
+                                    879 ;	src/large_map.c: 207: move_bkg(camera_x, WRAP_SCROLL_Y(camera_y + SCROLL_Y_OFFSET));
+    00000444 AEr04r00         [ 4]  880 	ldx	(_camera_y + 1)
+    00000447 ADr03r00         [ 4]  881 	lda	_camera_y
+    0000044A 18               [ 2]  882 	clc
+    0000044B 69 04            [ 2]  883 	adc	#0x04
+    0000044D 90 01            [ 4]  884 	bcc	00154$
+    0000044F E8               [ 2]  885 	inx
+    00000450                        886 00154$:
+    00000450 A0 F0            [ 2]  887 	ldy	#0xf0
+    00000452 8Cr00r00         [ 4]  888 	sty	__moduint_PARM_2
+    00000455 A0 00            [ 2]  889 	ldy	#0x00
+    00000457 8Cr01r00         [ 4]  890 	sty	(__moduint_PARM_2 + 1)
+    0000045A 20r00r00         [ 6]  891 	jsr	__moduint
+    0000045D AEr01r00         [ 4]  892 	ldx	_camera_x
+    00000460 8Er00r00         [ 4]  893 	stx	_bkg_scroll_x
+                                    894 ;	../../../include/nes/nes.h: 918: bkg_scroll_x = x, bkg_scroll_y = y;
+    00000463 8Dr00r00         [ 4]  895 	sta	_bkg_scroll_y
+                                    896 ;	src/large_map.c: 210: set_submap_indices(
+    00000466 A2 00            [ 2]  897 	ldx	#0x00
+    00000468 A5*02            [ 3]  898 	lda	*_init_camera_sloc0_1_0
+    0000046A 85*00            [ 3]  899 	sta	*(REGTEMP+0)
+    0000046C A9 9C            [ 2]  900 	lda	#0x9c
+    0000046E 38               [ 2]  901 	sec
+    0000046F E5*00            [ 3]  902 	sbc	*(REGTEMP+0)
+    00000471 48               [ 3]  903 	pha
+    00000472 8A               [ 2]  904 	txa
+    00000473 86*00            [ 3]  905 	stx	*(REGTEMP+0)
+    00000475 E5*00            [ 3]  906 	sbc	*(REGTEMP+0)
+    00000477 AA               [ 2]  907 	tax
+    00000478 68               [ 4]  908 	pla
+    00000479 85*00            [ 3]  909 	sta	*(REGTEMP+0)
+    0000047B A9 21            [ 2]  910 	lda	#0x21
+    0000047D 38               [ 2]  911 	sec
+    0000047E E5*00            [ 3]  912 	sbc	*(REGTEMP+0)
+    00000480 A9 00            [ 2]  913 	lda	#0x00
+    00000482 86*00            [ 3]  914 	stx	*(REGTEMP+0)
+    00000484 E5*00            [ 3]  915 	sbc	*(REGTEMP+0)
+    00000486 B0 05            [ 4]  916 	bcs	00116$
+    00000488 A0 21            [ 2]  917 	ldy	#0x21
+    0000048A 4Cr93r04         [ 3]  918 	jmp	00117$
+    0000048D                        919 00116$:
+    0000048D A9 9C            [ 2]  920 	lda	#0x9c
+    0000048F 38               [ 2]  921 	sec
+    00000490 E5*02            [ 3]  922 	sbc	*_init_camera_sloc0_1_0
+    00000492 A8               [ 2]  923 	tay
+    00000493                        924 00117$:
+    00000493 A2 00            [ 2]  925 	ldx	#0x00
+    00000495 A5*03            [ 3]  926 	lda	*_init_camera_sloc1_1_0
+    00000497 85*00            [ 3]  927 	sta	*(REGTEMP+0)
+    00000499 A9 42            [ 2]  928 	lda	#0x42
+    0000049B 38               [ 2]  929 	sec
+    0000049C E5*00            [ 3]  930 	sbc	*(REGTEMP+0)
+    0000049E 48               [ 3]  931 	pha
+    0000049F 8A               [ 2]  932 	txa
+    000004A0 86*00            [ 3]  933 	stx	*(REGTEMP+0)
+    000004A2 E5*00            [ 3]  934 	sbc	*(REGTEMP+0)
+    000004A4 AA               [ 2]  935 	tax
+    000004A5 68               [ 4]  936 	pla
+    000004A6 85*00            [ 3]  937 	sta	*(REGTEMP+0)
+    000004A8 A9 1F            [ 2]  938 	lda	#0x1f
+    000004AA 38               [ 2]  939 	sec
+    000004AB E5*00            [ 3]  940 	sbc	*(REGTEMP+0)
+    000004AD A9 00            [ 2]  941 	lda	#0x00
+    000004AF 86*00            [ 3]  942 	stx	*(REGTEMP+0)
+    000004B1 E5*00            [ 3]  943 	sbc	*(REGTEMP+0)
+    000004B3 B0 05            [ 4]  944 	bcs	00118$
+    000004B5 A9 1F            [ 2]  945 	lda	#0x1f
+    000004B7 4CrBFr04         [ 3]  946 	jmp	00119$
+    000004BA                        947 00118$:
+    000004BA A9 42            [ 2]  948 	lda	#0x42
+    000004BC 38               [ 2]  949 	sec
+    000004BD E5*03            [ 3]  950 	sbc	*_init_camera_sloc1_1_0
+    000004BF                        951 00119$:
+    000004BF A2s00            [ 2]  952 	ldx	#>_bigmap_map
+    000004C1 8Er01r00         [ 4]  953 	stx	(_set_bkg_submap_PARM_5 + 1)
+    000004C4 A2r00            [ 2]  954 	ldx	#_bigmap_map
+    000004C6 8Er00r00         [ 4]  955 	stx	_set_bkg_submap_PARM_5
+    000004C9 8Cr00r00         [ 4]  956 	sty	_set_bkg_submap_PARM_3
+    000004CC 8Dr00r00         [ 4]  957 	sta	_set_bkg_submap_PARM_4
+    000004CF A2 9C            [ 2]  958 	ldx	#0x9c
+    000004D1 8Er00r00         [ 4]  959 	stx	_set_bkg_submap_PARM_6
+    000004D4 A5*02            [ 3]  960 	lda	*_init_camera_sloc0_1_0
+    000004D6 A6*03            [ 3]  961 	ldx	*_init_camera_sloc1_1_0
+    000004D8 20r00r00         [ 6]  962 	jsr	_set_bkg_submap
+                                    963 ;	src/large_map.c: 218: set_submap_attributes(
+    000004DB A2 00            [ 2]  964 	ldx	#0x00
+    000004DD ADr0Ar00         [ 4]  965 	lda	_map_pos_y
+    000004E0 85*00            [ 3]  966 	sta	*(REGTEMP+0)
+    000004E2 A9 42            [ 2]  967 	lda	#0x42
+    000004E4 38               [ 2]  968 	sec
+    000004E5 E5*00            [ 3]  969 	sbc	*(REGTEMP+0)
+    000004E7 48               [ 3]  970 	pha
+    000004E8 8A               [ 2]  971 	txa
+    000004E9 86*00            [ 3]  972 	stx	*(REGTEMP+0)
+    000004EB E5*00            [ 3]  973 	sbc	*(REGTEMP+0)
+    000004ED AA               [ 2]  974 	tax
+    000004EE 68               [ 4]  975 	pla
+    000004EF 85*00            [ 3]  976 	sta	*(REGTEMP+0)
+    000004F1 A9 1F            [ 2]  977 	lda	#0x1f
+    000004F3 38               [ 2]  978 	sec
+    000004F4 E5*00            [ 3]  979 	sbc	*(REGTEMP+0)
+    000004F6 A9 00            [ 2]  980 	lda	#0x00
+    000004F8 86*00            [ 3]  981 	stx	*(REGTEMP+0)
+    000004FA E5*00            [ 3]  982 	sbc	*(REGTEMP+0)
+    000004FC B0 05            [ 4]  983 	bcs	00120$
+    000004FE A0 1F            [ 2]  984 	ldy	#0x1f
+    00000500 4Cr0Ar05         [ 3]  985 	jmp	00121$
+    00000503                        986 00120$:
+    00000503 A9 42            [ 2]  987 	lda	#0x42
+    00000505 38               [ 2]  988 	sec
+    00000506 EDr0Ar00         [ 4]  989 	sbc	_map_pos_y
+    00000509 A8               [ 2]  990 	tay
+    0000050A                        991 00121$:
+    0000050A A2 00            [ 2]  992 	ldx	#0x00
+    0000050C ADr09r00         [ 4]  993 	lda	_map_pos_x
+    0000050F 85*00            [ 3]  994 	sta	*(REGTEMP+0)
+    00000511 A9 9C            [ 2]  995 	lda	#0x9c
+    00000513 38               [ 2]  996 	sec
+    00000514 E5*00            [ 3]  997 	sbc	*(REGTEMP+0)
+    00000516 48               [ 3]  998 	pha
+    00000517 8A               [ 2]  999 	txa
+    00000518 86*00            [ 3] 1000 	stx	*(REGTEMP+0)
+    0000051A E5*00            [ 3] 1001 	sbc	*(REGTEMP+0)
+    0000051C AA               [ 2] 1002 	tax
+    0000051D 68               [ 4] 1003 	pla
+    0000051E 85*00            [ 3] 1004 	sta	*(REGTEMP+0)
+    00000520 A9 21            [ 2] 1005 	lda	#0x21
+    00000522 38               [ 2] 1006 	sec
+    00000523 E5*00            [ 3] 1007 	sbc	*(REGTEMP+0)
+    00000525 A9 00            [ 2] 1008 	lda	#0x00
+    00000527 86*00            [ 3] 1009 	stx	*(REGTEMP+0)
+    00000529 E5*00            [ 3] 1010 	sbc	*(REGTEMP+0)
+    0000052B B0 05            [ 4] 1011 	bcs	00122$
+    0000052D A2 21            [ 2] 1012 	ldx	#0x21
+    0000052F 4Cr39r05         [ 3] 1013 	jmp	00123$
+    00000532                       1014 00122$:
+    00000532 A9 9C            [ 2] 1015 	lda	#0x9c
+    00000534 38               [ 2] 1016 	sec
+    00000535 EDr09r00         [ 4] 1017 	sbc	_map_pos_x
+    00000538 AA               [ 2] 1018 	tax
+    00000539                       1019 00123$:
+                                   1020 ;	../../../include/nes/nes.h: 753: set_bkg_submap_attributes_nes16x16(x >> 1, y >> 1, (w + 1) >> 1, (h + 1) >> 1, attributes, map_w >> 1);
+    00000539 ADr09r00         [ 4] 1021 	lda	_map_pos_x
+    0000053C 4A               [ 2] 1022 	lsr	a
+    0000053D 85*03            [ 3] 1023 	sta	*_init_camera_sloc1_1_0
+    0000053F ADr0Ar00         [ 4] 1024 	lda	_map_pos_y
+    00000542 4A               [ 2] 1025 	lsr	a
+    00000543 85*02            [ 3] 1026 	sta	*_init_camera_sloc0_1_0
+    00000545 8A               [ 2] 1027 	txa
+    00000546 A2 00            [ 2] 1028 	ldx	#0x00
+    00000548 18               [ 2] 1029 	clc
+    00000549 69 01            [ 2] 1030 	adc	#0x01
+    0000054B 90 01            [ 4] 1031 	bcc	00159$
+    0000054D E8               [ 2] 1032 	inx
+    0000054E                       1033 00159$:
+    0000054E 86*00            [ 3] 1034 	stx	*(REGTEMP+0)
+    00000550 E0 80            [ 2] 1035 	cpx	#0x80
+    00000552 66*00            [ 5] 1036 	ror	*(REGTEMP+0)
+    00000554 6A               [ 2] 1037 	ror	a
+    00000555 8Dr00r00         [ 4] 1038 	sta	_set_bkg_submap_attributes_nes16x16_PARM_3
+    00000558 A2 00            [ 2] 1039 	ldx	#0x00
+    0000055A 98               [ 2] 1040 	tya
+    0000055B 18               [ 2] 1041 	clc
+    0000055C 69 01            [ 2] 1042 	adc	#0x01
+    0000055E 90 01            [ 4] 1043 	bcc	00160$
+    00000560 E8               [ 2] 1044 	inx
+    00000561                       1045 00160$:
+    00000561 86*00            [ 3] 1046 	stx	*(REGTEMP+0)
+    00000563 E0 80            [ 2] 1047 	cpx	#0x80
+    00000565 66*00            [ 5] 1048 	ror	*(REGTEMP+0)
+    00000567 6A               [ 2] 1049 	ror	a
+    00000568 A6*00            [ 3] 1050 	ldx	*(REGTEMP+0)
+    0000056A 8Dr00r00         [ 4] 1051 	sta	_set_bkg_submap_attributes_nes16x16_PARM_4
+    0000056D A9s00            [ 2] 1052 	lda	#>_bigmap_map_attributes
+    0000056F 8Dr01r00         [ 4] 1053 	sta	(_set_bkg_submap_attributes_nes16x16_PARM_5 + 1)
+    00000572 A9r00            [ 2] 1054 	lda	#_bigmap_map_attributes
+    00000574 8Dr00r00         [ 4] 1055 	sta	_set_bkg_submap_attributes_nes16x16_PARM_5
+    00000577 A2 4E            [ 2] 1056 	ldx	#0x4e
+    00000579 8Er00r00         [ 4] 1057 	stx	_set_bkg_submap_attributes_nes16x16_PARM_6
+    0000057C A5*03            [ 3] 1058 	lda	*_init_camera_sloc1_1_0
+    0000057E A6*02            [ 3] 1059 	ldx	*_init_camera_sloc0_1_0
+    00000580 20r00r00         [ 6] 1060 	jsr	_set_bkg_submap_attributes_nes16x16
+                                   1061 ;	src/large_map.c: 226: redraw = FALSE;
+    00000583 A2 00            [ 2] 1062 	ldx	#0x00
+    00000585 8Er0Dr00         [ 4] 1063 	stx	_redraw
+                                   1064 ;	src/large_map.c: 228: move_bkg(camera_x, WRAP_SCROLL_Y(camera_y + SCROLL_Y_OFFSET));
+    00000588 AEr04r00         [ 4] 1065 	ldx	(_camera_y + 1)
+    0000058B ADr03r00         [ 4] 1066 	lda	_camera_y
+    0000058E 18               [ 2] 1067 	clc
+    0000058F 69 04            [ 2] 1068 	adc	#0x04
+    00000591 90 01            [ 4] 1069 	bcc	00161$
+    00000593 E8               [ 2] 1070 	inx
+    00000594                       1071 00161$:
+    00000594 A0 F0            [ 2] 1072 	ldy	#0xf0
+    00000596 8Cr00r00         [ 4] 1073 	sty	__moduint_PARM_2
+    00000599 A0 00            [ 2] 1074 	ldy	#0x00
+    0000059B 8Cr01r00         [ 4] 1075 	sty	(__moduint_PARM_2 + 1)
+    0000059E 20r00r00         [ 6] 1076 	jsr	__moduint
+    000005A1 AEr01r00         [ 4] 1077 	ldx	_camera_x
+    000005A4 8Er00r00         [ 4] 1078 	stx	_bkg_scroll_x
+                                   1079 ;	../../../include/nes/nes.h: 918: bkg_scroll_x = x, bkg_scroll_y = y;
+    000005A7 8Dr00r00         [ 4] 1080 	sta	_bkg_scroll_y
+                                   1081 ;	src/large_map.c: 233: HIDE_LEFT_COLUMN;
+    000005AA ADr00r00         [ 4] 1082 	lda	_shadow_PPUMASK
+    000005AD 29 F9            [ 2] 1083 	and	#0xf9
+    000005AF 8Dr00r00         [ 4] 1084 	sta	_shadow_PPUMASK
+                                   1085 ;	src/large_map.c: 235: }
+    000005B2 60               [ 6] 1086 	rts
+                                   1087 ;------------------------------------------------------------
+                                   1088 ;Allocation info for local variables in function 'main'
+                                   1089 ;------------------------------------------------------------
+                                   1090 ;	src/large_map.c: 237: void main(void){
+                                   1091 ;	-----------------------------------------
+                                   1092 ;	 function main
+                                   1093 ;	-----------------------------------------
+                                   1094 ;	Register assignment is optimal.
+                                   1095 ;	Stack space usage: 0 bytes.
+    000005B3                       1096 _main:
+                                   1097 ;	src/large_map.c: 238: DISPLAY_OFF;
+    000005B3 20r00r00         [ 6] 1098 	jsr	_display_off
+                                   1099 ;	src/large_map.c: 239: init_camera(0, 0);
+    000005B6 A9 00            [ 2] 1100 	lda	#0x00
+    000005B8 AA               [ 2] 1101 	tax
+    000005B9 20rBAr03         [ 6] 1102 	jsr	_init_camera
+                                   1103 ;	src/large_map.c: 241: SHOW_BKG;
+    000005BC ADr00r00         [ 4] 1104 	lda	_shadow_PPUMASK
+    000005BF 09 08            [ 2] 1105 	ora	#0x08
+    000005C1 8Dr00r00         [ 4] 1106 	sta	_shadow_PPUMASK
+                                   1107 ;	src/large_map.c: 242: DISPLAY_ON;
+    000005C4 20r00r00         [ 6] 1108 	jsr	_display_on
+                                   1109 ;	src/large_map.c: 243: while (TRUE) {
+    000005C7                       1110 00123$:
+                                   1111 ;	src/large_map.c: 244: joy = joypad();
+    000005C7 20r00r00         [ 6] 1112 	jsr	_joypad
+    000005CA 8Dr00r00         [ 4] 1113 	sta	_joy
+                                   1114 ;	src/large_map.c: 246: if (joy & J_UP) {
+    000005CD A2 08            [ 2] 1115 	ldx	#0x08
+    000005CF 86*00            [ 3] 1116 	stx	*(REGTEMP+0)
+    000005D1 24*00            [ 3] 1117 	bit	*(REGTEMP+0)
+    000005D3 F0 1E            [ 4] 1118 	beq	00108$
+                                   1119 ;	src/large_map.c: 247: if (camera_y) {
+    000005D5 ADr04r00         [ 4] 1120 	lda	(_camera_y + 1)
+    000005D8 0Dr03r00         [ 4] 1121 	ora	_camera_y
+    000005DB F0 35            [ 4] 1122 	beq	00109$
+                                   1123 ;	src/large_map.c: 248: camera_y--;
+    000005DD 38               [ 2] 1124 	sec
+    000005DE ADr03r00         [ 4] 1125 	lda	_camera_y
+    000005E1 E9 01            [ 2] 1126 	sbc	#0x01
+    000005E3 8Dr03r00         [ 4] 1127 	sta	_camera_y
+    000005E6 B0 03            [ 4] 1128 	bcs	00190$
+    000005E8 CEr04r00         [ 6] 1129 	dec	(_camera_y + 1)
+    000005EB                       1130 00190$:
+                                   1131 ;	src/large_map.c: 249: redraw = TRUE;
+    000005EB A2 01            [ 2] 1132 	ldx	#0x01
+    000005ED 8Er0Dr00         [ 4] 1133 	stx	_redraw
+    000005F0 4Cr12r06         [ 3] 1134 	jmp	00109$
+    000005F3                       1135 00108$:
+                                   1136 ;	src/large_map.c: 251: } else if (joy & J_DOWN) {
+    000005F3 29 04            [ 2] 1137 	and	#0x04
+    000005F5 F0 1B            [ 4] 1138 	beq	00109$
+                                   1139 ;	src/large_map.c: 252: if (camera_y < camera_max_y) {
+    000005F7 AEr04r00         [ 4] 1140 	ldx	(_camera_y + 1)
+    000005FA ADr03r00         [ 4] 1141 	lda	_camera_y
+    000005FD 38               [ 2] 1142 	sec
+    000005FE E9 20            [ 2] 1143 	sbc	#0x20
+    00000600 8A               [ 2] 1144 	txa
+    00000601 E9 01            [ 2] 1145 	sbc	#0x01
+    00000603 B0 0D            [ 4] 1146 	bcs	00109$
+                                   1147 ;	src/large_map.c: 253: camera_y++;
+    00000605 EEr03r00         [ 6] 1148 	inc	_camera_y
+    00000608 D0 03            [ 4] 1149 	bne	00193$
+    0000060A EEr04r00         [ 6] 1150 	inc	(_camera_y + 1)
+    0000060D                       1151 00193$:
+                                   1152 ;	src/large_map.c: 254: redraw = TRUE;
+    0000060D A2 01            [ 2] 1153 	ldx	#0x01
+    0000060F 8Er0Dr00         [ 4] 1154 	stx	_redraw
+    00000612                       1155 00109$:
+                                   1156 ;	src/large_map.c: 258: if (joy & J_LEFT) {
+    00000612 ADr00r00         [ 4] 1157 	lda	_joy
+    00000615 A2 02            [ 2] 1158 	ldx	#0x02
+    00000617 86*00            [ 3] 1159 	stx	*(REGTEMP+0)
+    00000619 24*00            [ 3] 1160 	bit	*(REGTEMP+0)
+    0000061B F0 1D            [ 4] 1161 	beq	00117$
+                                   1162 ;	src/large_map.c: 259: if (camera_x) {
+    0000061D ADr02r00         [ 4] 1163 	lda	(_camera_x + 1)
+    00000620 0Dr01r00         [ 4] 1164 	ora	_camera_x
+    00000623 F0 34            [ 4] 1165 	beq	00118$
+                                   1166 ;	src/large_map.c: 260: camera_x--;
+    00000625 38               [ 2] 1167 	sec
+    00000626 ADr01r00         [ 4] 1168 	lda	_camera_x
+    00000629 E9 01            [ 2] 1169 	sbc	#0x01
+    0000062B 8Dr01r00         [ 4] 1170 	sta	_camera_x
+    0000062E B0 03            [ 4] 1171 	bcs	00197$
+    00000630 CEr02r00         [ 6] 1172 	dec	(_camera_x + 1)
+    00000633                       1173 00197$:
+                                   1174 ;	src/large_map.c: 261: redraw = TRUE;
+    00000633 CA               [ 2] 1175 	dex
+    00000634 8Er0Dr00         [ 4] 1176 	stx	_redraw
+    00000637 4Cr59r06         [ 3] 1177 	jmp	00118$
+    0000063A                       1178 00117$:
+                                   1179 ;	src/large_map.c: 263: } else if (joy & J_RIGHT) {
+    0000063A 29 01            [ 2] 1180 	and	#0x01
+    0000063C F0 1B            [ 4] 1181 	beq	00118$
+                                   1182 ;	src/large_map.c: 264: if (camera_x < camera_max_x) {
+    0000063E AEr02r00         [ 4] 1183 	ldx	(_camera_x + 1)
+    00000641 ADr01r00         [ 4] 1184 	lda	_camera_x
+    00000644 38               [ 2] 1185 	sec
+    00000645 E9 E0            [ 2] 1186 	sbc	#0xe0
+    00000647 8A               [ 2] 1187 	txa
+    00000648 E9 03            [ 2] 1188 	sbc	#0x03
+    0000064A B0 0D            [ 4] 1189 	bcs	00118$
+                                   1190 ;	src/large_map.c: 265: camera_x++;
+    0000064C EEr01r00         [ 6] 1191 	inc	_camera_x
+    0000064F D0 03            [ 4] 1192 	bne	00200$
+    00000651 EEr02r00         [ 6] 1193 	inc	(_camera_x + 1)
+    00000654                       1194 00200$:
+                                   1195 ;	src/large_map.c: 266: redraw = TRUE;
+    00000654 A2 01            [ 2] 1196 	ldx	#0x01
+    00000656 8Er0Dr00         [ 4] 1197 	stx	_redraw
+    00000659                       1198 00118$:
+                                   1199 ;	src/large_map.c: 269: if (redraw) {
+    00000659 ADr0Dr00         [ 4] 1200 	lda	_redraw
+    0000065C F0 0E            [ 4] 1201 	beq	00120$
+                                   1202 ;	src/large_map.c: 270: vsync();
+    0000065E 20r00r00         [ 6] 1203 	jsr	_vsync
+                                   1204 ;	src/large_map.c: 271: set_camera();
+    00000661 20r00r00         [ 6] 1205 	jsr	_set_camera
+                                   1206 ;	src/large_map.c: 272: redraw = FALSE;
+    00000664 A2 00            [ 2] 1207 	ldx	#0x00
+    00000666 8Er0Dr00         [ 4] 1208 	stx	_redraw
+    00000669 4CrC7r05         [ 3] 1209 	jmp	00123$
+    0000066C                       1210 00120$:
+                                   1211 ;	src/large_map.c: 273: } else vsync();
+    0000066C 20r00r00         [ 6] 1212 	jsr	_vsync
+    0000066F 4CrC7r05         [ 3] 1213 	jmp	00123$
+                                   1214 ;	src/large_map.c: 275: }
+    00000672 60               [ 6] 1215 	rts
+                                   1216 	.area _CODE
+                                   1217 	.area _XINIT
+                                   1218 	.area _CABS    (ABS)

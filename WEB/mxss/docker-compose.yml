@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  ctf-challenge:
+    build: .
+    ports:
+      - "4012:4012"
+    environment:
+      - NODE_ENV=production
+      - PORT=4012
+      - HOST=0.0.0.0
+    restart: unless-stopped
+    container_name: mathml-xss-ctf
+    # Optional: Add resource limits for CTF environment
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          memory: 256M

@@ -1,0 +1,61 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+    ___sdcc_bcall                                                   ******** GX
+  0 ___str_0                                                        000000BD R
+  0 ___str_1                                                        000000CE R
+  0 ___str_2                                                        000000DF R
+  0 ___str_3                                                        000000EA R
+  0 ___str_4                                                        000000F7 R
+  0 ___str_5                                                        00000104 R
+  0 ___str_6                                                        00000111 R
+  0 ___str_7                                                        0000011E R
+    _bank_1                                                         ******** GX
+    _bank_2                                                         ******** GX
+    _bank_3                                                         ******** GX
+  3 _bank_fixed                                                     00000000 GR
+  0 _main                                                           00000000 GR
+    _printf                                                         ******** GX
+    _puts                                                           ******** GX
+    _var_0                                                          ******** GX
+    _var_1                                                          ******** GX
+    _var_2                                                          ******** GX
+    _var_3                                                          ******** GX
+  8 _var_internal                                                   00000000 GR
+    b_bank_1                                                        ******** GX
+    b_bank_2                                                        ******** GX
+    b_bank_3                                                        ******** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      129   flags    0
+   1 _ZP                                        size        0   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size        7   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size        0   flags    0
+   7 _DATA                                      size        0   flags    0
+   8 _BSS                                       size        2   flags    0
+   9 _DABS                                      size        0   flags    8
+   A _CABS                                      size        0   flags    8
+

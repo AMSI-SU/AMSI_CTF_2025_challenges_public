@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxe Marketplace - Premium Luxury Goods</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f8f9fa;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+      color: white;
+      padding: 1rem 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #d4af37;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23333" width="1200" height="600"/><polygon fill="%23d4af37" points="0,600 1200,0 1200,600"/></svg>');
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero-content p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background: #d4af37;
+      color: white;
+      text-decoration: none;
+      border-radius: 50px;
+      font-weight: bold;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #b8941f;
+      transform: translateY(-2px);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .products {
+      padding: 4rem 0;
+    }
+
+    .products h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: #1a1a1a;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-card h3 {
+      color: #1a1a1a;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .price {
+      font-size: 1.8rem;
+      color: #d4af37;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+
+    .footer {
+      background: #1a1a1a;
+      color: white;
+      text-align: center;
+      padding: 2rem 0;
+      margin-top: 4rem;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <nav class="nav">
+      <div class="logo">LUXE</div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/cart">Cart</a></li>
+        <li><a href="/profile" id="profileLink" class="hidden">Profile</a></li>
+        <li><a href="/admin" id="adminLink" class="hidden">Admin</a></li>
+        <li><a href="/login" id="loginLink">Login</a></li>
+        <li><a href="#" id="logoutLink" class="hidden">Logout</a></li>
+      </ul>
+      <div class="user-info" id="userInfo" class="hidden">
+        <span id="userName"></span>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Luxury Redefined</h1>
+      <p>Discover the world's most exclusive timepieces and accessories</p>
+      <a href="#products" class="btn">Shop Collection</a>
+    </div>
+  </section>
+
+  <section class="products" id="products">
+    <div class="container">
+      <h2>Featured Collection</h2>
+      <div class="product-grid" id="productGrid">
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 Luxe Marketplace. Crafting Excellence Since 1985.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Check authentication status
+    fetch('/api/user/profile')
+      .then(res => res.ok ? res.json() : null)
+      .then(user => {
+        if (user) {
+          document.getElementById('userInfo').classList.remove('hidden');
+          document.getElementById('userName').textContent = user.profile.name;
+          document.getElementById('profileLink').classList.remove('hidden');
+          document.getElementById('logoutLink').classList.remove('hidden');
+          document.getElementById('loginLink').classList.add('hidden');
+
+          if (user.isAdmin || user.role === 'admin') {
+            document.getElementById('adminLink').classList.remove('hidden');
+          }
+        }
+      });
+
+    // Load products
+    fetch('/api/products?featured=true')
+      .then(res => res.json())
+      .then(products => {
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = products.map(product => `
+                    <div class="product-card">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <div class="price">$${product.price.toLocaleString()}</div>
+                        <button class="btn" onclick="addToCart('${product.id}')">Add to Cart</button>
+                    </div>
+                `).join('');
+      });
+
+    // Logout handler
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      fetch('/api/logout', {method: 'POST'})
+        .then(() => location.reload());
+    });
+
+    function addToCart(productId) {
+      // Simple cart functionality
+      let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const existing = cart.find(item => item.productId === productId);
+
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({productId, quantity: 1});
+      }
+
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert('Added to cart!');
+    }
+  </script>
+</body>
+
+</html>

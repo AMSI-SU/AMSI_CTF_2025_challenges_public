@@ -1,0 +1,239 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module bcd
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _main
+                                     23 	.globl _bcd2text
+                                     24 	.globl _bcd_sub
+                                     25 	.globl _bcd_add
+                                     26 	.globl _uint2bcd
+                                     27 	.globl _font_set
+                                     28 	.globl _font_load
+                                     29 	.globl _font_init
+                                     30 	.globl _set_bkg_tiles
+                                     31 	.globl _len
+                                     32 	.globl _bcd3
+                                     33 	.globl _bcd2
+                                     34 	.globl _bcd
+                                     35 	.globl _buf
+                                     36 	.globl _OAMDMA
+                                     37 	.globl _PPUDATA
+                                     38 	.globl _PPUADDR
+                                     39 	.globl _PPUSCROLL
+                                     40 	.globl _OAMDATA
+                                     41 	.globl _OAMADDR
+                                     42 	.globl _PPUSTATUS
+                                     43 	.globl _PPUMASK
+                                     44 	.globl _PPUCTRL
+                                     45 ;--------------------------------------------------------
+                                     46 ; ZP ram data
+                                     47 ;--------------------------------------------------------
+                                     48 	.area _ZP      (PAG)
+                                     49 ;--------------------------------------------------------
+                                     50 ; overlayable items in ram
+                                     51 ;--------------------------------------------------------
+                                     52 ;--------------------------------------------------------
+                                     53 ; uninitialized external ram data
+                                     54 ;--------------------------------------------------------
+                                     55 	.area _BSS
+                         00002000    56 _PPUCTRL	=	0x2000
+                         00002001    57 _PPUMASK	=	0x2001
+                         00002002    58 _PPUSTATUS	=	0x2002
+                         00002003    59 _OAMADDR	=	0x2003
+                         00002004    60 _OAMDATA	=	0x2004
+                         00002005    61 _PPUSCROLL	=	0x2005
+                         00002006    62 _PPUADDR	=	0x2006
+                         00002007    63 _PPUDATA	=	0x2007
+                         00004014    64 _OAMDMA	=	0x4014
+    00000000                         65 _buf::
+    00000000                         66 	.ds 10
+                                     67 ;--------------------------------------------------------
+                                     68 ; absolute external ram data
+                                     69 ;--------------------------------------------------------
+                                     70 	.area _DABS    (ABS)
+                                     71 ;--------------------------------------------------------
+                                     72 ; initialized external ram data
+                                     73 ;--------------------------------------------------------
+                                     74 	.area _DATA
+    00000000                         75 _bcd::
+    00000000                         76 	.ds 4
+    00000004                         77 _bcd2::
+    00000004                         78 	.ds 4
+    00000008                         79 _bcd3::
+    00000008                         80 	.ds 4
+    0000000C                         81 _len::
+    0000000C                         82 	.ds 1
+                                     83 ;--------------------------------------------------------
+                                     84 ; global & static initialisations
+                                     85 ;--------------------------------------------------------
+                                     86 	.area _HOME
+                                     87 	.area _GSINIT
+                                     88 	.area _GSFINAL
+                                     89 	.area _GSINIT
+                                     90 ;--------------------------------------------------------
+                                     91 ; Home
+                                     92 ;--------------------------------------------------------
+                                     93 	.area _HOME
+                                     94 	.area _HOME
+                                     95 ;--------------------------------------------------------
+                                     96 ; code
+                                     97 ;--------------------------------------------------------
+                                     98 	.area _CODE
+                                     99 ;------------------------------------------------------------
+                                    100 ;Allocation info for local variables in function 'main'
+                                    101 ;------------------------------------------------------------
+                                    102 ;	src/bcd.c: 15: void main(void) {
+                                    103 ;	-----------------------------------------
+                                    104 ;	 function main
+                                    105 ;	-----------------------------------------
+                                    106 ;	Register assignment is optimal.
+                                    107 ;	Stack space usage: 0 bytes.
+    00000000                        108 _main:
+                                    109 ;	src/bcd.c: 16: font_init();
+    00000000 20r00r00         [ 6]  110 	jsr	_font_init
+                                    111 ;	src/bcd.c: 17: font_set(font_load(font_spect));
+    00000003 A2s00            [ 2]  112 	ldx	#>_font_spect
+    00000005 A9r00            [ 2]  113 	lda	#_font_spect
+    00000007 20r00r00         [ 6]  114 	jsr	_font_load
+    0000000A 20r00r00         [ 6]  115 	jsr	_font_set
+                                    116 ;	src/bcd.c: 19: len = bcd2text(&bcd, 0x10, buf);
+    0000000D A9s00            [ 2]  117 	lda	#>_buf
+    0000000F 8Dr01r00         [ 4]  118 	sta	(_bcd2text_PARM_3 + 1)
+    00000012 A9r00            [ 2]  119 	lda	#_buf
+    00000014 8Dr00r00         [ 4]  120 	sta	_bcd2text_PARM_3
+    00000017 A2 10            [ 2]  121 	ldx	#0x10
+    00000019 8Er00r00         [ 4]  122 	stx	_bcd2text_PARM_2
+    0000001C A2s00            [ 2]  123 	ldx	#>_bcd
+    0000001E A9r00            [ 2]  124 	lda	#_bcd
+    00000020 20r00r00         [ 6]  125 	jsr	_bcd2text
+    00000023 8Dr0Cr00         [ 4]  126 	sta	_len
+                                    127 ;	src/bcd.c: 20: set_bkg_tiles(5, 5, len, 1, buf);
+    00000026 A2s00            [ 2]  128 	ldx	#>_buf
+    00000028 8Er01r00         [ 4]  129 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    0000002B A2r00            [ 2]  130 	ldx	#_buf
+    0000002D 8Er00r00         [ 4]  131 	stx	_set_bkg_tiles_PARM_5
+    00000030 8Dr00r00         [ 4]  132 	sta	_set_bkg_tiles_PARM_3
+    00000033 A2 01            [ 2]  133 	ldx	#0x01
+    00000035 8Er00r00         [ 4]  134 	stx	_set_bkg_tiles_PARM_4
+    00000038 A9 05            [ 2]  135 	lda	#0x05
+    0000003A AA               [ 2]  136 	tax
+    0000003B 20r00r00         [ 6]  137 	jsr	_set_bkg_tiles
+                                    138 ;	src/bcd.c: 22: bcd_add(&bcd, &bcd2);
+    0000003E A9s00            [ 2]  139 	lda	#>_bcd2
+    00000040 8Dr01r00         [ 4]  140 	sta	(_bcd_add_PARM_2 + 1)
+    00000043 A9r04            [ 2]  141 	lda	#_bcd2
+    00000045 8Dr00r00         [ 4]  142 	sta	_bcd_add_PARM_2
+    00000048 A2s00            [ 2]  143 	ldx	#>_bcd
+    0000004A A9r00            [ 2]  144 	lda	#_bcd
+    0000004C 20r00r00         [ 6]  145 	jsr	_bcd_add
+                                    146 ;	src/bcd.c: 24: len = bcd2text(&bcd, 0x10, buf);
+    0000004F A9s00            [ 2]  147 	lda	#>_buf
+    00000051 8Dr01r00         [ 4]  148 	sta	(_bcd2text_PARM_3 + 1)
+    00000054 A9r00            [ 2]  149 	lda	#_buf
+    00000056 8Dr00r00         [ 4]  150 	sta	_bcd2text_PARM_3
+    00000059 A2 10            [ 2]  151 	ldx	#0x10
+    0000005B 8Er00r00         [ 4]  152 	stx	_bcd2text_PARM_2
+    0000005E A2s00            [ 2]  153 	ldx	#>_bcd
+    00000060 A9r00            [ 2]  154 	lda	#_bcd
+    00000062 20r00r00         [ 6]  155 	jsr	_bcd2text
+    00000065 8Dr0Cr00         [ 4]  156 	sta	_len
+                                    157 ;	src/bcd.c: 25: set_bkg_tiles(5, 6, len, 1, buf);
+    00000068 A2s00            [ 2]  158 	ldx	#>_buf
+    0000006A 8Er01r00         [ 4]  159 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    0000006D A2r00            [ 2]  160 	ldx	#_buf
+    0000006F 8Er00r00         [ 4]  161 	stx	_set_bkg_tiles_PARM_5
+    00000072 8Dr00r00         [ 4]  162 	sta	_set_bkg_tiles_PARM_3
+    00000075 A2 01            [ 2]  163 	ldx	#0x01
+    00000077 8Er00r00         [ 4]  164 	stx	_set_bkg_tiles_PARM_4
+    0000007A A9 05            [ 2]  165 	lda	#0x05
+    0000007C A2 06            [ 2]  166 	ldx	#0x06
+    0000007E 20r00r00         [ 6]  167 	jsr	_set_bkg_tiles
+                                    168 ;	src/bcd.c: 27: bcd_sub(&bcd, &bcd3);
+    00000081 A9s00            [ 2]  169 	lda	#>_bcd3
+    00000083 8Dr01r00         [ 4]  170 	sta	(_bcd_sub_PARM_2 + 1)
+    00000086 A9r08            [ 2]  171 	lda	#_bcd3
+    00000088 8Dr00r00         [ 4]  172 	sta	_bcd_sub_PARM_2
+    0000008B A2s00            [ 2]  173 	ldx	#>_bcd
+    0000008D A9r00            [ 2]  174 	lda	#_bcd
+    0000008F 20r00r00         [ 6]  175 	jsr	_bcd_sub
+                                    176 ;	src/bcd.c: 29: len = bcd2text(&bcd, 0x10, buf);
+    00000092 A9s00            [ 2]  177 	lda	#>_buf
+    00000094 8Dr01r00         [ 4]  178 	sta	(_bcd2text_PARM_3 + 1)
+    00000097 A9r00            [ 2]  179 	lda	#_buf
+    00000099 8Dr00r00         [ 4]  180 	sta	_bcd2text_PARM_3
+    0000009C A2 10            [ 2]  181 	ldx	#0x10
+    0000009E 8Er00r00         [ 4]  182 	stx	_bcd2text_PARM_2
+    000000A1 A2s00            [ 2]  183 	ldx	#>_bcd
+    000000A3 A9r00            [ 2]  184 	lda	#_bcd
+    000000A5 20r00r00         [ 6]  185 	jsr	_bcd2text
+    000000A8 8Dr0Cr00         [ 4]  186 	sta	_len
+                                    187 ;	src/bcd.c: 30: set_bkg_tiles(5, 7, len, 1, buf);
+    000000AB A2s00            [ 2]  188 	ldx	#>_buf
+    000000AD 8Er01r00         [ 4]  189 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    000000B0 A2r00            [ 2]  190 	ldx	#_buf
+    000000B2 8Er00r00         [ 4]  191 	stx	_set_bkg_tiles_PARM_5
+    000000B5 8Dr00r00         [ 4]  192 	sta	_set_bkg_tiles_PARM_3
+    000000B8 A2 01            [ 2]  193 	ldx	#0x01
+    000000BA 8Er00r00         [ 4]  194 	stx	_set_bkg_tiles_PARM_4
+    000000BD A9 05            [ 2]  195 	lda	#0x05
+    000000BF A2 07            [ 2]  196 	ldx	#0x07
+    000000C1 20r00r00         [ 6]  197 	jsr	_set_bkg_tiles
+                                    198 ;	src/bcd.c: 32: uint2bcd(12345, &bcd);
+    000000C4 A9s00            [ 2]  199 	lda	#>_bcd
+    000000C6 8Dr01r00         [ 4]  200 	sta	(_uint2bcd_PARM_2 + 1)
+    000000C9 A9r00            [ 2]  201 	lda	#_bcd
+    000000CB 8Dr00r00         [ 4]  202 	sta	_uint2bcd_PARM_2
+    000000CE A2 30            [ 2]  203 	ldx	#0x30
+    000000D0 A9 39            [ 2]  204 	lda	#0x39
+    000000D2 20r00r00         [ 6]  205 	jsr	_uint2bcd
+                                    206 ;	src/bcd.c: 34: len = bcd2text(&bcd, 0x10, buf);
+    000000D5 A9s00            [ 2]  207 	lda	#>_buf
+    000000D7 8Dr01r00         [ 4]  208 	sta	(_bcd2text_PARM_3 + 1)
+    000000DA A9r00            [ 2]  209 	lda	#_buf
+    000000DC 8Dr00r00         [ 4]  210 	sta	_bcd2text_PARM_3
+    000000DF A2 10            [ 2]  211 	ldx	#0x10
+    000000E1 8Er00r00         [ 4]  212 	stx	_bcd2text_PARM_2
+    000000E4 A2s00            [ 2]  213 	ldx	#>_bcd
+    000000E6 A9r00            [ 2]  214 	lda	#_bcd
+    000000E8 20r00r00         [ 6]  215 	jsr	_bcd2text
+    000000EB 8Dr0Cr00         [ 4]  216 	sta	_len
+                                    217 ;	src/bcd.c: 35: set_bkg_tiles(5, 8, len, 1, buf);
+    000000EE A2s00            [ 2]  218 	ldx	#>_buf
+    000000F0 8Er01r00         [ 4]  219 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    000000F3 A2r00            [ 2]  220 	ldx	#_buf
+    000000F5 8Er00r00         [ 4]  221 	stx	_set_bkg_tiles_PARM_5
+    000000F8 8Dr00r00         [ 4]  222 	sta	_set_bkg_tiles_PARM_3
+    000000FB A2 01            [ 2]  223 	ldx	#0x01
+    000000FD 8Er00r00         [ 4]  224 	stx	_set_bkg_tiles_PARM_4
+    00000100 A9 05            [ 2]  225 	lda	#0x05
+    00000102 A2 08            [ 2]  226 	ldx	#0x08
+                                    227 ;	src/bcd.c: 36: }
+    00000104 4Cr00r00         [ 3]  228 	jmp	_set_bkg_tiles
+                                    229 	.area _CODE
+                                    230 	.area _XINIT
+    00000000                        231 __xinit__bcd:
+    00000000 40 30 20 10            232 	.byte #0x40, #0x30, #0x20, #0x10	; 270544960
+    00000004                        233 __xinit__bcd2:
+    00000004 08 07 06 05            234 	.byte #0x08, #0x07, #0x06, #0x05	; 84281096
+    00000008                        235 __xinit__bcd3:
+    00000008 11 11 11 11            236 	.byte #0x11, #0x11, #0x11, #0x11	; 286331153
+    0000000C                        237 __xinit__len:
+    0000000C 00                     238 	.db #0x00	; 0
+                                    239 	.area _CABS    (ABS)

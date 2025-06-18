@@ -1,0 +1,334 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module multiplayer
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _sprite_data
+                                     23 	.globl _main
+                                     24 	.globl _scroll_sprite
+                                     25 	.globl _move_sprite
+                                     26 	.globl _set_sprite_tile
+                                     27 	.globl _set_sprite_data
+                                     28 	.globl _vsync
+                                     29 	.globl _joypad_ex
+                                     30 	.globl _joypad_init
+                                     31 	.globl _joypads
+                                     32 	.globl _OAMDMA
+                                     33 	.globl _PPUDATA
+                                     34 	.globl _PPUADDR
+                                     35 	.globl _PPUSCROLL
+                                     36 	.globl _OAMDATA
+                                     37 	.globl _OAMADDR
+                                     38 	.globl _PPUSTATUS
+                                     39 	.globl _PPUMASK
+                                     40 	.globl _PPUCTRL
+                                     41 ;--------------------------------------------------------
+                                     42 ; ZP ram data
+                                     43 ;--------------------------------------------------------
+                                     44 	.area _ZP      (PAG)
+                                     45 ;--------------------------------------------------------
+                                     46 ; overlayable items in ram
+                                     47 ;--------------------------------------------------------
+                                     48 	.area	OSEG    (PAG, OVR)
+    00000000                         49 _main_sloc0_1_0:
+    00000000                         50 	.ds 1
+                                     51 ;--------------------------------------------------------
+                                     52 ; uninitialized external ram data
+                                     53 ;--------------------------------------------------------
+                                     54 	.area _BSS
+                         00002000    55 _PPUCTRL	=	0x2000
+                         00002001    56 _PPUMASK	=	0x2001
+                         00002002    57 _PPUSTATUS	=	0x2002
+                         00002003    58 _OAMADDR	=	0x2003
+                         00002004    59 _OAMDATA	=	0x2004
+                         00002005    60 _PPUSCROLL	=	0x2005
+                         00002006    61 _PPUADDR	=	0x2006
+                         00002007    62 _PPUDATA	=	0x2007
+                         00004014    63 _OAMDMA	=	0x4014
+    00000000                         64 _joypads::
+    00000000                         65 	.ds 5
+    00000005                         66 _main_joy_40000_95:
+    00000005                         67 	.ds 1
+                                     68 ;--------------------------------------------------------
+                                     69 ; absolute external ram data
+                                     70 ;--------------------------------------------------------
+                                     71 	.area _DABS    (ABS)
+                                     72 ;--------------------------------------------------------
+                                     73 ; initialized external ram data
+                                     74 ;--------------------------------------------------------
+                                     75 	.area _DATA
+                                     76 ;--------------------------------------------------------
+                                     77 ; global & static initialisations
+                                     78 ;--------------------------------------------------------
+                                     79 	.area _HOME
+                                     80 	.area _GSINIT
+                                     81 	.area _GSFINAL
+                                     82 	.area _GSINIT
+                                     83 ;--------------------------------------------------------
+                                     84 ; Home
+                                     85 ;--------------------------------------------------------
+                                     86 	.area _HOME
+                                     87 	.area _HOME
+                                     88 ;--------------------------------------------------------
+                                     89 ; code
+                                     90 ;--------------------------------------------------------
+                                     91 	.area _CODE
+                                     92 ;------------------------------------------------------------
+                                     93 ;Allocation info for local variables in function 'main'
+                                     94 ;------------------------------------------------------------
+                                     95 ;i                         Allocated to registers 
+                                     96 ;i                         Allocated to registers 
+                                     97 ;i                         Allocated to registers 
+                                     98 ;joy                       Allocated with name '_main_joy_40000_95'
+                                     99 ;i                         Allocated to registers 
+                                    100 ;sloc0                     Allocated with name '_main_sloc0_1_0'
+                                    101 ;------------------------------------------------------------
+                                    102 ;	src/multiplayer.c: 14: void main(void) {
+                                    103 ;	-----------------------------------------
+                                    104 ;	 function main
+                                    105 ;	-----------------------------------------
+                                    106 ;	Register assignment is optimal.
+                                    107 ;	Stack space usage: 0 bytes.
+    00000000                        108 _main:
+                                    109 ;	src/multiplayer.c: 15: set_sprite_data(0, 4, sprite_data);
+    00000000 A9s01            [ 2]  110 	lda	#>_sprite_data
+    00000002 8Dr01r00         [ 4]  111 	sta	(_set_sprite_data_PARM_3 + 1)
+    00000005 A9r01            [ 2]  112 	lda	#_sprite_data
+    00000007 8Dr00r00         [ 4]  113 	sta	_set_sprite_data_PARM_3
+    0000000A A9 00            [ 2]  114 	lda	#0x00
+    0000000C A2 04            [ 2]  115 	ldx	#0x04
+    0000000E 20r00r00         [ 6]  116 	jsr	_set_sprite_data
+                                    117 ;	src/multiplayer.c: 16: for (uint8_t i = 0; i < 4; i++) {
+    00000011 A2 00            [ 2]  118 	ldx	#0x00
+    00000013 86*00            [ 3]  119 	stx	*_main_sloc0_1_0
+    00000015                        120 00119$:
+    00000015 A5*00            [ 3]  121 	lda	*_main_sloc0_1_0
+    00000017 C9 04            [ 2]  122 	cmp	#0x04
+    00000019 B0 1F            [ 4]  123 	bcs	00101$
+                                    124 ;	src/multiplayer.c: 17: set_sprite_tile(i, i);
+    0000001B A5*00            [ 3]  125 	lda	*_main_sloc0_1_0
+    0000001D A6*00            [ 3]  126 	ldx	*_main_sloc0_1_0
+    0000001F 20r00r00         [ 6]  127 	jsr	_set_sprite_tile
+                                    128 ;	src/multiplayer.c: 19: DEVICE_SPRITE_PX_OFFSET_X + (i << 3) + ((DEVICE_SCREEN_PX_WIDTH - (4 * 8)) / 2), 
+    00000022 A5*00            [ 3]  129 	lda	*_main_sloc0_1_0
+    00000024 0A               [ 2]  130 	asl	a
+    00000025 0A               [ 2]  131 	asl	a
+    00000026 0A               [ 2]  132 	asl	a
+    00000027 18               [ 2]  133 	clc
+    00000028 69 70            [ 2]  134 	adc	#0x70
+                                    135 ;	src/multiplayer.c: 20: DEVICE_SPRITE_PX_OFFSET_Y + ((DEVICE_SCREEN_PX_HEIGHT - 8) / 2));
+    0000002A A2 73            [ 2]  136 	ldx	#0x73
+    0000002C 8Er00r00         [ 4]  137 	stx	_move_sprite_PARM_3
+    0000002F AA               [ 2]  138 	tax
+    00000030 A5*00            [ 3]  139 	lda	*_main_sloc0_1_0
+    00000032 20r00r00         [ 6]  140 	jsr	_move_sprite
+                                    141 ;	src/multiplayer.c: 16: for (uint8_t i = 0; i < 4; i++) {
+    00000035 E6*00            [ 5]  142 	inc	*_main_sloc0_1_0
+    00000037 4Cr15r00         [ 3]  143 	jmp	00119$
+    0000003A                        144 00101$:
+                                    145 ;	src/multiplayer.c: 22: SHOW_SPRITES;
+    0000003A ADr00r00         [ 4]  146 	lda	_shadow_PPUMASK
+    0000003D 09 10            [ 2]  147 	ora	#0x10
+    0000003F 8Dr00r00         [ 4]  148 	sta	_shadow_PPUMASK
+                                    149 ;	src/multiplayer.c: 26: for (uint8_t i = 4; i != 0; i--) vsync();
+    00000042 A9 04            [ 2]  150 	lda	#0x04
+    00000044                        151 00122$:
+    00000044 C9 00            [ 2]  152 	cmp	#0x00
+    00000046 F0 0B            [ 4]  153 	beq	00102$
+    00000048 48               [ 3]  154 	pha
+    00000049 20r00r00         [ 6]  155 	jsr	_vsync
+    0000004C 68               [ 4]  156 	pla
+    0000004D 38               [ 2]  157 	sec
+    0000004E E9 01            [ 2]  158 	sbc	#0x01
+    00000050 4Cr44r00         [ 3]  159 	jmp	00122$
+    00000053                        160 00102$:
+                                    161 ;	src/multiplayer.c: 29: joypad_init(4, &joypads);
+    00000053 A9s00            [ 2]  162 	lda	#>_joypads
+    00000055 8Dr01r00         [ 4]  163 	sta	(_joypad_init_PARM_2 + 1)
+    00000058 A9r00            [ 2]  164 	lda	#_joypads
+    0000005A 8Dr00r00         [ 4]  165 	sta	_joypad_init_PARM_2
+    0000005D A9 04            [ 2]  166 	lda	#0x04
+    0000005F 20r00r00         [ 6]  167 	jsr	_joypad_init
+                                    168 ;	src/multiplayer.c: 31: while(1) {
+    00000062                        169 00116$:
+                                    170 ;	src/multiplayer.c: 33: joypad_ex(&joypads);
+    00000062 A2s00            [ 2]  171 	ldx	#>_joypads
+    00000064 A9r00            [ 2]  172 	lda	#_joypads
+    00000066 20r00r00         [ 6]  173 	jsr	_joypad_ex
+                                    174 ;	src/multiplayer.c: 35: for (uint8_t i = 0; i < joypads.npads; i++) {
+    00000069 A2 00            [ 2]  175 	ldx	#0x00
+    0000006B 86*00            [ 3]  176 	stx	*_main_sloc0_1_0
+    0000006D                        177 00125$:
+    0000006D ADr00r00         [ 4]  178 	lda	_joypads
+    00000070 C5*00            [ 3]  179 	cmp	*_main_sloc0_1_0
+    00000072 F0 58            [ 4]  180 	beq	00111$
+    00000074 90 56            [ 4]  181 	bcc	00111$
+                                    182 ;	src/multiplayer.c: 36: uint8_t joy = joypads.joypads[i];
+    00000076 A2 00            [ 2]  183 	ldx	#0x00
+    00000078 A5*00            [ 3]  184 	lda	*_main_sloc0_1_0
+    0000007A A8               [ 2]  185 	tay
+    0000007B B9r01r00         [ 5]  186 	lda	((_joypads + 0x0001)+0+0x0000),y
+    0000007E 8Dr05r00         [ 4]  187 	sta	_main_joy_40000_95
+                                    188 ;	src/multiplayer.c: 37: if (joy & J_LEFT) scroll_sprite(i, -1, 0);
+    00000081 A9 02            [ 2]  189 	lda	#0x02
+    00000083 2Dr05r00         [ 4]  190 	and	_main_joy_40000_95
+    00000086 F0 09            [ 4]  191 	beq	00104$
+    00000088 8Er00r00         [ 4]  192 	stx	_scroll_sprite_PARM_3
+    0000008B A5*00            [ 3]  193 	lda	*_main_sloc0_1_0
+    0000008D CA               [ 2]  194 	dex
+    0000008E 20r00r00         [ 6]  195 	jsr	_scroll_sprite
+    00000091                        196 00104$:
+                                    197 ;	src/multiplayer.c: 38: if (joy & J_RIGHT) scroll_sprite(i, 1, 0);
+    00000091 A9 01            [ 2]  198 	lda	#0x01
+    00000093 2Dr05r00         [ 4]  199 	and	_main_joy_40000_95
+    00000096 F0 0B            [ 4]  200 	beq	00106$
+    00000098 A2 00            [ 2]  201 	ldx	#0x00
+    0000009A 8Er00r00         [ 4]  202 	stx	_scroll_sprite_PARM_3
+    0000009D A5*00            [ 3]  203 	lda	*_main_sloc0_1_0
+    0000009F E8               [ 2]  204 	inx
+    000000A0 20r00r00         [ 6]  205 	jsr	_scroll_sprite
+    000000A3                        206 00106$:
+                                    207 ;	src/multiplayer.c: 39: if (joy & J_UP) scroll_sprite(i, 0, -1);
+    000000A3 A9 08            [ 2]  208 	lda	#0x08
+    000000A5 2Dr05r00         [ 4]  209 	and	_main_joy_40000_95
+    000000A8 F0 0B            [ 4]  210 	beq	00108$
+    000000AA A2 FF            [ 2]  211 	ldx	#0xff
+    000000AC 8Er00r00         [ 4]  212 	stx	_scroll_sprite_PARM_3
+    000000AF A5*00            [ 3]  213 	lda	*_main_sloc0_1_0
+    000000B1 E8               [ 2]  214 	inx
+    000000B2 20r00r00         [ 6]  215 	jsr	_scroll_sprite
+    000000B5                        216 00108$:
+                                    217 ;	src/multiplayer.c: 40: if (joy & J_DOWN) scroll_sprite(i, 0, 1);
+    000000B5 A9 04            [ 2]  218 	lda	#0x04
+    000000B7 2Dr05r00         [ 4]  219 	and	_main_joy_40000_95
+    000000BA F0 0B            [ 4]  220 	beq	00126$
+    000000BC A2 01            [ 2]  221 	ldx	#0x01
+    000000BE 8Er00r00         [ 4]  222 	stx	_scroll_sprite_PARM_3
+    000000C1 A5*00            [ 3]  223 	lda	*_main_sloc0_1_0
+    000000C3 CA               [ 2]  224 	dex
+    000000C4 20r00r00         [ 6]  225 	jsr	_scroll_sprite
+    000000C7                        226 00126$:
+                                    227 ;	src/multiplayer.c: 35: for (uint8_t i = 0; i < joypads.npads; i++) {
+    000000C7 E6*00            [ 5]  228 	inc	*_main_sloc0_1_0
+    000000C9 4Cr6Dr00         [ 3]  229 	jmp	00125$
+    000000CC                        230 00111$:
+                                    231 ;	src/multiplayer.c: 43: if (joypads.joy0 & J_START) {
+    000000CC ADr01r00         [ 4]  232 	lda	(_joypads + 0x0001)
+    000000CF 29 10            [ 2]  233 	and	#0x10
+    000000D1 F0 27            [ 4]  234 	beq	00114$
+                                    235 ;	src/multiplayer.c: 44: for (uint8_t i = 0; i < 4; i++) move_sprite(i, (i << 3) + 64, 64);
+    000000D3 A0 00            [ 2]  236 	ldy	#0x00
+    000000D5                        237 00128$:
+    000000D5 C0 04            [ 2]  238 	cpy	#0x04
+    000000D7 B0 21            [ 4]  239 	bcs	00114$
+    000000D9 98               [ 2]  240 	tya
+    000000DA 0A               [ 2]  241 	asl	a
+    000000DB 0A               [ 2]  242 	asl	a
+    000000DC 0A               [ 2]  243 	asl	a
+    000000DD 18               [ 2]  244 	clc
+    000000DE 69 40            [ 2]  245 	adc	#0x40
+    000000E0 A2 40            [ 2]  246 	ldx	#0x40
+    000000E2 8Er00r00         [ 4]  247 	stx	_move_sprite_PARM_3
+    000000E5 85*00            [ 3]  248 	sta	*(REGTEMP+0)
+    000000E7 98               [ 2]  249 	tya
+    000000E8 48               [ 3]  250 	pha
+    000000E9 A5*00            [ 3]  251 	lda	*(REGTEMP+0)
+    000000EB AA               [ 2]  252 	tax
+    000000EC 98               [ 2]  253 	tya
+    000000ED 20r00r00         [ 6]  254 	jsr	_move_sprite
+    000000F0 85*00            [ 3]  255 	sta	*(REGTEMP+0)
+    000000F2 68               [ 4]  256 	pla
+    000000F3 A8               [ 2]  257 	tay
+    000000F4 A5*00            [ 3]  258 	lda	*(REGTEMP+0)
+    000000F6 C8               [ 2]  259 	iny
+    000000F7 4CrD5r00         [ 3]  260 	jmp	00128$
+    000000FA                        261 00114$:
+                                    262 ;	src/multiplayer.c: 46: vsync();
+    000000FA 20r00r00         [ 6]  263 	jsr	_vsync
+    000000FD 4Cr62r00         [ 3]  264 	jmp	00116$
+                                    265 ;	src/multiplayer.c: 48: }
+    00000100 60               [ 6]  266 	rts
+                                    267 	.area _CODE
+    00000101                        268 _sprite_data:
+    00000101 3C                     269 	.db #0x3c	; 60
+    00000102 3C                     270 	.db #0x3c	; 60
+    00000103 42                     271 	.db #0x42	; 66	'B'
+    00000104 7E                     272 	.db #0x7e	; 126
+    00000105 99                     273 	.db #0x99	; 153
+    00000106 FF                     274 	.db #0xff	; 255
+    00000107 A9                     275 	.db #0xa9	; 169
+    00000108 FF                     276 	.db #0xff	; 255
+    00000109 89                     277 	.db #0x89	; 137
+    0000010A FF                     278 	.db #0xff	; 255
+    0000010B 89                     279 	.db #0x89	; 137
+    0000010C FF                     280 	.db #0xff	; 255
+    0000010D 42                     281 	.db #0x42	; 66	'B'
+    0000010E 7E                     282 	.db #0x7e	; 126
+    0000010F 3C                     283 	.db #0x3c	; 60
+    00000110 3C                     284 	.db #0x3c	; 60
+    00000111 3C                     285 	.db #0x3c	; 60
+    00000112 3C                     286 	.db #0x3c	; 60
+    00000113 42                     287 	.db #0x42	; 66	'B'
+    00000114 7E                     288 	.db #0x7e	; 126
+    00000115 B9                     289 	.db #0xb9	; 185
+    00000116 FF                     290 	.db #0xff	; 255
+    00000117 89                     291 	.db #0x89	; 137
+    00000118 FF                     292 	.db #0xff	; 255
+    00000119 91                     293 	.db #0x91	; 145
+    0000011A FF                     294 	.db #0xff	; 255
+    0000011B B9                     295 	.db #0xb9	; 185
+    0000011C FF                     296 	.db #0xff	; 255
+    0000011D 42                     297 	.db #0x42	; 66	'B'
+    0000011E 7E                     298 	.db #0x7e	; 126
+    0000011F 3C                     299 	.db #0x3c	; 60
+    00000120 3C                     300 	.db #0x3c	; 60
+    00000121 3C                     301 	.db #0x3c	; 60
+    00000122 3C                     302 	.db #0x3c	; 60
+    00000123 42                     303 	.db #0x42	; 66	'B'
+    00000124 7E                     304 	.db #0x7e	; 126
+    00000125 99                     305 	.db #0x99	; 153
+    00000126 FF                     306 	.db #0xff	; 255
+    00000127 89                     307 	.db #0x89	; 137
+    00000128 FF                     308 	.db #0xff	; 255
+    00000129 99                     309 	.db #0x99	; 153
+    0000012A FF                     310 	.db #0xff	; 255
+    0000012B 89                     311 	.db #0x89	; 137
+    0000012C FF                     312 	.db #0xff	; 255
+    0000012D 5A                     313 	.db #0x5a	; 90	'Z'
+    0000012E 7E                     314 	.db #0x7e	; 126
+    0000012F 3C                     315 	.db #0x3c	; 60
+    00000130 3C                     316 	.db #0x3c	; 60
+    00000131 3C                     317 	.db #0x3c	; 60
+    00000132 3C                     318 	.db #0x3c	; 60
+    00000133 42                     319 	.db #0x42	; 66	'B'
+    00000134 7E                     320 	.db #0x7e	; 126
+    00000135 A9                     321 	.db #0xa9	; 169
+    00000136 FF                     322 	.db #0xff	; 255
+    00000137 A9                     323 	.db #0xa9	; 169
+    00000138 FF                     324 	.db #0xff	; 255
+    00000139 B9                     325 	.db #0xb9	; 185
+    0000013A FF                     326 	.db #0xff	; 255
+    0000013B 89                     327 	.db #0x89	; 137
+    0000013C FF                     328 	.db #0xff	; 255
+    0000013D 42                     329 	.db #0x42	; 66	'B'
+    0000013E 7E                     330 	.db #0x7e	; 126
+    0000013F 3C                     331 	.db #0x3c	; 60
+    00000140 3C                     332 	.db #0x3c	; 60
+                                    333 	.area _XINIT
+                                    334 	.area _CABS    (ABS)

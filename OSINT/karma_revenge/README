@@ -1,0 +1,33 @@
+# OSINT : 05 -  karma_revenge
+
+- **Auteur :** flav-sns
+- **Catégorie :** OSINT
+- **Diffculté :** Moyen
+- **Points :** -
+- **Points dynamiques :** oui
+- **Indice 1 :**
+```
+Pas d'indice 1.
+```
+
+- **Description :**
+```
+Enfaites vous êtes un Osinteur pas si éthique que ça. Durant un Pentest qui a mal tourné vous avez recupéré par inadvertance le hash de son mot de passe.
+
+Retrouvez son mot de passe, et amusez vous.
+
+Exemple : AMSI{motdepasse}
+```
+
+- **Remarques :**
+```
+Pas de remarque.
+```
+
+- **Dialogues :**
+```
+Pas de dialogue.
+```
+
+
+

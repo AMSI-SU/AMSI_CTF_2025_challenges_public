@@ -1,0 +1,32 @@
+# Side Channel : 03 -  les_secrets_de_la_conso
+
+- **Auteur :** flav-sns
+- **Catégorie :** Side Channel
+- **Diffculté :** Moyen
+- **Points :** -
+- **Points dynamiques :** oui
+- **Indice 1 :**
+```
+Pas d'indice 1.
+```
+
+- **Description :**
+```
+La clé se cache dans cette consommation de AES128, bon courage.
+
+flag format : AMSI{key_hexa}
+
+Exemple : AMSI{f3d9c4ab7610efbb29a3dd5e8e1b29f0}
+```
+
+- **Remarques :**
+```
+Pas de remarque.
+```
+
+- **Dialogues :**
+```
+Pas de dialogue.
+```
+
+

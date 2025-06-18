@@ -1,0 +1,57 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _LCDC_REG                                                       ******** GX
+    ___memcpy                                                       ******** GX
+    __map_tile_offset                                               ******** GX
+  7 __xinit__isSGB                                                  00000001 R
+  7 __xinit__joy                                                    00000003 R
+  7 __xinit__old_joy                                                00000002 R
+  7 __xinit__toggle                                                 00000000 R
+    _disabled_buttons                                               ******** GX
+  0 _draw_buttons                                                   00000000 GR
+  0 _draw_disabled                                                  00000178 GR
+    _fill_bkg_rect                                                  ******** GX
+  2 _isSGB                                                          00000001 GR
+  2 _joy                                                            00000003 GR
+    _joypad                                                         ******** GX
+    _joypad_ex                                                      ******** GX
+    _joypad_init                                                    ******** GX
+  1 _joypads                                                        00000005 GR
+  0 _main                                                           0000027B GR
+    _normal_buttons                                                 ******** GX
+  2 _old_joy                                                        00000002 GR
+  1 _old_joypads                                                    00000000 GR
+    _pressed_buttons                                                ******** GX
+  0 _reset_object_pos                                               00000256 GR
+    _set_bkg_data                                                   ******** GX
+    _set_bkg_tiles                                                  ******** GX
+    _set_sprite_data                                                ******** GX
+    _sgb_check                                                      ******** GX
+    _shadow_OAM                                                     ******** GX
+    _sprite_data                                                    ******** GX
+    _tiles_data                                                     ******** GX
+  2 _toggle                                                         00000000 GR
+    _vsync                                                          ******** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      42A   flags    0
+   1 _DATA                                      size        A   flags    0
+   2 _INITIALIZED                               size        4   flags    0
+   3 _DABS                                      size        0   flags    8
+   4 _HOME                                      size        0   flags    0
+   5 _GSINIT                                    size        0   flags    0
+   6 _GSFINAL                                   size        0   flags    0
+   7 _INITIALIZER                               size        4   flags    0
+   8 _CABS                                      size        0   flags    8
+

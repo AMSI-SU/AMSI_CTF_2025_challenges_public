@@ -1,0 +1,87 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    REGTEMP                                                         ******** GX
+  3 _IsTileSolid                                                    00000000 GR
+  8 _IsTileSolid_PARM_2                                             0000000C GR
+  8 _IsTileSolid__previous_bank_10000_119                           0000000E R
+  8 _IsTileSolid_column_10001_120                                   0000000F R
+  8 _IsTileSolid_row_10001_120                                      00000011 R
+  1 _IsTileSolid_sloc0_1_0                                          00000000 R
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+  3 _SetupCurrentLevel                                              000000B8 GR
+  8 _SetupCurrentLevel__previous_bank_10000_124                     00000013 R
+  1 _SetupCurrentLevel_sloc0_1_0                                    00000002 R
+  1 _SetupCurrentLevel_sloc1_1_0                                    00000003 R
+    _World1Area1_map                                                ******** GX
+    _World1Area2_map                                                ******** GX
+    _World1Tileset_palettes                                         ******** GX
+    _World1Tileset_tiles                                            ******** GX
+    _World2Area1_map                                                ******** GX
+    _World2Tileset_palettes                                         ******** GX
+    _World2Tileset_tiles                                            ******** GX
+    ___bank_World1Area1                                             ******** GX
+    ___bank_World1Area2                                             ******** GX
+    ___bank_World1Tileset                                           ******** GX
+    ___bank_World2Area1                                             ******** GX
+    ___bank_World2Tileset                                           ******** GX
+    __current_bank                                                  ******** GX
+    __moduchar                                                      ******** GX
+    __mulint                                                        ******** GX
+    __mulint_PARM_2                                                 ******** GX
+    __switch_prg0                                                   ******** GX
+  6 __xinit__currentLevel                                           00000000 R
+  6 __xinit__nextLevel                                              00000001 R
+  8 _currentAreaBank                                                0000000B GR
+  7 _currentLevel                                                   00000000 GR
+  8 _currentLevelHeight                                             00000004 GR
+  8 _currentLevelHeightInTiles                                      00000006 GR
+  8 _currentLevelMap                                                00000008 GR
+  8 _currentLevelNonSolidTileCount                                  0000000A GR
+  8 _currentLevelWidth                                              00000000 GR
+  8 _currentLevelWidthInTiles                                       00000002 GR
+  7 _nextLevel                                                      00000001 GR
+    _setBKGPalettes                                                 ******** GX
+    _setBKGPalettes_PARM_2                                          ******** GX
+    _set_bkg_attribute_xy_nes16x16                                  ******** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    _set_bkg_attribute_xy_nes16x16_PARM_3                           ******** GX
+    _set_bkg_native_data                                            ******** GX
+    _set_bkg_native_data_PARM_3                                     ******** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 3
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size        0   flags    0
+   1 _ZP                                        size        4   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size      248   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size        2   flags    0
+   7 _DATA                                      size        2   flags    0
+   8 _BSS                                       size       14   flags    0
+   9 _DABS                                      size        0   flags    8
+   A _CABS                                      size        0   flags    8
+

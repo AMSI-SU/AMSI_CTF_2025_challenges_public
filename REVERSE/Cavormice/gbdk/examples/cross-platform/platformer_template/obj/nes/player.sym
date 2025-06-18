@@ -1,0 +1,107 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    DPTR                                                            ******** GX
+    REGTEMP                                                         ******** GX
+  3 _DrawPlayer                                                     00000043 GR
+  8 _DrawPlayer_PARM_2                                              00000008 GR
+  8 _DrawPlayer_PARM_3                                              0000000A GR
+  8 _DrawPlayer__previous_bank_10000_129                            0000000B R
+  8 _DrawPlayer_playerCameraX_10000_129                             0000000C R
+  8 _DrawPlayer_playerCameraY_10000_129                             0000000E R
+    _IsTileSolid                                                    ******** GX
+    _IsTileSolid_PARM_2                                             ******** GX
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+    _PlayerCharacterSprites_metasprites                             ******** GX
+    _PlayerCharacterSprites_palettes                                ******** GX
+    _PlayerCharacterSprites_tiles                                   ******** GX
+  A _PlayerPalettesGGSMS                                            00000680 GR
+  3 _SetPlayerPalettes                                              00000021 GR
+  A _SetupPlayer                                                    00000000 GR
+  A _UpdatePlayer                                                   00000028 GR
+  3 _UpdatePlayerVRAMTiles                                          00000000 GR
+  8 _UpdatePlayer_grounded_10003_151                                00000018 R
+  8 _UpdatePlayer_max_20004_166                                     00000019 R
+  8 _UpdatePlayer_moveSpeed_10000_134                               00000010 R
+  8 _UpdatePlayer_playerRealX_10003_151                             00000014 R
+  8 _UpdatePlayer_playerRealY_10003_151                             00000016 R
+  1 _UpdatePlayer_sloc0_1_0                                         00000000 R
+  1 _UpdatePlayer_sloc1_1_0                                         00000001 R
+  1 _UpdatePlayer_sloc2_1_0                                         00000003 R
+  1 _UpdatePlayer_sloc3_1_0                                         00000005 R
+  1 _UpdatePlayer_sloc4_1_0                                         00000007 R
+  1 _UpdatePlayer_sloc5_1_0                                         00000009 R
+  1 _UpdatePlayer_sloc6_1_0                                         0000000B R
+  8 _UpdatePlayer_spritesUsed_10005_167                             0000001B R
+  8 _UpdatePlayer_threeFrameCounterValue_10001_135                  00000012 R
+  8 _UpdatePlayer_turning_10002_137                                 00000013 R
+    ___bank_PlayerCharacterSprites                                  ******** GX
+    ___current_base_prop                                            ******** GX
+    ___current_base_tile                                            ******** GX
+    ___current_metasprite                                           ******** GX
+    ___move_metasprite                                              ******** GX
+    ___move_metasprite_PARM_2                                       ******** GX
+    ___move_metasprite_PARM_3                                       ******** GX
+    __current_bank                                                  ******** GX
+    __switch_prg0                                                   ******** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+  6 __xinit__facingRight                                            00000000 R
+  6 __xinit__playerJumpIncrease                                     00000001 R
+  6 __xinit__threeFrameCounter                                      00000002 R
+  A _baseProp                                                       0000067F GR
+    _camera_x                                                       ******** GX
+    _currentLevelWidth                                              ******** GX
+  7 _facingRight                                                    00000000 GR
+    _joypadCurrent                                                  ******** GX
+    _joypadPrevious                                                 ******** GX
+    _nextLevel                                                      ******** GX
+  7 _playerJumpIncrease                                             00000001 GR
+  8 _playerX                                                        00000000 GR
+  8 _playerXVelocity                                                00000004 GR
+  8 _playerY                                                        00000002 GR
+  8 _playerYVelocity                                                00000006 GR
+    _set_sprite_data                                                ******** GX
+    _set_sprite_data_PARM_3                                         ******** GX
+    _set_sprite_palette                                             ******** GX
+    _set_sprite_palette_PARM_3                                      ******** GX
+  7 _threeFrameCounter                                              00000002 GR
+    b_SetupPlayer                                               =   000000FF G
+    b_UpdatePlayer                                              =   000000FF G
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 3
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size        0   flags    0
+   1 _ZP                                        size        D   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size       C0   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size        3   flags    0
+   7 _DATA                                      size        3   flags    0
+   8 _BSS                                       size       1C   flags    0
+   9 _DABS                                      size        0   flags    8
+   A _CODE_255                                  size      690   flags    0
+   B _CABS                                      size        0   flags    8
+

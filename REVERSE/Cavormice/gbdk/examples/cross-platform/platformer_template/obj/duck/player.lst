@@ -1,0 +1,1313 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module player
+                                      6 	.optsdcc -msm83
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl b_UpdatePlayer
+                                     12 	.globl _UpdatePlayer
+                                     13 	.globl _DrawPlayer
+                                     14 	.globl b_SetupPlayer
+                                     15 	.globl _SetupPlayer
+                                     16 	.globl _SetPlayerPalettes
+                                     17 	.globl _UpdatePlayerVRAMTiles
+                                     18 	.globl _IsTileSolid
+                                     19 	.globl _set_sprite_data
+                                     20 	.globl _threeFrameCounter
+                                     21 	.globl _playerJumpIncrease
+                                     22 	.globl _facingRight
+                                     23 	.globl _playerYVelocity
+                                     24 	.globl _playerXVelocity
+                                     25 	.globl _playerY
+                                     26 	.globl _playerX
+                                     27 	.globl _PlayerPalettesGGSMS
+                                     28 	.globl _baseProp
+                                     29 ;--------------------------------------------------------
+                                     30 ; special function registers
+                                     31 ;--------------------------------------------------------
+                                     32 ;--------------------------------------------------------
+                                     33 ; ram data
+                                     34 ;--------------------------------------------------------
+                                     35 	.area _DATA
+    00000000                         36 _playerX::
+    00000000                         37 	.ds 2
+    00000002                         38 _playerY::
+    00000002                         39 	.ds 2
+    00000004                         40 _playerXVelocity::
+    00000004                         41 	.ds 2
+    00000006                         42 _playerYVelocity::
+    00000006                         43 	.ds 2
+                                     44 ;--------------------------------------------------------
+                                     45 ; ram data
+                                     46 ;--------------------------------------------------------
+                                     47 	.area _INITIALIZED
+    00000000                         48 _facingRight::
+    00000000                         49 	.ds 1
+    00000001                         50 _playerJumpIncrease::
+    00000001                         51 	.ds 1
+    00000002                         52 _threeFrameCounter::
+    00000002                         53 	.ds 1
+                                     54 ;--------------------------------------------------------
+                                     55 ; absolute external ram data
+                                     56 ;--------------------------------------------------------
+                                     57 	.area _DABS (ABS)
+                                     58 ;--------------------------------------------------------
+                                     59 ; global & static initialisations
+                                     60 ;--------------------------------------------------------
+                                     61 	.area _HOME
+                                     62 	.area _GSINIT
+                                     63 	.area _GSFINAL
+                                     64 	.area _GSINIT
+                                     65 ;--------------------------------------------------------
+                                     66 ; Home
+                                     67 ;--------------------------------------------------------
+                                     68 	.area _HOME
+                                     69 ;src/player.c:67: void UpdatePlayerVRAMTiles(void) NONBANKED{
+                                     70 ;	---------------------------------
+                                     71 ; Function UpdatePlayerVRAMTiles
+                                     72 ; ---------------------------------
+    00000000                         73 _UpdatePlayerVRAMTiles::
+                                     74 ;src/player.c:68: uint8_t _previous_bank = CURRENT_BANK;
+    00000000 F0r00            [12]   75 	ldh	a, (__current_bank + 0)
+    00000002 4F               [ 4]   76 	ld	c, a
+                                     77 ;src/player.c:71: SWITCH_ROM(BANK(PlayerCharacterSprites));
+    00000003 3Er00            [ 8]   78 	ld	a, #<(___bank_PlayerCharacterSprites)
+    00000005 E0r00            [12]   79 	ldh	(__current_bank + 0), a
+    00000007 21r00r00         [12]   80 	ld	hl, #_rROMB0
+    0000000A 36r00            [12]   81 	ld	(hl), #<(___bank_PlayerCharacterSprites)
+                                     82 ;src/player.c:73: set_player_sprite_data (0,PlayerCharacterSprites_TILE_COUNT,PlayerCharacterSprites_tiles);
+    0000000C 11r00r00         [12]   83 	ld	de, #_PlayerCharacterSprites_tiles
+    0000000F D5               [16]   84 	push	de
+    00000010 21 00 3E         [12]   85 	ld	hl, #0x3e00
+    00000013 E5               [16]   86 	push	hl
+    00000014 CDr00r00         [24]   87 	call	_set_sprite_data
+    00000017 E8 04            [16]   88 	add	sp, #4
+                                     89 ;src/player.c:75: SWITCH_ROM(_previous_bank);
+    00000019 79               [ 4]   90 	ld	a, c
+    0000001A E0r00            [12]   91 	ldh	(__current_bank + 0), a
+    0000001C 21r00r00         [12]   92 	ld	hl, #_rROMB0
+    0000001F 71               [ 8]   93 	ld	(hl), c
+                                     94 ;src/player.c:76: }
+    00000020 C9               [16]   95 	ret
+    00000021                         96 _baseProp:
+    00000021 00                      97 	.db #0x00	; 0
+    00000022                         98 _PlayerPalettesGGSMS:
+    00000022 1F 22                   99 	.dw #0x221f
+    00000024 FF 7F                  100 	.dw #0x7fff
+    00000026 B5 56                  101 	.dw #0x56b5
+    00000028 00 00                  102 	.dw #0x0000
+    0000002A 11 00                  103 	.dw #0x0011
+    0000002C C0 01                  104 	.dw #0x01c0
+    0000002E 60 54                  105 	.dw #0x5460
+    00000030 0F 02                  106 	.dw #0x020f
+    00000032 20 36                  107 	.dw #0x3620
+    00000034 09 28                  108 	.dw #0x2809
+    00000036 1F 00                  109 	.dw #0x001f
+    00000038 E4 03                  110 	.dw #0x03e4
+    0000003A A0 7C                  111 	.dw #0x7ca0
+    0000003C BF 03                  112 	.dw #0x03bf
+    0000003E 80 7F                  113 	.dw #0x7f80
+    00000040 1F 7E                  114 	.dw #0x7e1f
+                                    115 ;src/player.c:78: void SetPlayerPalettes(void) NONBANKED{
+                                    116 ;	---------------------------------
+                                    117 ; Function SetPlayerPalettes
+                                    118 ; ---------------------------------
+    00000042                        119 _SetPlayerPalettes::
+                                    120 ;src/player.c:79: uint8_t _previous_bank = CURRENT_BANK;
+    00000042 F0r00            [12]  121 	ldh	a, (__current_bank + 0)
+    00000044 4F               [ 4]  122 	ld	c, a
+                                    123 ;src/player.c:81: SWITCH_ROM(PLAYER_PALETTES_BANK);
+    00000045 3Er00            [ 8]  124 	ld	a, #<(___bank_PlayerCharacterSprites)
+    00000047 E0r00            [12]  125 	ldh	(__current_bank + 0), a
+    00000049 21r00r00         [12]  126 	ld	hl, #_rROMB0
+    0000004C 36r00            [12]  127 	ld	(hl), #<(___bank_PlayerCharacterSprites)
+                                    128 ;src/player.c:95: SWITCH_ROM(_previous_bank);
+    0000004E 79               [ 4]  129 	ld	a, c
+    0000004F E0r00            [12]  130 	ldh	(__current_bank + 0), a
+    00000051 71               [ 8]  131 	ld	(hl), c
+                                    132 ;src/player.c:96: }
+    00000052 C9               [16]  133 	ret
+                                    134 ;src/player.c:116: uint8_t DrawPlayer(uint16_t playerRealX, uint16_t playerRealY, uint8_t frame) NONBANKED{
+                                    135 ;	---------------------------------
+                                    136 ; Function DrawPlayer
+                                    137 ; ---------------------------------
+    00000053                        138 _DrawPlayer::
+    00000053 3B               [ 8]  139 	dec	sp
+                                    140 ;src/player.c:119: uint8_t _previous_bank = CURRENT_BANK;
+    00000054 F0r00            [12]  141 	ldh	a, (__current_bank + 0)
+    00000056 F8 00            [12]  142 	ldhl	sp,	#0
+    00000058 77               [ 8]  143 	ld	(hl), a
+                                    144 ;src/player.c:123: uint16_t playerCameraX = (playerRealX-camera_x)+DEVICE_SPRITE_PX_OFFSET_X;
+    00000059 7B               [ 4]  145 	ld	a, e
+    0000005A 21r00r00         [12]  146 	ld	hl, #_camera_x
+    0000005D 5E               [ 8]  147 	ld	e, (hl)
+    0000005E 93               [ 4]  148 	sub	a, e
+    0000005F C6 08            [ 8]  149 	add	a, #0x08
+    00000061 5F               [ 4]  150 	ld	e, a
+                                    151 ;src/player.c:124: uint16_t playerCameraY= (playerRealY)+DEVICE_SPRITE_PX_OFFSET_Y;
+    00000062 79               [ 4]  152 	ld	a, c
+    00000063 C6 10            [ 8]  153 	add	a, #0x10
+    00000065 4F               [ 4]  154 	ld	c, a
+                                    155 ;src/player.c:126: SWITCH_ROM(BANK(PlayerCharacterSprites));
+    00000066 3Er00            [ 8]  156 	ld	a, #<(___bank_PlayerCharacterSprites)
+    00000068 E0r00            [12]  157 	ldh	(__current_bank + 0), a
+    0000006A 21r00r00         [12]  158 	ld	hl, #_rROMB0
+    0000006D 36r00            [12]  159 	ld	(hl), #<(___bank_PlayerCharacterSprites)
+                                    160 ;src/player.c:128: spritesUsed = move_metasprite_ex(PlayerCharacterSprites_metasprites[frame],0,baseProp,0,playerCameraX,playerCameraY);
+    0000006F 43               [ 4]  161 	ld	b, e
+    00000070 F8 03            [12]  162 	ldhl	sp,	#3
+    00000072 5E               [ 8]  163 	ld	e, (hl)
+    00000073 AF               [ 4]  164 	xor	a, a
+    00000074 6B               [ 4]  165 	ld	l, e
+    00000075 67               [ 4]  166 	ld	h, a
+    00000076 29               [ 8]  167 	add	hl, hl
+    00000077 11r00r00         [12]  168 	ld	de, #_PlayerCharacterSprites_metasprites
+    0000007A 19               [ 8]  169 	add	hl, de
+    0000007B 2A               [ 8]  170 	ld	a,	(hl+)
+    0000007C 66               [ 8]  171 	ld	h, (hl)
+                                    172 ;	spillPairReg hl
+                                    173 ;	spillPairReg hl
+                                    174 ;	spillPairReg hl
+                                    175 ;../../../include/gb/metasprites.h:160: __current_metasprite = metasprite;
+    0000007D 5F               [ 4]  176 	ld	e, a
+    0000007E 54               [ 4]  177 	ld	d, h
+    0000007F 21r00r00         [12]  178 	ld	hl, #___current_metasprite
+    00000082 7B               [ 4]  179 	ld	a, e
+    00000083 22               [ 8]  180 	ld	(hl+), a
+    00000084 72               [ 8]  181 	ld	(hl), d
+                                    182 ;../../../include/gb/metasprites.h:161: __current_base_tile = base_tile;
+    00000085 21r00r00         [12]  183 	ld	hl, #___current_base_tile
+    00000088 36 00            [12]  184 	ld	(hl), #0x00
+                                    185 ;../../../include/gb/metasprites.h:162: __current_base_prop = base_prop;
+    0000008A 21r00r00         [12]  186 	ld	hl, #___current_base_prop
+    0000008D 36 00            [12]  187 	ld	(hl), #0x00
+                                    188 ;../../../include/gb/metasprites.h:163: return __move_metasprite(base_sprite, (y << 8) | (uint8_t)x);
+    0000008F 51               [ 4]  189 	ld	d, c
+    00000090 58               [ 4]  190 	ld	e, b
+    00000091 AF               [ 4]  191 	xor	a, a
+    00000092 CDr00r00         [24]  192 	call	___move_metasprite
+    00000095 4F               [ 4]  193 	ld	c, a
+                                    194 ;src/player.c:130: SWITCH_ROM(_previous_bank);
+    00000096 F8 00            [12]  195 	ldhl	sp,	#0
+    00000098 7E               [ 8]  196 	ld	a, (hl)
+    00000099 E0r00            [12]  197 	ldh	(__current_bank + 0), a
+    0000009B 7E               [ 8]  198 	ld	a, (hl)
+    0000009C EAr00r00         [16]  199 	ld	(#_rROMB0),a
+                                    200 ;src/player.c:132: return spritesUsed;
+    0000009F 79               [ 4]  201 	ld	a, c
+                                    202 ;src/player.c:133: }
+    000000A0 33               [ 8]  203 	inc	sp
+    000000A1 E1               [12]  204 	pop	hl
+    000000A2 33               [ 8]  205 	inc	sp
+    000000A3 E9               [ 4]  206 	jp	(hl)
+                                    207 	.area _HOME
+                                    208 ;--------------------------------------------------------
+                                    209 ; code
+                                    210 ;--------------------------------------------------------
+                                    211 	.area _CODE_255
+                                    212 ;src/player.c:98: void SetupPlayer(void) BANKED{
+                                    213 ;	---------------------------------
+                                    214 ; Function SetupPlayer
+                                    215 ; ---------------------------------
+                         000000FF   216 	b_SetupPlayer	= 255
+    00000000                        217 _SetupPlayer::
+                                    218 ;src/player.c:102: playerX=40<<4;
+    00000000 21r00r00         [12]  219 	ld	hl, #_playerX
+    00000003 3E 80            [ 8]  220 	ld	a, #0x80
+    00000005 22               [ 8]  221 	ld	(hl+), a
+    00000006 36 02            [12]  222 	ld	(hl), #0x02
+                                    223 ;src/player.c:103: playerY=40<<4;
+    00000008 21r02r00         [12]  224 	ld	hl, #_playerY
+    0000000B 3E 80            [ 8]  225 	ld	a, #0x80
+    0000000D 22               [ 8]  226 	ld	(hl+), a
+    0000000E 36 02            [12]  227 	ld	(hl), #0x02
+                                    228 ;src/player.c:105: playerXVelocity=0;
+    00000010 AF               [ 4]  229 	xor	a, a
+    00000011 21r04r00         [12]  230 	ld	hl, #_playerXVelocity
+    00000014 22               [ 8]  231 	ld	(hl+), a
+    00000015 77               [ 8]  232 	ld	(hl), a
+                                    233 ;src/player.c:106: playerYVelocity=0;
+    00000016 AF               [ 4]  234 	xor	a, a
+    00000017 21r06r00         [12]  235 	ld	hl, #_playerYVelocity
+    0000001A 22               [ 8]  236 	ld	(hl+), a
+    0000001B 77               [ 8]  237 	ld	(hl), a
+                                    238 ;src/player.c:108: UpdatePlayerVRAMTiles();
+    0000001C CDr00r00         [24]  239 	call	_UpdatePlayerVRAMTiles
+                                    240 ;src/player.c:111: SetPlayerPalettes();
+                                    241 ;src/player.c:114: }
+    0000001F C3r42r00         [16]  242 	jp	_SetPlayerPalettes
+                                    243 ;src/player.c:135: uint8_t UpdatePlayer(void) BANKED{
+                                    244 ;	---------------------------------
+                                    245 ; Function UpdatePlayer
+                                    246 ; ---------------------------------
+                         000000FF   247 	b_UpdatePlayer	= 255
+    00000022                        248 _UpdatePlayer::
+    00000022 E8 F1            [16]  249 	add	sp, #-15
+                                    250 ;src/player.c:139: int16_t moveSpeed = (joypadCurrent & J_B) ?PLAYER_CHARACTER_RUN_VELOCITY:PLAYER_CHARACTER_WALK_VELOCITY;
+    00000024 FAr00r00         [16]  251 	ld	a, (#_joypadCurrent)
+    00000027 F8 06            [12]  252 	ldhl	sp,	#6
+    00000029 77               [ 8]  253 	ld	(hl), a
+    0000002A E6 20            [ 8]  254 	and	a,#0x20
+    0000002C 28 05            [12]  255 	jr	Z, 00191$
+    0000002E 01 A9 01         [12]  256 	ld	bc, #0x01a9
+    00000031 18 03            [12]  257 	jr	00192$
+    00000033                        258 00191$:
+    00000033 01 45 01         [12]  259 	ld	bc, #0x0145
+    00000036                        260 00192$:
+    00000036 F8 07            [12]  261 	ldhl	sp,	#7
+    00000038 71               [ 8]  262 	ld	(hl), c
+    00000039 23               [ 8]  263 	inc	hl
+    0000003A 70               [ 8]  264 	ld	(hl), b
+                                    265 ;src/player.c:140: uint8_t threeFrameCounterSpeed = (joypadCurrent & J_B) ? PLAYER_CHARACTER_RUN_TWO_FRAME_COUNTER : PLAYER_CHARACTER_WALK_TWO_FRAME_COUNTER;
+    0000003B B7               [ 4]  266 	or	a, a
+    0000003C 28 04            [12]  267 	jr	Z, 00193$
+    0000003E 06 05            [ 8]  268 	ld	b, #0x05
+    00000040 18 02            [12]  269 	jr	00194$
+    00000042                        270 00193$:
+    00000042 06 03            [ 8]  271 	ld	b, #0x03
+    00000044                        272 00194$:
+    00000044 78               [ 4]  273 	ld	a, b
+                                    274 ;src/player.c:142: threeFrameCounter+=threeFrameCounterSpeed;
+    00000045 21r02r00         [12]  275 	ld	hl, #_threeFrameCounter
+    00000048 86               [ 8]  276 	add	a, (hl)
+                                    277 ;src/player.c:143: uint8_t threeFrameCounterValue = threeFrameCounter>>4;
+    00000049 77               [ 8]  278 	ld	(hl), a
+    0000004A CB 37            [ 8]  279 	swap	a
+    0000004C E6 0F            [ 8]  280 	and	a, #0x0f
+    0000004E F8 02            [12]  281 	ldhl	sp,	#2
+                                    282 ;src/player.c:144: if(threeFrameCounterValue>=3){
+    00000050 77               [ 8]  283 	ld	(hl), a
+    00000051 D6 03            [ 8]  284 	sub	a, #0x03
+    00000053 38 09            [12]  285 	jr	C, 00102$
+                                    286 ;src/player.c:145: threeFrameCounter=0;
+    00000055 21r02r00         [12]  287 	ld	hl, #_threeFrameCounter
+    00000058 36 00            [12]  288 	ld	(hl), #0x00
+                                    289 ;src/player.c:146: threeFrameCounterValue=0;
+    0000005A F8 02            [12]  290 	ldhl	sp,	#2
+    0000005C 36 00            [12]  291 	ld	(hl), #0x00
+    0000005E                        292 00102$:
+                                    293 ;src/player.c:149: uint8_t turning = FALSE;
+    0000005E F8 03            [12]  294 	ldhl	sp,	#3
+    00000060 36 00            [12]  295 	ld	(hl), #0x00
+                                    296 ;src/player.c:154: if(playerXVelocity<0){
+    00000062 FAr04r00         [16]  297 	ld	a, (#_playerXVelocity)
+    00000065 F8 09            [12]  298 	ldhl	sp,	#9
+    00000067 77               [ 8]  299 	ld	(hl), a
+    00000068 FAr05r00         [16]  300 	ld	a, (#_playerXVelocity + 1)
+    0000006B F8 0A            [12]  301 	ldhl	sp,	#10
+    0000006D 22               [ 8]  302 	ld	(hl+), a
+    0000006E 07               [ 4]  303 	rlca
+    0000006F E6 01            [ 8]  304 	and	a,#0x01
+                                    305 ;src/player.c:157: playerXVelocity+=GROUND_FRICTION;
+    00000071 32               [ 8]  306 	ld	(hl-), a
+    00000072 2B               [ 8]  307 	dec	hl
+    00000073 2A               [ 8]  308 	ld	a, (hl+)
+    00000074 5F               [ 4]  309 	ld	e, a
+    00000075 56               [ 8]  310 	ld	d, (hl)
+    00000076 21 0F 00         [12]  311 	ld	hl, #0x000f
+    00000079 19               [ 8]  312 	add	hl, de
+    0000007A 4D               [ 4]  313 	ld	c, l
+    0000007B 7C               [ 4]  314 	ld	a, h
+    0000007C F8 0C            [12]  315 	ldhl	sp,	#12
+    0000007E 71               [ 8]  316 	ld	(hl), c
+    0000007F 23               [ 8]  317 	inc	hl
+    00000080 77               [ 8]  318 	ld	(hl), a
+                                    319 ;src/player.c:151: if(joypadCurrent &J_RIGHT){
+    00000081 E5               [16]  320 	push	hl
+    00000082 F8 08            [12]  321 	ldhl	sp,	#8
+    00000084 CB 46            [12]  322 	bit	0, (hl)
+    00000086 E1               [12]  323 	pop	hl
+    00000087 28 3F            [12]  324 	jr	Z, 00134$
+                                    325 ;src/player.c:154: if(playerXVelocity<0){
+    00000089 F8 0B            [12]  326 	ldhl	sp,	#11
+    0000008B 7E               [ 8]  327 	ld	a, (hl)
+    0000008C B7               [ 4]  328 	or	a, a
+    0000008D 28 20            [12]  329 	jr	Z, 00109$
+                                    330 ;src/player.c:157: playerXVelocity+=GROUND_FRICTION;
+    0000008F 23               [ 8]  331 	inc	hl
+    00000090 7E               [ 8]  332 	ld	a, (hl)
+    00000091 EAr04r00         [16]  333 	ld	(#_playerXVelocity),a
+    00000094 F8 0D            [12]  334 	ldhl	sp,	#13
+    00000096 7E               [ 8]  335 	ld	a, (hl)
+    00000097 21r05r00         [12]  336 	ld	hl, #_playerXVelocity + 1
+                                    337 ;src/player.c:160: if(playerXVelocity<0)turning=TRUE;
+    0000009A 32               [ 8]  338 	ld	(hl-), a
+    0000009B 2A               [ 8]  339 	ld	a, (hl+)
+    0000009C CB 7E            [12]  340 	bit	7, (hl)
+    0000009E 28 07            [12]  341 	jr	Z, 00104$
+    000000A0 F8 03            [12]  342 	ldhl	sp,	#3
+    000000A2 36 01            [12]  343 	ld	(hl), #0x01
+    000000A4 C3r95r01         [16]  344 	jp	00135$
+    000000A7                        345 00104$:
+                                    346 ;src/player.c:163: facingRight=TRUE;
+    000000A7 21r00r00         [12]  347 	ld	hl, #_facingRight
+    000000AA 36 01            [12]  348 	ld	(hl), #0x01
+    000000AC C3r95r01         [16]  349 	jp	00135$
+    000000AF                        350 00109$:
+                                    351 ;src/player.c:166: playerXVelocity=moveSpeed;
+    000000AF F8 07            [12]  352 	ldhl	sp,	#7
+    000000B1 7E               [ 8]  353 	ld	a, (hl)
+    000000B2 EAr04r00         [16]  354 	ld	(#_playerXVelocity),a
+    000000B5 F8 08            [12]  355 	ldhl	sp,	#8
+    000000B7 7E               [ 8]  356 	ld	a, (hl)
+    000000B8 EAr05r00         [16]  357 	ld	(#_playerXVelocity + 1),a
+                                    358 ;src/player.c:169: if(!facingRight){
+    000000BB 21r00r00         [12]  359 	ld	hl, #_facingRight
+    000000BE 7E               [ 8]  360 	ld	a, (hl)
+    000000BF B7               [ 4]  361 	or	a, a
+    000000C0 C2r95r01         [16]  362 	jp	NZ, 00135$
+                                    363 ;src/player.c:170: facingRight=TRUE;
+    000000C3 36 01            [12]  364 	ld	(hl), #0x01
+    000000C5 C3r95r01         [16]  365 	jp	00135$
+    000000C8                        366 00134$:
+                                    367 ;src/player.c:177: if(playerXVelocity>0){
+    000000C8 F8 09            [12]  368 	ldhl	sp,	#9
+    000000CA AF               [ 4]  369 	xor	a, a
+    000000CB 96               [ 8]  370 	sub	a, (hl)
+    000000CC 23               [ 8]  371 	inc	hl
+    000000CD 3E 00            [ 8]  372 	ld	a, #0x00
+    000000CF 9E               [ 8]  373 	sbc	a, (hl)
+    000000D0 3E 00            [ 8]  374 	ld	a, #0x00
+    000000D2 57               [ 4]  375 	ld	d, a
+    000000D3 CB 7E            [12]  376 	bit	7, (hl)
+    000000D5 28 07            [12]  377 	jr	Z, 00532$
+    000000D7 CB 7A            [ 8]  378 	bit	7, d
+    000000D9 20 08            [12]  379 	jr	NZ, 00533$
+    000000DB BF               [ 4]  380 	cp	a, a
+    000000DC 18 05            [12]  381 	jr	00533$
+    000000DE                        382 00532$:
+    000000DE CB 7A            [ 8]  383 	bit	7, d
+    000000E0 28 01            [12]  384 	jr	Z, 00533$
+    000000E2 37               [ 4]  385 	scf
+    000000E3                        386 00533$:
+    000000E3 3E 00            [ 8]  387 	ld	a, #0x00
+    000000E5 17               [ 4]  388 	rla
+    000000E6 F8 0E            [12]  389 	ldhl	sp,	#14
+    000000E8 77               [ 8]  390 	ld	(hl), a
+                                    391 ;src/player.c:180: playerXVelocity-=GROUND_FRICTION;
+    000000E9 F8 09            [12]  392 	ldhl	sp,#9
+    000000EB 2A               [ 8]  393 	ld	a, (hl+)
+    000000EC 5F               [ 4]  394 	ld	e, a
+    000000ED 56               [ 8]  395 	ld	d, (hl)
+    000000EE 21 0F 00         [12]  396 	ld	hl, #0x000f
+    000000F1 7B               [ 4]  397 	ld	a, e
+    000000F2 95               [ 4]  398 	sub	a, l
+    000000F3 5F               [ 4]  399 	ld	e, a
+    000000F4 7A               [ 4]  400 	ld	a, d
+    000000F5 9C               [ 4]  401 	sbc	a, h
+    000000F6 4B               [ 4]  402 	ld	c, e
+    000000F7 47               [ 4]  403 	ld	b, a
+                                    404 ;src/player.c:174: }else if(joypadCurrent &J_LEFT){
+    000000F8 E5               [16]  405 	push	hl
+    000000F9 F8 08            [12]  406 	ldhl	sp,	#8
+    000000FB CB 4E            [12]  407 	bit	1, (hl)
+    000000FD E1               [12]  408 	pop	hl
+    000000FE 28 51            [12]  409 	jr	Z, 00131$
+                                    410 ;src/player.c:177: if(playerXVelocity>0){
+    00000100 F8 0E            [12]  411 	ldhl	sp,	#14
+    00000102 7E               [ 8]  412 	ld	a, (hl)
+    00000103 B7               [ 4]  413 	or	a, a
+    00000104 28 2E            [12]  414 	jr	Z, 00117$
+                                    415 ;src/player.c:180: playerXVelocity-=GROUND_FRICTION;
+    00000106 21r04r00         [12]  416 	ld	hl, #_playerXVelocity
+    00000109 79               [ 4]  417 	ld	a, c
+    0000010A 22               [ 8]  418 	ld	(hl+), a
+                                    419 ;src/player.c:183: if(playerXVelocity>0)turning=TRUE;
+    0000010B 78               [ 4]  420 	ld	a, b
+    0000010C 32               [ 8]  421 	ld	(hl-), a
+    0000010D 2A               [ 8]  422 	ld	a, (hl+)
+    0000010E 4F               [ 4]  423 	ld	c, a
+    0000010F 46               [ 8]  424 	ld	b, (hl)
+    00000110 58               [ 4]  425 	ld	e, b
+    00000111 AF               [ 4]  426 	xor	a, a
+    00000112 57               [ 4]  427 	ld	d, a
+    00000113 B9               [ 4]  428 	cp	a, c
+    00000114 98               [ 4]  429 	sbc	a, b
+    00000115 CB 7B            [ 8]  430 	bit	7, e
+    00000117 28 07            [12]  431 	jr	Z, 00535$
+    00000119 CB 7A            [ 8]  432 	bit	7, d
+    0000011B 20 08            [12]  433 	jr	NZ, 00536$
+    0000011D BF               [ 4]  434 	cp	a, a
+    0000011E 18 05            [12]  435 	jr	00536$
+    00000120                        436 00535$:
+    00000120 CB 7A            [ 8]  437 	bit	7, d
+    00000122 28 01            [12]  438 	jr	Z, 00536$
+    00000124 37               [ 4]  439 	scf
+    00000125                        440 00536$:
+    00000125 30 06            [12]  441 	jr	NC, 00112$
+    00000127 F8 03            [12]  442 	ldhl	sp,	#3
+    00000129 36 01            [12]  443 	ld	(hl), #0x01
+    0000012B 18 68            [12]  444 	jr	00135$
+    0000012D                        445 00112$:
+                                    446 ;src/player.c:186: facingRight=FALSE;
+    0000012D 21r00r00         [12]  447 	ld	hl, #_facingRight
+    00000130 36 00            [12]  448 	ld	(hl), #0x00
+    00000132 18 61            [12]  449 	jr	00135$
+    00000134                        450 00117$:
+                                    451 ;src/player.c:190: playerXVelocity=-moveSpeed;
+    00000134 11 00 00         [12]  452 	ld	de, #0x0000
+    00000137 F8 07            [12]  453 	ldhl	sp,	#7
+    00000139 2A               [ 8]  454 	ld	a,	(hl+)
+    0000013A 66               [ 8]  455 	ld	h, (hl)
+    0000013B 6F               [ 4]  456 	ld	l, a
+    0000013C 7B               [ 4]  457 	ld	a, e
+    0000013D 95               [ 4]  458 	sub	a, l
+    0000013E 5F               [ 4]  459 	ld	e, a
+    0000013F 7A               [ 4]  460 	ld	a, d
+    00000140 9C               [ 4]  461 	sbc	a, h
+    00000141 21r05r00         [12]  462 	ld	hl, #_playerXVelocity + 1
+    00000144 32               [ 8]  463 	ld	(hl-), a
+    00000145 73               [ 8]  464 	ld	(hl), e
+                                    465 ;src/player.c:193: if(facingRight){
+    00000146 21r00r00         [12]  466 	ld	hl, #_facingRight
+    00000149 7E               [ 8]  467 	ld	a, (hl)
+    0000014A B7               [ 4]  468 	or	a, a
+    0000014B 28 48            [12]  469 	jr	Z, 00135$
+                                    470 ;src/player.c:194: facingRight=FALSE;
+    0000014D 36 00            [12]  471 	ld	(hl), #0x00
+    0000014F 18 44            [12]  472 	jr	00135$
+    00000151                        473 00131$:
+                                    474 ;src/player.c:203: if (playerXVelocity > 0) {
+    00000151 F8 0E            [12]  475 	ldhl	sp,	#14
+    00000153 7E               [ 8]  476 	ld	a, (hl)
+    00000154 B7               [ 4]  477 	or	a, a
+    00000155 28 2D            [12]  478 	jr	Z, 00128$
+                                    479 ;src/player.c:204: if (playerXVelocity >= GROUND_FRICTION) playerXVelocity -= GROUND_FRICTION;
+    00000157 F8 09            [12]  480 	ldhl	sp,	#9
+    00000159 2A               [ 8]  481 	ld	a, (hl+)
+    0000015A D6 0F            [ 8]  482 	sub	a, #0x0f
+    0000015C 7E               [ 8]  483 	ld	a, (hl)
+    0000015D DE 00            [ 8]  484 	sbc	a, #0x00
+    0000015F 56               [ 8]  485 	ld	d, (hl)
+    00000160 3E 00            [ 8]  486 	ld	a, #0x00
+    00000162 CB 7F            [ 8]  487 	bit	7,a
+    00000164 28 07            [12]  488 	jr	Z, 00537$
+    00000166 CB 7A            [ 8]  489 	bit	7, d
+    00000168 20 08            [12]  490 	jr	NZ, 00538$
+    0000016A BF               [ 4]  491 	cp	a, a
+    0000016B 18 05            [12]  492 	jr	00538$
+    0000016D                        493 00537$:
+    0000016D CB 7A            [ 8]  494 	bit	7, d
+    0000016F 28 01            [12]  495 	jr	Z, 00538$
+    00000171 37               [ 4]  496 	scf
+    00000172                        497 00538$:
+    00000172 38 08            [12]  498 	jr	C, 00120$
+    00000174 21r04r00         [12]  499 	ld	hl, #_playerXVelocity
+    00000177 79               [ 4]  500 	ld	a, c
+    00000178 22               [ 8]  501 	ld	(hl+), a
+    00000179 70               [ 8]  502 	ld	(hl), b
+    0000017A 18 19            [12]  503 	jr	00135$
+    0000017C                        504 00120$:
+                                    505 ;src/player.c:205: else playerXVelocity=0;
+    0000017C AF               [ 4]  506 	xor	a, a
+    0000017D 21r04r00         [12]  507 	ld	hl, #_playerXVelocity
+    00000180 22               [ 8]  508 	ld	(hl+), a
+    00000181 77               [ 8]  509 	ld	(hl), a
+    00000182 18 11            [12]  510 	jr	00135$
+    00000184                        511 00128$:
+                                    512 ;src/player.c:207: else if (playerXVelocity < 0) {
+    00000184 F8 0B            [12]  513 	ldhl	sp,	#11
+    00000186 7E               [ 8]  514 	ld	a, (hl)
+    00000187 B7               [ 4]  515 	or	a, a
+    00000188 28 0B            [12]  516 	jr	Z, 00135$
+                                    517 ;src/player.c:208: if (playerXVelocity <= GROUND_FRICTION) playerXVelocity += GROUND_FRICTION;
+    0000018A 23               [ 8]  518 	inc	hl
+    0000018B 7E               [ 8]  519 	ld	a, (hl)
+    0000018C EAr04r00         [16]  520 	ld	(#_playerXVelocity),a
+    0000018F F8 0D            [12]  521 	ldhl	sp,	#13
+    00000191 7E               [ 8]  522 	ld	a, (hl)
+    00000192 EAr05r00         [16]  523 	ld	(#_playerXVelocity + 1),a
+                                    524 ;src/player.c:209: else playerXVelocity=0;
+    00000195                        525 00135$:
+                                    526 ;src/player.c:213: uint16_t playerRealX = playerX>>4;
+    00000195 21r00r00         [12]  527 	ld	hl, #_playerX
+    00000198 2A               [ 8]  528 	ld	a, (hl+)
+    00000199 5F               [ 4]  529 	ld	e, a
+    0000019A 56               [ 8]  530 	ld	d, (hl)
+    0000019B CB 3A            [ 8]  531 	srl	d
+    0000019D CB 1B            [ 8]  532 	rr	e
+    0000019F CB 3A            [ 8]  533 	srl	d
+    000001A1 CB 1B            [ 8]  534 	rr	e
+    000001A3 CB 3A            [ 8]  535 	srl	d
+    000001A5 CB 1B            [ 8]  536 	rr	e
+    000001A7 CB 3A            [ 8]  537 	srl	d
+    000001A9 CB 1B            [ 8]  538 	rr	e
+                                    539 ;src/player.c:214: uint16_t playerRealY = playerY>>4;
+    000001AB FAr02r00         [16]  540 	ld	a, (#_playerY)
+    000001AE F8 04            [12]  541 	ldhl	sp,	#4
+    000001B0 77               [ 8]  542 	ld	(hl), a
+    000001B1 FAr03r00         [16]  543 	ld	a, (#_playerY + 1)
+    000001B4 F8 05            [12]  544 	ldhl	sp,	#5
+    000001B6 77               [ 8]  545 	ld	(hl), a
+    000001B7 CB 3E            [16]  546 	srl	(hl)
+    000001B9 2B               [ 8]  547 	dec	hl
+    000001BA CB 1E            [16]  548 	rr	(hl)
+    000001BC 23               [ 8]  549 	inc	hl
+    000001BD CB 3E            [16]  550 	srl	(hl)
+    000001BF 2B               [ 8]  551 	dec	hl
+    000001C0 CB 1E            [16]  552 	rr	(hl)
+    000001C2 23               [ 8]  553 	inc	hl
+    000001C3 CB 3E            [16]  554 	srl	(hl)
+    000001C5 2B               [ 8]  555 	dec	hl
+    000001C6 CB 1E            [16]  556 	rr	(hl)
+    000001C8 23               [ 8]  557 	inc	hl
+    000001C9 CB 3E            [16]  558 	srl	(hl)
+    000001CB 2B               [ 8]  559 	dec	hl
+    000001CC CB 1E            [16]  560 	rr	(hl)
+                                    561 ;src/player.c:216: uint8_t grounded = FALSE;
+    000001CE 23               [ 8]  562 	inc	hl
+    000001CF 23               [ 8]  563 	inc	hl
+                                    564 ;src/player.c:223: if(playerRealY<DEVICE_SCREEN_PX_HEIGHT){
+    000001D0 AF               [ 4]  565 	xor	a, a
+    000001D1 32               [ 8]  566 	ld	(hl-), a
+    000001D2 2B               [ 8]  567 	dec	hl
+    000001D3 2A               [ 8]  568 	ld	a, (hl+)
+    000001D4 D6 90            [ 8]  569 	sub	a, #0x90
+    000001D6 7E               [ 8]  570 	ld	a, (hl)
+    000001D7 DE 00            [ 8]  571 	sbc	a, #0x00
+    000001D9 30 45            [12]  572 	jr	NC, 00140$
+                                    573 ;src/player.c:226: while(IsTileSolid(playerRealX,playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT-1)){
+    000001DB                        574 00136$:
+    000001DB F8 04            [12]  575 	ldhl	sp,	#4
+    000001DD 4E               [ 8]  576 	ld	c, (hl)
+    000001DE 23               [ 8]  577 	inc	hl
+    000001DF 46               [ 8]  578 	ld	b, (hl)
+    000001E0 21 17 00         [12]  579 	ld	hl, #0x0017
+    000001E3 09               [ 8]  580 	add	hl, bc
+    000001E4 4D               [ 4]  581 	ld	c, l
+    000001E5 44               [ 4]  582 	ld	b, h
+    000001E6 D5               [16]  583 	push	de
+    000001E7 CDr00r00         [24]  584 	call	_IsTileSolid
+    000001EA D1               [12]  585 	pop	de
+    000001EB B7               [ 4]  586 	or	a, a
+    000001EC 28 32            [12]  587 	jr	Z, 00140$
+                                    588 ;src/player.c:227: playerY-=16;
+    000001EE 21r02r00         [12]  589 	ld	hl, #_playerY
+    000001F1 2A               [ 8]  590 	ld	a, (hl+)
+    000001F2 46               [ 8]  591 	ld	b, (hl)
+    000001F3 2B               [ 8]  592 	dec	hl
+    000001F4 C6 F0            [ 8]  593 	add	a, #0xf0
+    000001F6 4F               [ 4]  594 	ld	c, a
+    000001F7 78               [ 4]  595 	ld	a, b
+    000001F8 CE FF            [ 8]  596 	adc	a, #0xff
+    000001FA 71               [ 8]  597 	ld	(hl), c
+    000001FB 23               [ 8]  598 	inc	hl
+                                    599 ;src/player.c:228: playerRealY = playerY>>4;
+    000001FC 32               [ 8]  600 	ld	(hl-), a
+    000001FD 7E               [ 8]  601 	ld	a, (hl)
+    000001FE F8 04            [12]  602 	ldhl	sp,	#4
+    00000200 77               [ 8]  603 	ld	(hl), a
+    00000201 FAr03r00         [16]  604 	ld	a, (#_playerY + 1)
+    00000204 F8 05            [12]  605 	ldhl	sp,	#5
+    00000206 77               [ 8]  606 	ld	(hl), a
+    00000207 CB 3E            [16]  607 	srl	(hl)
+    00000209 2B               [ 8]  608 	dec	hl
+    0000020A CB 1E            [16]  609 	rr	(hl)
+    0000020C 23               [ 8]  610 	inc	hl
+    0000020D CB 3E            [16]  611 	srl	(hl)
+    0000020F 2B               [ 8]  612 	dec	hl
+    00000210 CB 1E            [16]  613 	rr	(hl)
+    00000212 23               [ 8]  614 	inc	hl
+    00000213 CB 3E            [16]  615 	srl	(hl)
+    00000215 2B               [ 8]  616 	dec	hl
+    00000216 CB 1E            [16]  617 	rr	(hl)
+    00000218 23               [ 8]  618 	inc	hl
+    00000219 CB 3E            [16]  619 	srl	(hl)
+    0000021B 2B               [ 8]  620 	dec	hl
+    0000021C CB 1E            [16]  621 	rr	(hl)
+    0000021E 18 BB            [12]  622 	jr	00136$
+    00000220                        623 00140$:
+                                    624 ;src/player.c:226: while(IsTileSolid(playerRealX,playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT-1)){
+    00000220 F8 04            [12]  625 	ldhl	sp,	#4
+    00000222 7E               [ 8]  626 	ld	a, (hl)
+    00000223 F8 07            [12]  627 	ldhl	sp,	#7
+    00000225 32               [ 8]  628 	ld	(hl-), a
+    00000226 2B               [ 8]  629 	dec	hl
+    00000227 7E               [ 8]  630 	ld	a, (hl)
+    00000228 F8 08            [12]  631 	ldhl	sp,	#8
+    0000022A 77               [ 8]  632 	ld	(hl), a
+                                    633 ;src/player.c:249: if(IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+2)||IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HALF_HEIGHT)||IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+(PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT-2)))playerXVelocity=0;
+    0000022B F8 0B            [12]  634 	ldhl	sp,	#11
+    0000022D 7B               [ 4]  635 	ld	a, e
+    0000022E 22               [ 8]  636 	ld	(hl+), a
+    0000022F 72               [ 8]  637 	ld	(hl), d
+                                    638 ;src/player.c:242: if(playerXVelocity!=0){
+    00000230 21r05r00         [12]  639 	ld	hl, #_playerXVelocity + 1
+    00000233 3A               [ 8]  640 	ld	a, (hl-)
+    00000234 B6               [ 8]  641 	or	a, (hl)
+    00000235 CAr07r03         [16]  642 	jp	Z, 00155$
+                                    643 ;src/player.c:245: if(playerXVelocity>0){
+    00000238 7E               [ 8]  644 	ld	a, (hl)
+    00000239 F8 0D            [12]  645 	ldhl	sp,	#13
+    0000023B 77               [ 8]  646 	ld	(hl), a
+    0000023C FAr05r00         [16]  647 	ld	a, (#_playerXVelocity + 1)
+    0000023F F8 0E            [12]  648 	ldhl	sp,	#14
+    00000241 77               [ 8]  649 	ld	(hl), a
+                                    650 ;src/player.c:249: if(IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+2)||IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HALF_HEIGHT)||IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+(PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT-2)))playerXVelocity=0;
+    00000242 F8 07            [12]  651 	ldhl	sp,	#7
+    00000244 2A               [ 8]  652 	ld	a, (hl+)
+    00000245 4F               [ 4]  653 	ld	c, a
+    00000246 3A               [ 8]  654 	ld	a, (hl-)
+    00000247 47               [ 4]  655 	ld	b, a
+    00000248 03               [ 8]  656 	inc	bc
+    00000249 03               [ 8]  657 	inc	bc
+    0000024A 2A               [ 8]  658 	ld	a, (hl+)
+    0000024B 5F               [ 4]  659 	ld	e, a
+    0000024C 56               [ 8]  660 	ld	d, (hl)
+    0000024D 21 0C 00         [12]  661 	ld	hl, #0x000c
+    00000250 19               [ 8]  662 	add	hl, de
+    00000251 E5               [16]  663 	push	hl
+    00000252 7D               [ 4]  664 	ld	a, l
+    00000253 F8 0B            [12]  665 	ldhl	sp,	#11
+    00000255 77               [ 8]  666 	ld	(hl), a
+    00000256 E1               [12]  667 	pop	hl
+    00000257 7C               [ 4]  668 	ld	a, h
+    00000258 F8 0A            [12]  669 	ldhl	sp,	#10
+    0000025A 32               [ 8]  670 	ld	(hl-), a
+    0000025B 2B               [ 8]  671 	dec	hl
+    0000025C 2B               [ 8]  672 	dec	hl
+    0000025D 2A               [ 8]  673 	ld	a, (hl+)
+    0000025E 5F               [ 4]  674 	ld	e, a
+    0000025F 56               [ 8]  675 	ld	d, (hl)
+    00000260 21 16 00         [12]  676 	ld	hl, #0x0016
+    00000263 19               [ 8]  677 	add	hl, de
+    00000264 5D               [ 4]  678 	ld	e, l
+    00000265 54               [ 4]  679 	ld	d, h
+    00000266 F8 09            [12]  680 	ldhl	sp,	#9
+    00000268 7E               [ 8]  681 	ld	a, (hl)
+    00000269 F8 00            [12]  682 	ldhl	sp,	#0
+    0000026B 77               [ 8]  683 	ld	(hl), a
+    0000026C F8 0A            [12]  684 	ldhl	sp,	#10
+    0000026E 7E               [ 8]  685 	ld	a, (hl)
+    0000026F F8 01            [12]  686 	ldhl	sp,	#1
+    00000271 77               [ 8]  687 	ld	(hl), a
+    00000272 F8 09            [12]  688 	ldhl	sp,	#9
+    00000274 7B               [ 4]  689 	ld	a, e
+    00000275 22               [ 8]  690 	ld	(hl+), a
+    00000276 72               [ 8]  691 	ld	(hl), d
+                                    692 ;src/player.c:245: if(playerXVelocity>0){
+    00000277 F8 0D            [12]  693 	ldhl	sp,	#13
+    00000279 AF               [ 4]  694 	xor	a, a
+    0000027A 96               [ 8]  695 	sub	a, (hl)
+    0000027B 23               [ 8]  696 	inc	hl
+    0000027C 3E 00            [ 8]  697 	ld	a, #0x00
+    0000027E 9E               [ 8]  698 	sbc	a, (hl)
+    0000027F 3E 00            [ 8]  699 	ld	a, #0x00
+    00000281 57               [ 4]  700 	ld	d, a
+    00000282 CB 7E            [12]  701 	bit	7, (hl)
+    00000284 28 07            [12]  702 	jr	Z, 00539$
+    00000286 CB 7A            [ 8]  703 	bit	7, d
+    00000288 20 08            [12]  704 	jr	NZ, 00540$
+    0000028A BF               [ 4]  705 	cp	a, a
+    0000028B 18 05            [12]  706 	jr	00540$
+    0000028D                        707 00539$:
+    0000028D CB 7A            [ 8]  708 	bit	7, d
+    0000028F 28 01            [12]  709 	jr	Z, 00540$
+    00000291 37               [ 4]  710 	scf
+    00000292                        711 00540$:
+    00000292 30 33            [12]  712 	jr	NC, 00152$
+                                    713 ;src/player.c:249: if(IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+2)||IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HALF_HEIGHT)||IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+(PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT-2)))playerXVelocity=0;
+    00000294 F8 0B            [12]  714 	ldhl	sp,#11
+    00000296 5E               [ 8]  715 	ld	e, (hl)
+    00000297 23               [ 8]  716 	inc	hl
+    00000298 56               [ 8]  717 	ld	d, (hl)
+    00000299 21 05 00         [12]  718 	ld	hl, #0x0005
+    0000029C 19               [ 8]  719 	add	hl, de
+    0000029D 5D               [ 4]  720 	ld	e, l
+    0000029E 54               [ 4]  721 	ld	d, h
+    0000029F D5               [16]  722 	push	de
+    000002A0 CDr00r00         [24]  723 	call	_IsTileSolid
+    000002A3 D1               [12]  724 	pop	de
+    000002A4 B7               [ 4]  725 	or	a, a
+    000002A5 20 18            [12]  726 	jr	NZ, 00141$
+    000002A7 D5               [16]  727 	push	de
+    000002A8 F8 02            [12]  728 	ldhl	sp,	#2
+    000002AA 4E               [ 8]  729 	ld	c, (hl)
+    000002AB 23               [ 8]  730 	inc	hl
+    000002AC 46               [ 8]  731 	ld	b, (hl)
+    000002AD CDr00r00         [24]  732 	call	_IsTileSolid
+    000002B0 D1               [12]  733 	pop	de
+    000002B1 B7               [ 4]  734 	or	a, a
+    000002B2 20 0B            [12]  735 	jr	NZ, 00141$
+    000002B4 F8 09            [12]  736 	ldhl	sp,	#9
+    000002B6 4E               [ 8]  737 	ld	c, (hl)
+    000002B7 23               [ 8]  738 	inc	hl
+    000002B8 46               [ 8]  739 	ld	b, (hl)
+    000002B9 CDr00r00         [24]  740 	call	_IsTileSolid
+    000002BC B7               [ 4]  741 	or	a, a
+    000002BD 28 48            [12]  742 	jr	Z, 00155$
+    000002BF                        743 00141$:
+    000002BF AF               [ 4]  744 	xor	a, a
+    000002C0 21r04r00         [12]  745 	ld	hl, #_playerXVelocity
+    000002C3 22               [ 8]  746 	ld	(hl+), a
+    000002C4 77               [ 8]  747 	ld	(hl), a
+    000002C5 18 40            [12]  748 	jr	00155$
+    000002C7                        749 00152$:
+                                    750 ;src/player.c:252: }else if(playerXVelocity<0){
+    000002C7 F8 0E            [12]  751 	ldhl	sp,	#14
+    000002C9 CB 7E            [12]  752 	bit	7, (hl)
+    000002CB 28 3A            [12]  753 	jr	Z, 00155$
+                                    754 ;src/player.c:256: if(IsTileSolid(playerRealX-PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+2)||IsTileSolid(playerRealX-PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HALF_HEIGHT)||IsTileSolid(playerRealX-PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+(PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT-2)))playerXVelocity=0;
+    000002CD 2B               [ 8]  755 	dec	hl
+    000002CE 2B               [ 8]  756 	dec	hl
+    000002CF 2B               [ 8]  757 	dec	hl
+    000002D0 2A               [ 8]  758 	ld	a, (hl+)
+    000002D1 5F               [ 4]  759 	ld	e, a
+    000002D2 56               [ 8]  760 	ld	d, (hl)
+    000002D3 21 05 00         [12]  761 	ld	hl, #0x0005
+    000002D6 7B               [ 4]  762 	ld	a, e
+    000002D7 95               [ 4]  763 	sub	a, l
+    000002D8 5F               [ 4]  764 	ld	e, a
+    000002D9 7A               [ 4]  765 	ld	a, d
+    000002DA 9C               [ 4]  766 	sbc	a, h
+    000002DB F8 0E            [12]  767 	ldhl	sp,	#14
+    000002DD 32               [ 8]  768 	ld	(hl-), a
+    000002DE 73               [ 8]  769 	ld	(hl),e
+    000002DF 23               [ 8]  770 	inc	hl
+    000002E0 56               [ 8]  771 	ld	d, (hl)
+    000002E1 D5               [16]  772 	push	de
+    000002E2 CDr00r00         [24]  773 	call	_IsTileSolid
+    000002E5 D1               [12]  774 	pop	de
+    000002E6 B7               [ 4]  775 	or	a, a
+    000002E7 20 18            [12]  776 	jr	NZ, 00145$
+    000002E9 D5               [16]  777 	push	de
+    000002EA F8 02            [12]  778 	ldhl	sp,	#2
+    000002EC 4E               [ 8]  779 	ld	c, (hl)
+    000002ED 23               [ 8]  780 	inc	hl
+    000002EE 46               [ 8]  781 	ld	b, (hl)
+    000002EF CDr00r00         [24]  782 	call	_IsTileSolid
+    000002F2 D1               [12]  783 	pop	de
+    000002F3 B7               [ 4]  784 	or	a, a
+    000002F4 20 0B            [12]  785 	jr	NZ, 00145$
+    000002F6 F8 09            [12]  786 	ldhl	sp,	#9
+    000002F8 4E               [ 8]  787 	ld	c, (hl)
+    000002F9 23               [ 8]  788 	inc	hl
+    000002FA 46               [ 8]  789 	ld	b, (hl)
+    000002FB CDr00r00         [24]  790 	call	_IsTileSolid
+    000002FE B7               [ 4]  791 	or	a, a
+    000002FF 28 06            [12]  792 	jr	Z, 00155$
+    00000301                        793 00145$:
+    00000301 AF               [ 4]  794 	xor	a, a
+    00000302 21r04r00         [12]  795 	ld	hl, #_playerXVelocity
+    00000305 22               [ 8]  796 	ld	(hl+), a
+    00000306 77               [ 8]  797 	ld	(hl), a
+    00000307                        798 00155$:
+                                    799 ;src/player.c:261: if(playerYVelocity>=0){
+    00000307 FAr06r00         [16]  800 	ld	a, (#_playerYVelocity)
+    0000030A F8 09            [12]  801 	ldhl	sp,	#9
+    0000030C 77               [ 8]  802 	ld	(hl), a
+    0000030D FAr07r00         [16]  803 	ld	a, (#_playerYVelocity + 1)
+    00000310 F8 0A            [12]  804 	ldhl	sp,	#10
+                                    805 ;src/player.c:265: if(IsTileSolid(playerRealX+(PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH-2),playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT)||IsTileSolid(playerRealX-(PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH-2),playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT)){
+    00000312 22               [ 8]  806 	ld	(hl+), a
+    00000313 2A               [ 8]  807 	ld	a, (hl+)
+    00000314 4F               [ 4]  808 	ld	c, a
+    00000315 3A               [ 8]  809 	ld	a, (hl-)
+    00000316 47               [ 4]  810 	ld	b, a
+    00000317 03               [ 8]  811 	inc	bc
+    00000318 03               [ 8]  812 	inc	bc
+    00000319 03               [ 8]  813 	inc	bc
+    0000031A 2A               [ 8]  814 	ld	a, (hl+)
+    0000031B 5F               [ 4]  815 	ld	e, a
+    0000031C 56               [ 8]  816 	ld	d, (hl)
+    0000031D 21 03 00         [12]  817 	ld	hl, #0x0003
+    00000320 7B               [ 4]  818 	ld	a, e
+    00000321 95               [ 4]  819 	sub	a, l
+    00000322 5F               [ 4]  820 	ld	e, a
+    00000323 7A               [ 4]  821 	ld	a, d
+    00000324 9C               [ 4]  822 	sbc	a, h
+    00000325 F8 0E            [12]  823 	ldhl	sp,	#14
+    00000327 32               [ 8]  824 	ld	(hl-), a
+    00000328 7B               [ 4]  825 	ld	a, e
+    00000329 32               [ 8]  826 	ld	(hl-), a
+    0000032A 2B               [ 8]  827 	dec	hl
+    0000032B 79               [ 4]  828 	ld	a, c
+    0000032C 22               [ 8]  829 	ld	(hl+), a
+                                    830 ;src/player.c:261: if(playerYVelocity>=0){
+    0000032D 78               [ 4]  831 	ld	a, b
+    0000032E 32               [ 8]  832 	ld	(hl-), a
+    0000032F 2B               [ 8]  833 	dec	hl
+    00000330 7E               [ 8]  834 	ld	a, (hl)
+    00000331 CB 7F            [ 8]  835 	bit	7, a
+    00000333 20 34            [12]  836 	jr	NZ, 00160$
+                                    837 ;src/player.c:265: if(IsTileSolid(playerRealX+(PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH-2),playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT)||IsTileSolid(playerRealX-(PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH-2),playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT)){
+    00000335 2B               [ 8]  838 	dec	hl
+    00000336 2B               [ 8]  839 	dec	hl
+    00000337 2B               [ 8]  840 	dec	hl
+    00000338 5E               [ 8]  841 	ld	e, (hl)
+    00000339 23               [ 8]  842 	inc	hl
+    0000033A 56               [ 8]  843 	ld	d, (hl)
+    0000033B 21 18 00         [12]  844 	ld	hl, #0x0018
+    0000033E 19               [ 8]  845 	add	hl, de
+    0000033F 5D               [ 4]  846 	ld	e, l
+    00000340 54               [ 4]  847 	ld	d, h
+    00000341 D5               [16]  848 	push	de
+    00000342 4B               [ 4]  849 	ld	c, e
+    00000343 42               [ 4]  850 	ld	b, d
+    00000344 F8 0D            [12]  851 	ldhl	sp,	#13
+    00000346 5E               [ 8]  852 	ld	e, (hl)
+    00000347 23               [ 8]  853 	inc	hl
+    00000348 56               [ 8]  854 	ld	d, (hl)
+    00000349 CDr00r00         [24]  855 	call	_IsTileSolid
+    0000034C D1               [12]  856 	pop	de
+    0000034D B7               [ 4]  857 	or	a, a
+    0000034E 20 0D            [12]  858 	jr	NZ, 00156$
+    00000350 4B               [ 4]  859 	ld	c, e
+    00000351 42               [ 4]  860 	ld	b, d
+    00000352 F8 0D            [12]  861 	ldhl	sp,	#13
+    00000354 5E               [ 8]  862 	ld	e, (hl)
+    00000355 23               [ 8]  863 	inc	hl
+    00000356 56               [ 8]  864 	ld	d, (hl)
+    00000357 CDr00r00         [24]  865 	call	_IsTileSolid
+    0000035A B7               [ 4]  866 	or	a, a
+    0000035B 28 64            [12]  867 	jr	Z, 00167$
+    0000035D                        868 00156$:
+                                    869 ;src/player.c:266: playerYVelocity=0;
+    0000035D AF               [ 4]  870 	xor	a, a
+    0000035E 21r06r00         [12]  871 	ld	hl, #_playerYVelocity
+    00000361 22               [ 8]  872 	ld	(hl+), a
+    00000362 77               [ 8]  873 	ld	(hl), a
+                                    874 ;src/player.c:267: grounded=TRUE;
+    00000363 F8 06            [12]  875 	ldhl	sp,	#6
+    00000365 36 01            [12]  876 	ld	(hl), #0x01
+    00000367 18 58            [12]  877 	jr	00167$
+                                    878 ;src/player.c:277: while(IsTileSolid(playerRealX+(PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH-2),playerRealY)||IsTileSolid(playerRealX-(PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH-2),playerRealY)){
+    00000369                        879 00160$:
+    00000369 F8 04            [12]  880 	ldhl	sp,	#4
+    0000036B 4E               [ 8]  881 	ld	c, (hl)
+    0000036C 23               [ 8]  882 	inc	hl
+    0000036D 46               [ 8]  883 	ld	b, (hl)
+    0000036E F8 0B            [12]  884 	ldhl	sp,	#11
+    00000370 5E               [ 8]  885 	ld	e, (hl)
+    00000371 23               [ 8]  886 	inc	hl
+    00000372 56               [ 8]  887 	ld	d, (hl)
+    00000373 CDr00r00         [24]  888 	call	_IsTileSolid
+    00000376 B7               [ 4]  889 	or	a, a
+    00000377 20 10            [12]  890 	jr	NZ, 00161$
+    00000379 F8 04            [12]  891 	ldhl	sp,	#4
+    0000037B 4E               [ 8]  892 	ld	c, (hl)
+    0000037C 23               [ 8]  893 	inc	hl
+    0000037D 46               [ 8]  894 	ld	b, (hl)
+    0000037E F8 0D            [12]  895 	ldhl	sp,	#13
+    00000380 5E               [ 8]  896 	ld	e, (hl)
+    00000381 23               [ 8]  897 	inc	hl
+    00000382 56               [ 8]  898 	ld	d, (hl)
+    00000383 CDr00r00         [24]  899 	call	_IsTileSolid
+    00000386 B7               [ 4]  900 	or	a, a
+    00000387 28 38            [12]  901 	jr	Z, 00167$
+    00000389                        902 00161$:
+                                    903 ;src/player.c:278: playerYVelocity=0;
+    00000389 AF               [ 4]  904 	xor	a, a
+    0000038A 21r06r00         [12]  905 	ld	hl, #_playerYVelocity
+    0000038D 22               [ 8]  906 	ld	(hl+), a
+    0000038E 77               [ 8]  907 	ld	(hl), a
+                                    908 ;src/player.c:279: playerY+=16;
+    0000038F 21r02r00         [12]  909 	ld	hl, #_playerY
+    00000392 2A               [ 8]  910 	ld	a, (hl+)
+    00000393 46               [ 8]  911 	ld	b, (hl)
+    00000394 2B               [ 8]  912 	dec	hl
+    00000395 C6 10            [ 8]  913 	add	a, #0x10
+    00000397 4F               [ 4]  914 	ld	c, a
+    00000398 78               [ 4]  915 	ld	a, b
+    00000399 CE 00            [ 8]  916 	adc	a, #0x00
+    0000039B 71               [ 8]  917 	ld	(hl), c
+    0000039C 23               [ 8]  918 	inc	hl
+                                    919 ;src/player.c:280: playerRealY = playerY>>4;
+    0000039D 32               [ 8]  920 	ld	(hl-), a
+    0000039E 7E               [ 8]  921 	ld	a, (hl)
+    0000039F F8 04            [12]  922 	ldhl	sp,	#4
+    000003A1 77               [ 8]  923 	ld	(hl), a
+    000003A2 FAr03r00         [16]  924 	ld	a, (#_playerY + 1)
+    000003A5 F8 05            [12]  925 	ldhl	sp,	#5
+    000003A7 77               [ 8]  926 	ld	(hl), a
+    000003A8 CB 3E            [16]  927 	srl	(hl)
+    000003AA 2B               [ 8]  928 	dec	hl
+    000003AB CB 1E            [16]  929 	rr	(hl)
+    000003AD 23               [ 8]  930 	inc	hl
+    000003AE CB 3E            [16]  931 	srl	(hl)
+    000003B0 2B               [ 8]  932 	dec	hl
+    000003B1 CB 1E            [16]  933 	rr	(hl)
+    000003B3 23               [ 8]  934 	inc	hl
+    000003B4 CB 3E            [16]  935 	srl	(hl)
+    000003B6 2B               [ 8]  936 	dec	hl
+    000003B7 CB 1E            [16]  937 	rr	(hl)
+    000003B9 23               [ 8]  938 	inc	hl
+    000003BA CB 3E            [16]  939 	srl	(hl)
+    000003BC 2B               [ 8]  940 	dec	hl
+    000003BD CB 1E            [16]  941 	rr	(hl)
+    000003BF 18 A8            [12]  942 	jr	00160$
+    000003C1                        943 00167$:
+                                    944 ;src/player.c:286: uint8_t pressedA = (joypadCurrent & J_A && !(joypadPrevious & J_A));
+    000003C1 FAr00r00         [16]  945 	ld	a, (#_joypadCurrent)
+    000003C4 CB 37            [ 8]  946 	swap	a
+    000003C6 E6 01            [ 8]  947 	and	a,#0x01
+    000003C8 28 09            [12]  948 	jr	Z, 00195$
+    000003CA FAr00r00         [16]  949 	ld	a, (#_joypadPrevious)
+    000003CD CB 37            [ 8]  950 	swap	a
+    000003CF E6 01            [ 8]  951 	and	a,#0x01
+    000003D1 28 04            [12]  952 	jr	Z, 00196$
+    000003D3                        953 00195$:
+    000003D3 0E 00            [ 8]  954 	ld	c, #0x00
+    000003D5 18 02            [12]  955 	jr	00197$
+    000003D7                        956 00196$:
+    000003D7 0E 01            [ 8]  957 	ld	c, #0x01
+    000003D9                        958 00197$:
+                                    959 ;src/player.c:287: uint8_t pressedUp = (joypadCurrent & J_UP && !(joypadPrevious & J_UP));
+    000003D9 FAr00r00         [16]  960 	ld	a, (#_joypadCurrent)
+    000003DC 0F               [ 4]  961 	rrca
+    000003DD 0F               [ 4]  962 	rrca
+    000003DE E6 01            [ 8]  963 	and	a,#0x01
+    000003E0 28 09            [12]  964 	jr	Z, 00198$
+    000003E2 FAr00r00         [16]  965 	ld	a, (#_joypadPrevious)
+    000003E5 0F               [ 4]  966 	rrca
+    000003E6 0F               [ 4]  967 	rrca
+    000003E7 E6 01            [ 8]  968 	and	a,#0x01
+    000003E9 28 03            [12]  969 	jr	Z, 00199$
+    000003EB                        970 00198$:
+    000003EB AF               [ 4]  971 	xor	a, a
+    000003EC 18 02            [12]  972 	jr	00200$
+    000003EE                        973 00199$:
+    000003EE 3E 01            [ 8]  974 	ld	a, #0x01
+    000003F0                        975 00200$:
+                                    976 ;src/player.c:288: uint8_t pressedAOrUp = pressedA||pressedUp;
+    000003F0 0C               [ 4]  977 	inc	c
+    000003F1 0D               [ 4]  978 	dec	c
+    000003F2 20 06            [12]  979 	jr	NZ, 00202$
+    000003F4 B7               [ 4]  980 	or	a,a
+    000003F5 20 03            [12]  981 	jr	NZ, 00202$
+    000003F7 4F               [ 4]  982 	ld	c,a
+    000003F8 18 02            [12]  983 	jr	00203$
+    000003FA                        984 00202$:
+    000003FA 0E 01            [ 8]  985 	ld	c, #0x01
+    000003FC                        986 00203$:
+                                    987 ;src/player.c:291: if(grounded && pressedAOrUp){
+    000003FC F8 06            [12]  988 	ldhl	sp,	#6
+    000003FE 7E               [ 8]  989 	ld	a, (hl)
+    000003FF B7               [ 4]  990 	or	a, a
+    00000400 28 11            [12]  991 	jr	Z, 00169$
+    00000402 79               [ 4]  992 	ld	a, c
+    00000403 B7               [ 4]  993 	or	a, a
+    00000404 28 0D            [12]  994 	jr	Z, 00169$
+                                    995 ;src/player.c:292: playerYVelocity=-PLAYER_CHARACTER_JUMP_VELOCITY;
+    00000406 21r06r00         [12]  996 	ld	hl, #_playerYVelocity
+    00000409 3E DA            [ 8]  997 	ld	a, #0xda
+    0000040B 22               [ 8]  998 	ld	(hl+), a
+    0000040C 36 FD            [12]  999 	ld	(hl), #0xfd
+                                   1000 ;src/player.c:293: playerJumpIncrease=PLAYER_CHARACTER_INCREASE_JUMP_TIMER_MAX;
+    0000040E 21r01r00         [12] 1001 	ld	hl, #_playerJumpIncrease
+    00000411 36 14            [12] 1002 	ld	(hl), #0x14
+    00000413                       1003 00169$:
+                                   1004 ;src/player.c:261: if(playerYVelocity>=0){
+    00000413 21r06r00         [12] 1005 	ld	hl, #_playerYVelocity
+    00000416 2A               [ 8] 1006 	ld	a, (hl+)
+    00000417 4F               [ 4] 1007 	ld	c, a
+    00000418 46               [ 8] 1008 	ld	b, (hl)
+                                   1009 ;src/player.c:297: if(!grounded){
+    00000419 F8 06            [12] 1010 	ldhl	sp,	#6
+    0000041B 7E               [ 8] 1011 	ld	a, (hl)
+    0000041C B7               [ 4] 1012 	or	a, a
+    0000041D 20 2C            [12] 1013 	jr	NZ, 00180$
+                                   1014 ;src/player.c:300: if(playerJumpIncrease>0)playerJumpIncrease--;
+    0000041F 21r01r00         [12] 1015 	ld	hl, #_playerJumpIncrease
+    00000422 7E               [ 8] 1016 	ld	a, (hl)
+    00000423 B7               [ 4] 1017 	or	a, a
+    00000424 28 01            [12] 1018 	jr	Z, 00172$
+    00000426 35               [12] 1019 	dec	(hl)
+    00000427                       1020 00172$:
+                                   1021 ;src/player.c:139: int16_t moveSpeed = (joypadCurrent & J_B) ?PLAYER_CHARACTER_RUN_VELOCITY:PLAYER_CHARACTER_WALK_VELOCITY;
+    00000427 FAr00r00         [16] 1022 	ld	a, (#_joypadCurrent)
+                                   1023 ;src/player.c:303: if(!((joypadCurrent & J_A||joypadCurrent & J_UP))||playerJumpIncrease==0){
+    0000042A CB 67            [ 8] 1024 	bit	4, a
+    0000042C 20 04            [12] 1025 	jr	NZ, 00176$
+    0000042E CB 57            [ 8] 1026 	bit	2, a
+    00000430 28 06            [12] 1027 	jr	Z, 00173$
+    00000432                       1028 00176$:
+    00000432 FAr01r00         [16] 1029 	ld	a, (#_playerJumpIncrease)
+    00000435 B7               [ 4] 1030 	or	a, a
+    00000436 20 1D            [12] 1031 	jr	NZ, 00181$
+    00000438                       1032 00173$:
+                                   1033 ;src/player.c:306: playerYVelocity+=GRAVTY;
+    00000438 21 2D 00         [12] 1034 	ld	hl, #0x002d
+    0000043B 09               [ 8] 1035 	add	hl, bc
+    0000043C 4D               [ 4] 1036 	ld	c, l
+    0000043D 7C               [ 4] 1037 	ld	a, h
+    0000043E 21r06r00         [12] 1038 	ld	hl, #_playerYVelocity
+    00000441 71               [ 8] 1039 	ld	(hl), c
+    00000442 23               [ 8] 1040 	inc	hl
+    00000443 77               [ 8] 1041 	ld	(hl), a
+                                   1042 ;src/player.c:309: playerJumpIncrease=0;
+    00000444 21r01r00         [12] 1043 	ld	hl, #_playerJumpIncrease
+    00000447 36 00            [12] 1044 	ld	(hl), #0x00
+    00000449 18 0A            [12] 1045 	jr	00181$
+    0000044B                       1046 00180$:
+                                   1047 ;src/player.c:313: }else if(playerYVelocity>=0){
+    0000044B CB 78            [ 8] 1048 	bit	7, b
+    0000044D 20 06            [12] 1049 	jr	NZ, 00181$
+                                   1050 ;src/player.c:316: playerYVelocity=0;
+    0000044F AF               [ 4] 1051 	xor	a, a
+    00000450 21r06r00         [12] 1052 	ld	hl, #_playerYVelocity
+    00000453 22               [ 8] 1053 	ld	(hl+), a
+    00000454 77               [ 8] 1054 	ld	(hl), a
+    00000455                       1055 00181$:
+                                   1056 ;src/player.c:320: playerX+=playerXVelocity>>4;
+    00000455 FAr04r00         [16] 1057 	ld	a, (#_playerXVelocity)
+    00000458 F8 04            [12] 1058 	ldhl	sp,	#4
+    0000045A 77               [ 8] 1059 	ld	(hl), a
+    0000045B FAr05r00         [16] 1060 	ld	a, (#_playerXVelocity + 1)
+    0000045E F8 05            [12] 1061 	ldhl	sp,	#5
+    00000460 77               [ 8] 1062 	ld	(hl), a
+    00000461 CB 2E            [16] 1063 	sra	(hl)
+    00000463 2B               [ 8] 1064 	dec	hl
+    00000464 CB 1E            [16] 1065 	rr	(hl)
+    00000466 23               [ 8] 1066 	inc	hl
+    00000467 CB 2E            [16] 1067 	sra	(hl)
+    00000469 2B               [ 8] 1068 	dec	hl
+    0000046A CB 1E            [16] 1069 	rr	(hl)
+    0000046C 23               [ 8] 1070 	inc	hl
+    0000046D CB 2E            [16] 1071 	sra	(hl)
+    0000046F 2B               [ 8] 1072 	dec	hl
+    00000470 CB 1E            [16] 1073 	rr	(hl)
+    00000472 23               [ 8] 1074 	inc	hl
+    00000473 CB 2E            [16] 1075 	sra	(hl)
+    00000475 2B               [ 8] 1076 	dec	hl
+    00000476 CB 1E            [16] 1077 	rr	(hl)
+    00000478 2A               [ 8] 1078 	ld	a, (hl+)
+    00000479 4F               [ 4] 1079 	ld	c, a
+    0000047A 46               [ 8] 1080 	ld	b, (hl)
+    0000047B 21r00r00         [12] 1081 	ld	hl, #_playerX
+    0000047E 7E               [ 8] 1082 	ld	a, (hl)
+    0000047F 81               [ 4] 1083 	add	a, c
+    00000480 22               [ 8] 1084 	ld	(hl+), a
+    00000481 7E               [ 8] 1085 	ld	a, (hl)
+    00000482 88               [ 4] 1086 	adc	a, b
+    00000483 77               [ 8] 1087 	ld	(hl), a
+                                   1088 ;src/player.c:321: playerY+=playerYVelocity>>4;
+    00000484 21r06r00         [12] 1089 	ld	hl, #_playerYVelocity
+    00000487 2A               [ 8] 1090 	ld	a, (hl+)
+    00000488 4F               [ 4] 1091 	ld	c, a
+    00000489 46               [ 8] 1092 	ld	b, (hl)
+    0000048A CB 28            [ 8] 1093 	sra	b
+    0000048C CB 19            [ 8] 1094 	rr	c
+    0000048E CB 28            [ 8] 1095 	sra	b
+    00000490 CB 19            [ 8] 1096 	rr	c
+    00000492 CB 28            [ 8] 1097 	sra	b
+    00000494 CB 19            [ 8] 1098 	rr	c
+    00000496 CB 28            [ 8] 1099 	sra	b
+    00000498 CB 19            [ 8] 1100 	rr	c
+    0000049A 21r02r00         [12] 1101 	ld	hl, #_playerY
+    0000049D 7E               [ 8] 1102 	ld	a, (hl)
+    0000049E 81               [ 4] 1103 	add	a, c
+    0000049F 22               [ 8] 1104 	ld	(hl+), a
+    000004A0 7E               [ 8] 1105 	ld	a, (hl)
+    000004A1 88               [ 4] 1106 	adc	a, b
+    000004A2 77               [ 8] 1107 	ld	(hl), a
+                                   1108 ;src/player.c:324: playerRealX = playerX>>4;
+    000004A3 FAr00r00         [16] 1109 	ld	a, (#_playerX)
+    000004A6 F8 07            [12] 1110 	ldhl	sp,	#7
+    000004A8 77               [ 8] 1111 	ld	(hl), a
+    000004A9 FAr01r00         [16] 1112 	ld	a, (#_playerX + 1)
+    000004AC F8 08            [12] 1113 	ldhl	sp,	#8
+    000004AE 77               [ 8] 1114 	ld	(hl), a
+    000004AF CB 3E            [16] 1115 	srl	(hl)
+    000004B1 2B               [ 8] 1116 	dec	hl
+    000004B2 CB 1E            [16] 1117 	rr	(hl)
+    000004B4 23               [ 8] 1118 	inc	hl
+    000004B5 CB 3E            [16] 1119 	srl	(hl)
+    000004B7 2B               [ 8] 1120 	dec	hl
+    000004B8 CB 1E            [16] 1121 	rr	(hl)
+    000004BA 23               [ 8] 1122 	inc	hl
+    000004BB CB 3E            [16] 1123 	srl	(hl)
+    000004BD 2B               [ 8] 1124 	dec	hl
+    000004BE CB 1E            [16] 1125 	rr	(hl)
+    000004C0 23               [ 8] 1126 	inc	hl
+    000004C1 CB 3E            [16] 1127 	srl	(hl)
+    000004C3 2B               [ 8] 1128 	dec	hl
+    000004C4 CB 1E            [16] 1129 	rr	(hl)
+                                   1130 ;src/player.c:325: playerRealY = playerY>>4;
+    000004C6 FAr02r00         [16] 1131 	ld	a, (#_playerY)
+    000004C9 F8 09            [12] 1132 	ldhl	sp,	#9
+    000004CB 77               [ 8] 1133 	ld	(hl), a
+    000004CC FAr03r00         [16] 1134 	ld	a, (#_playerY + 1)
+    000004CF F8 0A            [12] 1135 	ldhl	sp,	#10
+    000004D1 77               [ 8] 1136 	ld	(hl), a
+    000004D2 CB 3E            [16] 1137 	srl	(hl)
+    000004D4 2B               [ 8] 1138 	dec	hl
+    000004D5 CB 1E            [16] 1139 	rr	(hl)
+    000004D7 23               [ 8] 1140 	inc	hl
+    000004D8 CB 3E            [16] 1141 	srl	(hl)
+    000004DA 2B               [ 8] 1142 	dec	hl
+    000004DB CB 1E            [16] 1143 	rr	(hl)
+    000004DD 23               [ 8] 1144 	inc	hl
+    000004DE CB 3E            [16] 1145 	srl	(hl)
+    000004E0 2B               [ 8] 1146 	dec	hl
+    000004E1 CB 1E            [16] 1147 	rr	(hl)
+    000004E3 23               [ 8] 1148 	inc	hl
+    000004E4 CB 3E            [16] 1149 	srl	(hl)
+    000004E6 2B               [ 8] 1150 	dec	hl
+    000004E7 CB 1E            [16] 1151 	rr	(hl)
+                                   1152 ;src/player.c:249: if(IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+2)||IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+PLAYER_CHARACTER_BOUNDING_BOX_HALF_HEIGHT)||IsTileSolid(playerRealX+PLAYER_CHARACTER_BOUNDING_BOX_HALF_WIDTH,playerRealY+(PLAYER_CHARACTER_BOUNDING_BOX_HEIGHT-2)))playerXVelocity=0;
+    000004E9 2B               [ 8] 1153 	dec	hl
+    000004EA 2B               [ 8] 1154 	dec	hl
+    000004EB 7E               [ 8] 1155 	ld	a, (hl)
+    000004EC F8 0B            [12] 1156 	ldhl	sp,	#11
+    000004EE 77               [ 8] 1157 	ld	(hl), a
+    000004EF F8 08            [12] 1158 	ldhl	sp,	#8
+    000004F1 7E               [ 8] 1159 	ld	a, (hl)
+    000004F2 F8 0C            [12] 1160 	ldhl	sp,	#12
+    000004F4 77               [ 8] 1161 	ld	(hl), a
+                                   1162 ;src/player.c:328: if(playerRealX>=(DEVICE_SCREEN_PX_WIDTH>>1)){
+    000004F5 F8 07            [12] 1163 	ldhl	sp,	#7
+    000004F7 2A               [ 8] 1164 	ld	a, (hl+)
+    000004F8 D6 50            [ 8] 1165 	sub	a, #0x50
+    000004FA 7E               [ 8] 1166 	ld	a, (hl)
+    000004FB DE 00            [ 8] 1167 	sbc	a, #0x00
+    000004FD 38 37            [12] 1168 	jr	C, 00185$
+                                   1169 ;src/player.c:329: uint16_t max = currentLevelWidth-DEVICE_SCREEN_PX_WIDTH;
+    000004FF 21r00r00         [12] 1170 	ld	hl, #_currentLevelWidth
+    00000502 2A               [ 8] 1171 	ld	a, (hl+)
+    00000503 46               [ 8] 1172 	ld	b, (hl)
+    00000504 C6 60            [ 8] 1173 	add	a, #0x60
+    00000506 4F               [ 4] 1174 	ld	c, a
+    00000507 78               [ 4] 1175 	ld	a, b
+    00000508 CE FF            [ 8] 1176 	adc	a, #0xff
+    0000050A 47               [ 4] 1177 	ld	b, a
+                                   1178 ;src/player.c:330: camera_x=playerRealX-(DEVICE_SCREEN_PX_WIDTH>>1);
+    0000050B F8 0B            [12] 1179 	ldhl	sp,#11
+    0000050D 2A               [ 8] 1180 	ld	a, (hl+)
+    0000050E 5F               [ 4] 1181 	ld	e, a
+    0000050F 56               [ 8] 1182 	ld	d, (hl)
+    00000510 21 50 00         [12] 1183 	ld	hl, #0x0050
+    00000513 7B               [ 4] 1184 	ld	a, e
+    00000514 95               [ 4] 1185 	sub	a, l
+    00000515 5F               [ 4] 1186 	ld	e, a
+    00000516 7A               [ 4] 1187 	ld	a, d
+    00000517 9C               [ 4] 1188 	sbc	a, h
+    00000518 F8 0E            [12] 1189 	ldhl	sp,	#14
+    0000051A 32               [ 8] 1190 	ld	(hl-), a
+    0000051B 73               [ 8] 1191 	ld	(hl), e
+    0000051C 7E               [ 8] 1192 	ld	a, (hl)
+    0000051D EAr00r00         [16] 1193 	ld	(#_camera_x),a
+    00000520 F8 0E            [12] 1194 	ldhl	sp,	#14
+    00000522 7E               [ 8] 1195 	ld	a, (hl)
+    00000523 21r01r00         [12] 1196 	ld	hl, #_camera_x + 1
+                                   1197 ;src/player.c:333: if(camera_x>max)camera_x=max;
+    00000526 32               [ 8] 1198 	ld	(hl-), a
+    00000527 79               [ 4] 1199 	ld	a, c
+    00000528 96               [ 8] 1200 	sub	a, (hl)
+    00000529 23               [ 8] 1201 	inc	hl
+    0000052A 78               [ 4] 1202 	ld	a, b
+    0000052B 9E               [ 8] 1203 	sbc	a, (hl)
+    0000052C 30 0E            [12] 1204 	jr	NC, 00186$
+    0000052E 21r00r00         [12] 1205 	ld	hl, #_camera_x
+    00000531 79               [ 4] 1206 	ld	a, c
+    00000532 22               [ 8] 1207 	ld	(hl+), a
+    00000533 70               [ 8] 1208 	ld	(hl), b
+    00000534 18 06            [12] 1209 	jr	00186$
+    00000536                       1210 00185$:
+                                   1211 ;src/player.c:335: else camera_x=0;
+    00000536 AF               [ 4] 1212 	xor	a, a
+    00000537 21r00r00         [12] 1213 	ld	hl, #_camera_x
+    0000053A 22               [ 8] 1214 	ld	(hl+), a
+    0000053B 77               [ 8] 1215 	ld	(hl), a
+    0000053C                       1216 00186$:
+                                   1217 ;src/player.c:345: uint8_t frame = grounded ? (turning ? 5 :((playerXVelocity>>4)==0 ? 0 : threeFrameCounterValue)) : (playerYVelocity<0 ? 3 : 4);
+    0000053C F8 06            [12] 1218 	ldhl	sp,	#6
+    0000053E 7E               [ 8] 1219 	ld	a, (hl)
+    0000053F B7               [ 4] 1220 	or	a, a
+    00000540 28 18            [12] 1221 	jr	Z, 00204$
+    00000542 F8 03            [12] 1222 	ldhl	sp,	#3
+    00000544 7E               [ 8] 1223 	ld	a, (hl)
+    00000545 B7               [ 4] 1224 	or	a, a
+    00000546 28 04            [12] 1225 	jr	Z, 00206$
+    00000548 0E 05            [ 8] 1226 	ld	c, #0x05
+    0000054A 18 29            [12] 1227 	jr	00205$
+    0000054C                       1228 00206$:
+    0000054C F8 05            [12] 1229 	ldhl	sp,	#5
+    0000054E 3A               [ 8] 1230 	ld	a, (hl-)
+    0000054F B6               [ 8] 1231 	or	a,(hl)
+    00000550 20 03            [12] 1232 	jr	NZ, 00208$
+    00000552 4F               [ 4] 1233 	ld	c,a
+    00000553 18 20            [12] 1234 	jr	00205$
+    00000555                       1235 00208$:
+    00000555 F8 02            [12] 1236 	ldhl	sp,	#2
+    00000557 4E               [ 8] 1237 	ld	c, (hl)
+    00000558 18 1B            [12] 1238 	jr	00205$
+    0000055A                       1239 00204$:
+    0000055A FAr06r00         [16] 1240 	ld	a, (#_playerYVelocity)
+    0000055D F8 0D            [12] 1241 	ldhl	sp,	#13
+    0000055F 77               [ 8] 1242 	ld	(hl), a
+    00000560 FAr07r00         [16] 1243 	ld	a, (#_playerYVelocity + 1)
+    00000563 F8 0E            [12] 1244 	ldhl	sp,	#14
+    00000565 77               [ 8] 1245 	ld	(hl), a
+    00000566 CB 7E            [12] 1246 	bit	7, (hl)
+    00000568 28 04            [12] 1247 	jr	Z, 00210$
+    0000056A 36 03            [12] 1248 	ld	(hl), #0x03
+    0000056C 18 04            [12] 1249 	jr	00211$
+    0000056E                       1250 00210$:
+    0000056E F8 0E            [12] 1251 	ldhl	sp,	#14
+    00000570 36 04            [12] 1252 	ld	(hl), #0x04
+    00000572                       1253 00211$:
+    00000572 F8 0E            [12] 1254 	ldhl	sp,	#14
+    00000574 4E               [ 8] 1255 	ld	c, (hl)
+    00000575                       1256 00205$:
+                                   1257 ;src/player.c:346: uint8_t directionOffset = facingRight ? 0 : 6;
+    00000575 FAr00r00         [16] 1258 	ld	a, (#_facingRight)
+    00000578 B7               [ 4] 1259 	or	a, a
+    00000579 28 03            [12] 1260 	jr	Z, 00212$
+    0000057B AF               [ 4] 1261 	xor	a, a
+    0000057C 18 02            [12] 1262 	jr	00213$
+    0000057E                       1263 00212$:
+    0000057E 3E 06            [ 8] 1264 	ld	a, #0x06
+    00000580                       1265 00213$:
+                                   1266 ;src/player.c:348: uint8_t spritesUsed = DrawPlayer(playerRealX,playerRealY,frame+directionOffset);
+    00000580 81               [ 4] 1267 	add	a, c
+    00000581 F5               [16] 1268 	push	af
+    00000582 33               [ 8] 1269 	inc	sp
+    00000583 F8 0A            [12] 1270 	ldhl	sp,	#10
+    00000585 4E               [ 8] 1271 	ld	c, (hl)
+    00000586 23               [ 8] 1272 	inc	hl
+    00000587 46               [ 8] 1273 	ld	b, (hl)
+    00000588 F8 08            [12] 1274 	ldhl	sp,	#8
+    0000058A 5E               [ 8] 1275 	ld	e, (hl)
+    0000058B 23               [ 8] 1276 	inc	hl
+    0000058C 56               [ 8] 1277 	ld	d, (hl)
+    0000058D CDr53r00         [24] 1278 	call	_DrawPlayer
+    00000590 4F               [ 4] 1279 	ld	c, a
+                                   1280 ;src/player.c:351: if(playerRealX>currentLevelWidth-32){
+    00000591 21r00r00         [12] 1281 	ld	hl, #_currentLevelWidth
+    00000594 2A               [ 8] 1282 	ld	a, (hl+)
+    00000595 46               [ 8] 1283 	ld	b, (hl)
+    00000596 C6 E0            [ 8] 1284 	add	a, #0xe0
+    00000598 5F               [ 4] 1285 	ld	e, a
+    00000599 78               [ 4] 1286 	ld	a, b
+    0000059A CE FF            [ 8] 1287 	adc	a, #0xff
+    0000059C 47               [ 4] 1288 	ld	b, a
+    0000059D F8 0B            [12] 1289 	ldhl	sp,	#11
+    0000059F 7B               [ 4] 1290 	ld	a, e
+    000005A0 96               [ 8] 1291 	sub	a, (hl)
+    000005A1 23               [ 8] 1292 	inc	hl
+    000005A2 78               [ 4] 1293 	ld	a, b
+    000005A3 9E               [ 8] 1294 	sbc	a, (hl)
+    000005A4 30 04            [12] 1295 	jr	NC, 00188$
+                                   1296 ;src/player.c:352: nextLevel++;
+    000005A6 21r00r00         [12] 1297 	ld	hl, #_nextLevel
+    000005A9 34               [12] 1298 	inc	(hl)
+    000005AA                       1299 00188$:
+                                   1300 ;src/player.c:355: return spritesUsed;
+    000005AA 79               [ 4] 1301 	ld	a, c
+                                   1302 ;src/player.c:356: }
+    000005AB E8 0F            [16] 1303 	add	sp, #15
+    000005AD C9               [16] 1304 	ret
+                                   1305 	.area _CODE_255
+                                   1306 	.area _INITIALIZER
+    00000000                       1307 __xinit__facingRight:
+    00000000 01                    1308 	.db #0x01	; 1
+    00000001                       1309 __xinit__playerJumpIncrease:
+    00000001 00                    1310 	.db #0x00	; 0
+    00000002                       1311 __xinit__threeFrameCounter:
+    00000002 00                    1312 	.db #0x00	; 0
+                                   1313 	.area _CABS (ABS)

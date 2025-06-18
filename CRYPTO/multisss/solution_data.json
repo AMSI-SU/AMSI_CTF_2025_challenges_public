@@ -1,0 +1,21 @@
+{
+  "prime": 11722381329322020341,
+  "threshold": 5,
+  "shared_coefficients": [
+    202841,
+    230501,
+    135893,
+    235591
+  ],
+  "secret1": 8397993022001427531,
+  "secret2": 3573101314885804184,
+  "secret3": 5498521204372071632,
+  "secret4": 5301984866951474580,
+  "flag_plaintext": "AMSI{5282ac9cd529f68bc2df37d5fc780ec03ed45c178223d260ccb2bdac90fb4bb8}",
+  "flag_parts": [
+    "AMSI{5282ac9cd529",
+    "f68bc2df37d5fc780",
+    "ec03ed45c178223d2",
+    "60ccb2bdac90fb4bb8}"
+  ]
+}

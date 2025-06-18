@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dossier ultra confidentiel</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>📂 Dossier confidentiel – Accès STAFF uniquement</h1>
+<p><strong>Tu as accédé à un répertoire archivé non destiné au public.</strong></p>
+<pre>{{ flag }}</pre>
+<p><em>Contenu extrait du répertoire : /bde/data/interdit/blacklist.txt</em></p>
+
+  <a href="/logout">🚪 Quitter discretos</a>
+</body>
+</html>

@@ -1,0 +1,342 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module common
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _hide_sprites_range
+                                     23 	.globl __switch_prg0
+                                     24 	.globl _fill_bkg_rect
+                                     25 	.globl _set_sprite_native_data
+                                     26 	.globl _set_bkg_native_data
+                                     27 	.globl _set_bkg_tiles
+                                     28 	.globl _display_off
+                                     29 	.globl _display_on
+                                     30 	.globl _vsync
+                                     31 	.globl _joypad
+                                     32 	.globl _set_bkg_palette
+                                     33 	.globl _joypadPrevious
+                                     34 	.globl _joypadCurrent
+                                     35 	.globl _ShowCentered_PARM_7
+                                     36 	.globl _ShowCentered_PARM_6
+                                     37 	.globl _ShowCentered_PARM_5
+                                     38 	.globl _ShowCentered_PARM_4
+                                     39 	.globl _ShowCentered_PARM_3
+                                     40 	.globl _setBKGPalettes_PARM_2
+                                     41 	.globl _OAMDMA
+                                     42 	.globl _PPUDATA
+                                     43 	.globl _PPUADDR
+                                     44 	.globl _PPUSCROLL
+                                     45 	.globl _OAMDATA
+                                     46 	.globl _OAMADDR
+                                     47 	.globl _PPUSTATUS
+                                     48 	.globl _PPUMASK
+                                     49 	.globl _PPUCTRL
+                                     50 	.globl _WaitForStartOrA
+                                     51 	.globl _setBKGPalettes
+                                     52 	.globl _ShowCentered
+                                     53 ;--------------------------------------------------------
+                                     54 ; ZP ram data
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _ZP      (PAG)
+    00000000                         57 _ShowCentered_sloc0_1_0:
+    00000000                         58 	.ds 1
+    00000001                         59 _ShowCentered_sloc1_1_0:
+    00000001                         60 	.ds 2
+                                     61 ;--------------------------------------------------------
+                                     62 ; overlayable items in ram
+                                     63 ;--------------------------------------------------------
+                                     64 ;--------------------------------------------------------
+                                     65 ; uninitialized external ram data
+                                     66 ;--------------------------------------------------------
+                                     67 	.area _BSS
+                         00002000    68 _PPUCTRL	=	0x2000
+                         00002001    69 _PPUMASK	=	0x2001
+                         00002002    70 _PPUSTATUS	=	0x2002
+                         00002003    71 _OAMADDR	=	0x2003
+                         00002004    72 _OAMDATA	=	0x2004
+                         00002005    73 _PPUSCROLL	=	0x2005
+                         00002006    74 _PPUADDR	=	0x2006
+                         00002007    75 _PPUDATA	=	0x2007
+                         00004014    76 _OAMDMA	=	0x4014
+    00000000                         77 _setBKGPalettes_PARM_2:
+    00000000                         78 	.ds 2
+    00000002                         79 _ShowCentered_PARM_3:
+    00000002                         80 	.ds 1
+    00000003                         81 _ShowCentered_PARM_4:
+    00000003                         82 	.ds 2
+    00000005                         83 _ShowCentered_PARM_5:
+    00000005                         84 	.ds 1
+    00000006                         85 _ShowCentered_PARM_6:
+    00000006                         86 	.ds 2
+    00000008                         87 _ShowCentered_PARM_7:
+    00000008                         88 	.ds 2
+    0000000A                         89 _ShowCentered_width_10000_123:
+    0000000A                         90 	.ds 1
+    0000000B                         91 _ShowCentered__previous_bank_10001_125:
+    0000000B                         92 	.ds 1
+    0000000C                         93 _ShowCentered_titleRow_10002_126:
+    0000000C                         94 	.ds 1
+    0000000D                         95 _ShowCentered_titleColumn_10002_126:
+    0000000D                         96 	.ds 1
+                                     97 ;--------------------------------------------------------
+                                     98 ; absolute external ram data
+                                     99 ;--------------------------------------------------------
+                                    100 	.area _DABS    (ABS)
+                                    101 ;--------------------------------------------------------
+                                    102 ; initialized external ram data
+                                    103 ;--------------------------------------------------------
+                                    104 	.area _DATA
+    00000000                        105 _joypadCurrent::
+    00000000                        106 	.ds 1
+    00000001                        107 _joypadPrevious::
+    00000001                        108 	.ds 1
+                                    109 ;--------------------------------------------------------
+                                    110 ; global & static initialisations
+                                    111 ;--------------------------------------------------------
+                                    112 	.area _HOME
+                                    113 	.area _GSINIT
+                                    114 	.area _GSFINAL
+                                    115 	.area _GSINIT
+                                    116 ;--------------------------------------------------------
+                                    117 ; Home
+                                    118 ;--------------------------------------------------------
+                                    119 	.area _HOME
+                                    120 ;	src/common.c: 24: void setBKGPalettes(uint8_t count, const palette_color_t *palettes) NONBANKED{
+                                    121 ;	-----------------------------------------
+                                    122 ;	 function setBKGPalettes
+                                    123 ;	-----------------------------------------
+                                    124 ;	Register assignment is optimal.
+                                    125 ;	Stack space usage: 0 bytes.
+    00000000                        126 _setBKGPalettes:
+                                    127 ;	src/common.c: 35: set_bkg_palette(0, count, palettes);
+    00000000 AEr01r00         [ 4]  128 	ldx	(_setBKGPalettes_PARM_2 + 1)
+    00000003 8Er01r00         [ 4]  129 	stx	(_set_bkg_palette_PARM_3 + 1)
+    00000006 AEr00r00         [ 4]  130 	ldx	_setBKGPalettes_PARM_2
+    00000009 8Er00r00         [ 4]  131 	stx	_set_bkg_palette_PARM_3
+    0000000C AA               [ 2]  132 	tax
+    0000000D A9 00            [ 2]  133 	lda	#0x00
+                                    134 ;	src/common.c: 37: }
+    0000000F 4Cr00r00         [ 3]  135 	jmp	_set_bkg_palette
+                                    136 ;	src/common.c: 40: void ShowCentered(uint8_t width,uint8_t height,uint8_t bank, uint8_t* tileData, uint8_t tileCount, uint8_t* mapData, const palette_color_t* palettes) NONBANKED{
+                                    137 ;	-----------------------------------------
+                                    138 ;	 function ShowCentered
+                                    139 ;	-----------------------------------------
+                                    140 ;	Register assignment is optimal.
+                                    141 ;	Stack space usage: 0 bytes.
+    00000012                        142 _ShowCentered:
+    00000012 8Dr0Ar00         [ 4]  143 	sta	_ShowCentered_width_10000_123
+    00000015 8A               [ 2]  144 	txa
+                                    145 ;	src/common.c: 43: DISPLAY_OFF;
+    00000016 48               [ 3]  146 	pha
+    00000017 20r00r00         [ 6]  147 	jsr	_display_off
+    0000001A 68               [ 4]  148 	pla
+                                    149 ;	src/common.c: 45: uint8_t _previous_bank = CURRENT_BANK;
+    0000001B AEr00r00         [ 4]  150 	ldx	__current_bank
+    0000001E 8Er0Br00         [ 4]  151 	stx	_ShowCentered__previous_bank_10001_125
+                                    152 ;	src/common.c: 49: hide_sprites_range(0,MAX_HARDWARE_SPRITES);
+    00000021 48               [ 3]  153 	pha
+    00000022 A9 00            [ 2]  154 	lda	#0x00
+    00000024 A2 40            [ 2]  155 	ldx	#0x40
+    00000026 20r00r00         [ 6]  156 	jsr	_hide_sprites_range
+    00000029 68               [ 4]  157 	pla
+                                    158 ;	../../../include/nes/nes.h: 918: bkg_scroll_x = x, bkg_scroll_y = y;
+    0000002A A2 00            [ 2]  159 	ldx	#0x00
+    0000002C 8Er00r00         [ 4]  160 	stx	_bkg_scroll_x
+    0000002F 8Er00r00         [ 4]  161 	stx	_bkg_scroll_y
+                                    162 ;	src/common.c: 54: uint8_t titleRow = (DEVICE_SCREEN_HEIGHT-(height>>3))/2;
+    00000032 4A               [ 2]  163 	lsr	a
+    00000033 4A               [ 2]  164 	lsr	a
+    00000034 4A               [ 2]  165 	lsr	a
+    00000035 85*00            [ 3]  166 	sta	*_ShowCentered_sloc0_1_0
+    00000037 85*00            [ 3]  167 	sta	*(REGTEMP+0)
+    00000039 A9 1E            [ 2]  168 	lda	#0x1e
+    0000003B 38               [ 2]  169 	sec
+    0000003C E5*00            [ 3]  170 	sbc	*(REGTEMP+0)
+    0000003E 85*01            [ 3]  171 	sta	*_ShowCentered_sloc1_1_0
+    00000040 8A               [ 2]  172 	txa
+    00000041 86*00            [ 3]  173 	stx	*(REGTEMP+0)
+    00000043 E5*00            [ 3]  174 	sbc	*(REGTEMP+0)
+    00000045 85*02            [ 3]  175 	sta	*(_ShowCentered_sloc1_1_0 + 1)
+    00000047 A6*02            [ 3]  176 	ldx	*(_ShowCentered_sloc1_1_0 + 1)
+    00000049 A5*01            [ 3]  177 	lda	*_ShowCentered_sloc1_1_0
+    0000004B 24*02            [ 3]  178 	bit	*(_ShowCentered_sloc1_1_0 + 1)
+    0000004D 10 03            [ 4]  179 	bpl	00110$
+    0000004F A2 00            [ 2]  180 	ldx	#0x00
+    00000051 8A               [ 2]  181 	txa
+    00000052                        182 00110$:
+    00000052 86*00            [ 3]  183 	stx	*(REGTEMP+0)
+    00000054 E0 80            [ 2]  184 	cpx	#0x80
+    00000056 66*00            [ 5]  185 	ror	*(REGTEMP+0)
+    00000058 6A               [ 2]  186 	ror	a
+    00000059 A6*00            [ 3]  187 	ldx	*(REGTEMP+0)
+    0000005B 8Dr0Cr00         [ 4]  188 	sta	_ShowCentered_titleRow_10002_126
+                                    189 ;	src/common.c: 55: uint8_t titleColumn = (DEVICE_SCREEN_WIDTH-(width>>3))/2;
+    0000005E ADr0Ar00         [ 4]  190 	lda	_ShowCentered_width_10000_123
+    00000061 4A               [ 2]  191 	lsr	a
+    00000062 4A               [ 2]  192 	lsr	a
+    00000063 4A               [ 2]  193 	lsr	a
+    00000064 85*01            [ 3]  194 	sta	*_ShowCentered_sloc1_1_0
+    00000066 A2 00            [ 2]  195 	ldx	#0x00
+    00000068 A5*01            [ 3]  196 	lda	*_ShowCentered_sloc1_1_0
+    0000006A 85*00            [ 3]  197 	sta	*(REGTEMP+0)
+    0000006C A9 20            [ 2]  198 	lda	#0x20
+    0000006E 38               [ 2]  199 	sec
+    0000006F E5*00            [ 3]  200 	sbc	*(REGTEMP+0)
+    00000071 48               [ 3]  201 	pha
+    00000072 8A               [ 2]  202 	txa
+    00000073 86*00            [ 3]  203 	stx	*(REGTEMP+0)
+    00000075 E5*00            [ 3]  204 	sbc	*(REGTEMP+0)
+    00000077 AA               [ 2]  205 	tax
+    00000078 68               [ 4]  206 	pla
+    00000079 86*00            [ 3]  207 	stx	*(REGTEMP+0)
+    0000007B E0 80            [ 2]  208 	cpx	#0x80
+    0000007D 66*00            [ 5]  209 	ror	*(REGTEMP+0)
+    0000007F 6A               [ 2]  210 	ror	a
+    00000080 A6*00            [ 3]  211 	ldx	*(REGTEMP+0)
+    00000082 8Dr0Dr00         [ 4]  212 	sta	_ShowCentered_titleColumn_10002_126
+                                    213 ;	src/common.c: 57: SWITCH_ROM(bank);
+    00000085 ADr02r00         [ 4]  214 	lda	_ShowCentered_PARM_3
+    00000088 20r00r00         [ 6]  215 	jsr	__switch_prg0
+                                    216 ;	src/common.c: 59: setBKGPalettes(1,palettes);
+    0000008B ADr09r00         [ 4]  217 	lda	(_ShowCentered_PARM_7 + 1)
+    0000008E 8Dr01r00         [ 4]  218 	sta	(_setBKGPalettes_PARM_2 + 1)
+    00000091 ADr08r00         [ 4]  219 	lda	_ShowCentered_PARM_7
+    00000094 8Dr00r00         [ 4]  220 	sta	_setBKGPalettes_PARM_2
+    00000097 A9 01            [ 2]  221 	lda	#0x01
+    00000099 20r00r00         [ 6]  222 	jsr	_setBKGPalettes
+                                    223 ;	src/common.c: 61: set_native_tile_data(0,tileCount,tileData);
+    0000009C ADr04r00         [ 4]  224 	lda	(_ShowCentered_PARM_4 + 1)
+    0000009F 8Dr01r00         [ 4]  225 	sta	(_set_bkg_native_data_PARM_3 + 1)
+    000000A2 ADr03r00         [ 4]  226 	lda	_ShowCentered_PARM_4
+    000000A5 8Dr00r00         [ 4]  227 	sta	_set_bkg_native_data_PARM_3
+    000000A8 ADr05r00         [ 4]  228 	lda	_ShowCentered_PARM_5
+                                    229 ;	../../../include/nes/nes.h: 1207: set_bkg_native_data(first_tile, nb_tiles, data);
+    000000AB AA               [ 2]  230 	tax
+    000000AC A9 00            [ 2]  231 	lda	#0x00
+    000000AE 20r00r00         [ 6]  232 	jsr	_set_bkg_native_data
+                                    233 ;	src/common.c: 62: fill_bkg_rect(0,0,DEVICE_SCREEN_WIDTH,DEVICE_SCREEN_HEIGHT,0);
+    000000B1 A2 20            [ 2]  234 	ldx	#0x20
+    000000B3 8Er00r00         [ 4]  235 	stx	_fill_bkg_rect_PARM_3
+    000000B6 A2 1E            [ 2]  236 	ldx	#0x1e
+    000000B8 8Er00r00         [ 4]  237 	stx	_fill_bkg_rect_PARM_4
+    000000BB A2 00            [ 2]  238 	ldx	#0x00
+    000000BD 8Er00r00         [ 4]  239 	stx	_fill_bkg_rect_PARM_5
+    000000C0 8A               [ 2]  240 	txa
+    000000C1 20r00r00         [ 6]  241 	jsr	_fill_bkg_rect
+                                    242 ;	src/common.c: 63: set_bkg_tiles(titleColumn,titleRow,width>>3,height>>3,mapData);
+    000000C4 A5*01            [ 3]  243 	lda	*_ShowCentered_sloc1_1_0
+    000000C6 8Dr00r00         [ 4]  244 	sta	_set_bkg_tiles_PARM_3
+    000000C9 A5*00            [ 3]  245 	lda	*_ShowCentered_sloc0_1_0
+    000000CB 8Dr00r00         [ 4]  246 	sta	_set_bkg_tiles_PARM_4
+    000000CE ADr07r00         [ 4]  247 	lda	(_ShowCentered_PARM_6 + 1)
+    000000D1 8Dr01r00         [ 4]  248 	sta	(_set_bkg_tiles_PARM_5 + 1)
+    000000D4 ADr06r00         [ 4]  249 	lda	_ShowCentered_PARM_6
+    000000D7 8Dr00r00         [ 4]  250 	sta	_set_bkg_tiles_PARM_5
+    000000DA ADr0Dr00         [ 4]  251 	lda	_ShowCentered_titleColumn_10002_126
+    000000DD AEr0Cr00         [ 4]  252 	ldx	_ShowCentered_titleRow_10002_126
+    000000E0 20r00r00         [ 6]  253 	jsr	_set_bkg_tiles
+                                    254 ;	src/common.c: 64: SWITCH_ROM(_previous_bank);
+    000000E3 ADr0Br00         [ 4]  255 	lda	_ShowCentered__previous_bank_10001_125
+    000000E6 20r00r00         [ 6]  256 	jsr	__switch_prg0
+                                    257 ;	src/common.c: 66: DISPLAY_ON;
+                                    258 ;	src/common.c: 67: }
+    000000E9 4Cr00r00         [ 3]  259 	jmp	_display_on
+                                    260 	.area _HOME
+                                    261 ;--------------------------------------------------------
+                                    262 ; code
+                                    263 ;--------------------------------------------------------
+                                    264 	.area _CODE
+                                    265 ;------------------------------------------------------------
+                                    266 ;Allocation info for local variables in function 'WaitForStartOrA'
+                                    267 ;------------------------------------------------------------
+                                    268 ;	src/common.c: 9: void WaitForStartOrA(void){
+                                    269 ;	-----------------------------------------
+                                    270 ;	 function WaitForStartOrA
+                                    271 ;	-----------------------------------------
+                                    272 ;	Register assignment is optimal.
+                                    273 ;	Stack space usage: 0 bytes.
+    00000000                        274 _WaitForStartOrA:
+                                    275 ;	src/common.c: 10: while(1){
+    00000000                        276 00108$:
+                                    277 ;	src/common.c: 13: joypadPrevious = joypadCurrent;
+    00000000 ADr00r00         [ 4]  278 	lda	_joypadCurrent
+    00000003 8Dr01r00         [ 4]  279 	sta	_joypadPrevious
+                                    280 ;	src/common.c: 14: joypadCurrent = joypad();
+    00000006 20r00r00         [ 6]  281 	jsr	_joypad
+    00000009 8Dr00r00         [ 4]  282 	sta	_joypadCurrent
+                                    283 ;	src/common.c: 16: if((joypadCurrent & J_START) && !(joypadPrevious & J_START))break;
+    0000000C 29 10            [ 2]  284 	and	#0x10
+    0000000E F0 07            [ 4]  285 	beq	00102$
+    00000010 ADr01r00         [ 4]  286 	lda	_joypadPrevious
+    00000013 29 10            [ 2]  287 	and	#0x10
+    00000015 F0 14            [ 4]  288 	beq	00110$
+    00000017                        289 00102$:
+                                    290 ;	src/common.c: 17: if((joypadCurrent & J_A) && !(joypadPrevious & J_A))break;
+    00000017 ADr00r00         [ 4]  291 	lda	_joypadCurrent
+    0000001A 29 80            [ 2]  292 	and	#0x80
+    0000001C F0 07            [ 4]  293 	beq	00105$
+    0000001E ADr01r00         [ 4]  294 	lda	_joypadPrevious
+    00000021 29 80            [ 2]  295 	and	#0x80
+    00000023 F0 06            [ 4]  296 	beq	00110$
+    00000025                        297 00105$:
+                                    298 ;	src/common.c: 19: vsync();
+    00000025 20r00r00         [ 6]  299 	jsr	_vsync
+    00000028 4Cr00r00         [ 3]  300 	jmp	00108$
+    0000002B                        301 00110$:
+                                    302 ;	src/common.c: 22: }
+    0000002B 60               [ 6]  303 	rts
+                                    304 ;------------------------------------------------------------
+                                    305 ;Allocation info for local variables in function 'setBKGPalettes'
+                                    306 ;------------------------------------------------------------
+                                    307 ;palettes                  Allocated with name '_setBKGPalettes_PARM_2'
+                                    308 ;count                     Allocated to registers a 
+                                    309 ;------------------------------------------------------------
+                                    310 ;------------------------------------------------------------
+                                    311 ;Allocation info for local variables in function 'ShowCentered'
+                                    312 ;------------------------------------------------------------
+                                    313 ;sloc0                     Allocated with name '_ShowCentered_sloc0_1_0'
+                                    314 ;sloc1                     Allocated with name '_ShowCentered_sloc1_1_0'
+                                    315 ;bank                      Allocated with name '_ShowCentered_PARM_3'
+                                    316 ;tileData                  Allocated with name '_ShowCentered_PARM_4'
+                                    317 ;tileCount                 Allocated with name '_ShowCentered_PARM_5'
+                                    318 ;mapData                   Allocated with name '_ShowCentered_PARM_6'
+                                    319 ;palettes                  Allocated with name '_ShowCentered_PARM_7'
+                                    320 ;height                    Allocated to registers a 
+                                    321 ;width                     Allocated with name '_ShowCentered_width_10000_123'
+                                    322 ;_previous_bank            Allocated with name '_ShowCentered__previous_bank_10001_125'
+                                    323 ;__200010006               Allocated to registers 
+                                    324 ;__200010007               Allocated to registers 
+                                    325 ;x                         Allocated to registers 
+                                    326 ;y                         Allocated to registers 
+                                    327 ;titleRow                  Allocated with name '_ShowCentered_titleRow_10002_126'
+                                    328 ;titleColumn               Allocated with name '_ShowCentered_titleColumn_10002_126'
+                                    329 ;__200020009               Allocated to registers 
+                                    330 ;__200020010               Allocated to registers a 
+                                    331 ;__200020011               Allocated to registers 
+                                    332 ;first_tile                Allocated to registers 
+                                    333 ;nb_tiles                  Allocated to registers 
+                                    334 ;data                      Allocated to registers 
+                                    335 ;------------------------------------------------------------
+                                    336 	.area _CODE
+                                    337 	.area _XINIT
+    00000000                        338 __xinit__joypadCurrent:
+    00000000 00                     339 	.db #0x00	; 0
+    00000001                        340 __xinit__joypadPrevious:
+    00000001 00                     341 	.db #0x00	; 0
+                                    342 	.area _CABS    (ABS)

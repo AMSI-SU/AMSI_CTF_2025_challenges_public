@@ -1,0 +1,528 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module level
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _SetupCurrentLevel
+                                     23 	.globl _IsTileSolid
+                                     24 	.globl _setBKGPalettes
+                                     25 	.globl __switch_prg0
+                                     26 	.globl _set_bkg_native_data
+                                     27 	.globl _set_bkg_attribute_xy_nes16x16
+                                     28 	.globl _nextLevel
+                                     29 	.globl _currentLevel
+                                     30 	.globl _IsTileSolid_PARM_2
+                                     31 	.globl _currentAreaBank
+                                     32 	.globl _currentLevelNonSolidTileCount
+                                     33 	.globl _currentLevelMap
+                                     34 	.globl _currentLevelHeightInTiles
+                                     35 	.globl _currentLevelHeight
+                                     36 	.globl _currentLevelWidthInTiles
+                                     37 	.globl _currentLevelWidth
+                                     38 	.globl _OAMDMA
+                                     39 	.globl _PPUDATA
+                                     40 	.globl _PPUADDR
+                                     41 	.globl _PPUSCROLL
+                                     42 	.globl _OAMDATA
+                                     43 	.globl _OAMADDR
+                                     44 	.globl _PPUSTATUS
+                                     45 	.globl _PPUMASK
+                                     46 	.globl _PPUCTRL
+                                     47 ;--------------------------------------------------------
+                                     48 ; ZP ram data
+                                     49 ;--------------------------------------------------------
+                                     50 	.area _ZP      (PAG)
+    00000000                         51 _IsTileSolid_sloc0_1_0:
+    00000000                         52 	.ds 2
+    00000002                         53 _SetupCurrentLevel_sloc0_1_0:
+    00000002                         54 	.ds 1
+    00000003                         55 _SetupCurrentLevel_sloc1_1_0:
+    00000003                         56 	.ds 1
+                                     57 ;--------------------------------------------------------
+                                     58 ; overlayable items in ram
+                                     59 ;--------------------------------------------------------
+                                     60 ;--------------------------------------------------------
+                                     61 ; uninitialized external ram data
+                                     62 ;--------------------------------------------------------
+                                     63 	.area _BSS
+                         00002000    64 _PPUCTRL	=	0x2000
+                         00002001    65 _PPUMASK	=	0x2001
+                         00002002    66 _PPUSTATUS	=	0x2002
+                         00002003    67 _OAMADDR	=	0x2003
+                         00002004    68 _OAMDATA	=	0x2004
+                         00002005    69 _PPUSCROLL	=	0x2005
+                         00002006    70 _PPUADDR	=	0x2006
+                         00002007    71 _PPUDATA	=	0x2007
+                         00004014    72 _OAMDMA	=	0x4014
+    00000000                         73 _currentLevelWidth::
+    00000000                         74 	.ds 2
+    00000002                         75 _currentLevelWidthInTiles::
+    00000002                         76 	.ds 2
+    00000004                         77 _currentLevelHeight::
+    00000004                         78 	.ds 2
+    00000006                         79 _currentLevelHeightInTiles::
+    00000006                         80 	.ds 2
+    00000008                         81 _currentLevelMap::
+    00000008                         82 	.ds 2
+    0000000A                         83 _currentLevelNonSolidTileCount::
+    0000000A                         84 	.ds 1
+    0000000B                         85 _currentAreaBank::
+    0000000B                         86 	.ds 1
+    0000000C                         87 _IsTileSolid_PARM_2:
+    0000000C                         88 	.ds 2
+    0000000E                         89 _IsTileSolid__previous_bank_10000_119:
+    0000000E                         90 	.ds 1
+    0000000F                         91 _IsTileSolid_column_10001_120:
+    0000000F                         92 	.ds 2
+    00000011                         93 _IsTileSolid_row_10001_120:
+    00000011                         94 	.ds 2
+    00000013                         95 _SetupCurrentLevel__previous_bank_10000_124:
+    00000013                         96 	.ds 1
+                                     97 ;--------------------------------------------------------
+                                     98 ; absolute external ram data
+                                     99 ;--------------------------------------------------------
+                                    100 	.area _DABS    (ABS)
+                                    101 ;--------------------------------------------------------
+                                    102 ; initialized external ram data
+                                    103 ;--------------------------------------------------------
+                                    104 	.area _DATA
+    00000000                        105 _currentLevel::
+    00000000                        106 	.ds 1
+    00000001                        107 _nextLevel::
+    00000001                        108 	.ds 1
+                                    109 ;--------------------------------------------------------
+                                    110 ; global & static initialisations
+                                    111 ;--------------------------------------------------------
+                                    112 	.area _HOME
+                                    113 	.area _GSINIT
+                                    114 	.area _GSFINAL
+                                    115 	.area _GSINIT
+                                    116 ;--------------------------------------------------------
+                                    117 ; Home
+                                    118 ;--------------------------------------------------------
+                                    119 	.area _HOME
+                                    120 ;	src/level.c: 40: uint8_t IsTileSolid(uint16_t worldX,uint16_t worldY) NONBANKED{
+                                    121 ;	-----------------------------------------
+                                    122 ;	 function IsTileSolid
+                                    123 ;	-----------------------------------------
+                                    124 ;	Register assignment is optimal.
+                                    125 ;	Stack space usage: 0 bytes.
+    00000000                        126 _IsTileSolid:
+                                    127 ;	src/level.c: 42: uint8_t _previous_bank = CURRENT_BANK;
+    00000000 ACr00r00         [ 4]  128 	ldy	__current_bank
+    00000003 8Cr0Er00         [ 4]  129 	sty	_IsTileSolid__previous_bank_10000_119
+                                    130 ;	src/level.c: 44: SWITCH_ROM(currentAreaBank);
+    00000006 48               [ 3]  131 	pha
+    00000007 85*00            [ 3]  132 	sta	*(REGTEMP+0)
+    00000009 8A               [ 2]  133 	txa
+    0000000A 48               [ 3]  134 	pha
+    0000000B ADr0Br00         [ 4]  135 	lda	_currentAreaBank
+    0000000E 20r00r00         [ 6]  136 	jsr	__switch_prg0
+    00000011 68               [ 4]  137 	pla
+    00000012 AA               [ 2]  138 	tax
+    00000013 68               [ 4]  139 	pla
+                                    140 ;	src/level.c: 47: uint16_t column = worldX>>3;
+    00000014 86*00            [ 3]  141 	stx	*(REGTEMP+0)
+    00000016 46*00            [ 5]  142 	lsr	*(REGTEMP+0)
+    00000018 6A               [ 2]  143 	ror	a
+    00000019 46*00            [ 5]  144 	lsr	*(REGTEMP+0)
+    0000001B 6A               [ 2]  145 	ror	a
+    0000001C 46*00            [ 5]  146 	lsr	*(REGTEMP+0)
+    0000001E 6A               [ 2]  147 	ror	a
+    0000001F A6*00            [ 3]  148 	ldx	*(REGTEMP+0)
+    00000021 8Dr0Fr00         [ 4]  149 	sta	_IsTileSolid_column_10001_120
+    00000024 8Er10r00         [ 4]  150 	stx	(_IsTileSolid_column_10001_120 + 1)
+                                    151 ;	src/level.c: 48: uint16_t row = worldY>>3;
+    00000027 AEr0Dr00         [ 4]  152 	ldx	(_IsTileSolid_PARM_2 + 1)
+    0000002A ADr0Cr00         [ 4]  153 	lda	_IsTileSolid_PARM_2
+    0000002D 86*00            [ 3]  154 	stx	*(REGTEMP+0)
+    0000002F 46*00            [ 5]  155 	lsr	*(REGTEMP+0)
+    00000031 6A               [ 2]  156 	ror	a
+    00000032 46*00            [ 5]  157 	lsr	*(REGTEMP+0)
+    00000034 6A               [ 2]  158 	ror	a
+    00000035 46*00            [ 5]  159 	lsr	*(REGTEMP+0)
+    00000037 6A               [ 2]  160 	ror	a
+    00000038 A6*00            [ 3]  161 	ldx	*(REGTEMP+0)
+    0000003A 8Dr11r00         [ 4]  162 	sta	_IsTileSolid_row_10001_120
+    0000003D 8Er12r00         [ 4]  163 	stx	(_IsTileSolid_row_10001_120 + 1)
+                                    164 ;	src/level.c: 50: uint16_t worldMaxRow = currentLevelHeight>>3;
+    00000040 AEr05r00         [ 4]  165 	ldx	(_currentLevelHeight + 1)
+    00000043 ADr04r00         [ 4]  166 	lda	_currentLevelHeight
+    00000046 86*00            [ 3]  167 	stx	*(REGTEMP+0)
+    00000048 46*00            [ 5]  168 	lsr	*(REGTEMP+0)
+    0000004A 6A               [ 2]  169 	ror	a
+    0000004B 46*00            [ 5]  170 	lsr	*(REGTEMP+0)
+    0000004D 6A               [ 2]  171 	ror	a
+    0000004E 46*00            [ 5]  172 	lsr	*(REGTEMP+0)
+    00000050 6A               [ 2]  173 	ror	a
+    00000051 A6*00            [ 3]  174 	ldx	*(REGTEMP+0)
+                                    175 ;	src/level.c: 55: if(row>worldMaxRow||column>=currentLevelWidthInTiles){
+    00000053 38               [ 2]  176 	sec
+    00000054 EDr11r00         [ 4]  177 	sbc	_IsTileSolid_row_10001_120
+    00000057 8A               [ 2]  178 	txa
+    00000058 EDr12r00         [ 4]  179 	sbc	(_IsTileSolid_row_10001_120 + 1)
+    0000005B 90 0F            [ 4]  180 	bcc	00101$
+    0000005D ADr0Fr00         [ 4]  181 	lda	_IsTileSolid_column_10001_120
+    00000060 38               [ 2]  182 	sec
+    00000061 EDr02r00         [ 4]  183 	sbc	_currentLevelWidthInTiles
+    00000064 ADr10r00         [ 4]  184 	lda	(_IsTileSolid_column_10001_120 + 1)
+    00000067 EDr03r00         [ 4]  185 	sbc	(_currentLevelWidthInTiles + 1)
+    0000006A 90 09            [ 4]  186 	bcc	00102$
+    0000006C                        187 00101$:
+                                    188 ;	src/level.c: 57: SWITCH_ROM(_previous_bank);
+    0000006C ADr0Er00         [ 4]  189 	lda	_IsTileSolid__previous_bank_10000_119
+    0000006F 20r00r00         [ 6]  190 	jsr	__switch_prg0
+                                    191 ;	src/level.c: 58: return TRUE;
+    00000072 A9 01            [ 2]  192 	lda	#0x01
+    00000074 60               [ 6]  193 	rts
+    00000075                        194 00102$:
+                                    195 ;	src/level.c: 61: uint16_t index = column + row* currentLevelWidthInTiles;
+    00000075 ADr03r00         [ 4]  196 	lda	(_currentLevelWidthInTiles + 1)
+    00000078 8Dr01r00         [ 4]  197 	sta	(__mulint_PARM_2 + 1)
+    0000007B ADr02r00         [ 4]  198 	lda	_currentLevelWidthInTiles
+    0000007E 8Dr00r00         [ 4]  199 	sta	__mulint_PARM_2
+    00000081 AEr12r00         [ 4]  200 	ldx	(_IsTileSolid_row_10001_120 + 1)
+    00000084 ADr11r00         [ 4]  201 	lda	_IsTileSolid_row_10001_120
+    00000087 20r00r00         [ 6]  202 	jsr	__mulint
+    0000008A 18               [ 2]  203 	clc
+    0000008B 6Dr0Fr00         [ 4]  204 	adc	_IsTileSolid_column_10001_120
+    0000008E 48               [ 3]  205 	pha
+    0000008F 8A               [ 2]  206 	txa
+    00000090 6Dr10r00         [ 4]  207 	adc	(_IsTileSolid_column_10001_120 + 1)
+    00000093 AA               [ 2]  208 	tax
+    00000094 68               [ 4]  209 	pla
+                                    210 ;	src/level.c: 63: uint8_t tile = currentLevelMap[index];
+    00000095 18               [ 2]  211 	clc
+    00000096 6Dr08r00         [ 4]  212 	adc	_currentLevelMap
+    00000099 85*00            [ 3]  213 	sta	*_IsTileSolid_sloc0_1_0
+    0000009B 8A               [ 2]  214 	txa
+    0000009C 6Dr09r00         [ 4]  215 	adc	(_currentLevelMap + 1)
+    0000009F 85*01            [ 3]  216 	sta	*(_IsTileSolid_sloc0_1_0 + 1)
+    000000A1 A0 00            [ 2]  217 	ldy	#0x00
+    000000A3 B1*00            [ 6]  218 	lda	[*_IsTileSolid_sloc0_1_0],y
+                                    219 ;	src/level.c: 65: SWITCH_ROM(_previous_bank);
+    000000A5 48               [ 3]  220 	pha
+    000000A6 ADr0Er00         [ 4]  221 	lda	_IsTileSolid__previous_bank_10000_119
+    000000A9 20r00r00         [ 6]  222 	jsr	__switch_prg0
+    000000AC 68               [ 4]  223 	pla
+                                    224 ;	src/level.c: 67: return tile<currentLevelNonSolidTileCount;
+    000000AD CDr0Ar00         [ 4]  225 	cmp	_currentLevelNonSolidTileCount
+    000000B0 90 03            [ 4]  226 	bcc	00114$
+    000000B2 A9 00            [ 2]  227 	lda	#0x00
+    000000B4 60               [ 6]  228 	rts
+    000000B5                        229 00114$:
+    000000B5 A9 01            [ 2]  230 	lda	#0x01
+                                    231 ;	src/level.c: 68: }
+    000000B7 60               [ 6]  232 	rts
+                                    233 ;	src/level.c: 72: void SetupCurrentLevel(void) NONBANKED{
+                                    234 ;	-----------------------------------------
+                                    235 ;	 function SetupCurrentLevel
+                                    236 ;	-----------------------------------------
+                                    237 ;	Register assignment is optimal.
+                                    238 ;	Stack space usage: 0 bytes.
+    000000B8                        239 _SetupCurrentLevel:
+                                    240 ;	src/level.c: 74: uint8_t _previous_bank = CURRENT_BANK;
+    000000B8 ADr00r00         [ 4]  241 	lda	__current_bank
+    000000BB 8Dr13r00         [ 4]  242 	sta	_SetupCurrentLevel__previous_bank_10000_124
+                                    243 ;	src/level.c: 76: for(uint8_t i=0;i<DEVICE_SCREEN_BUFFER_WIDTH;i++){
+    000000BE A2 00            [ 2]  244 	ldx	#0x00
+    000000C0 86*02            [ 3]  245 	stx	*_SetupCurrentLevel_sloc0_1_0
+    000000C2                        246 00130$:
+    000000C2 A5*02            [ 3]  247 	lda	*_SetupCurrentLevel_sloc0_1_0
+    000000C4 C9 20            [ 2]  248 	cmp	#0x20
+    000000C6 B0 2D            [ 4]  249 	bcs	00102$
+                                    250 ;	src/level.c: 77: for(uint8_t j=0;j<DEVICE_SCREEN_BUFFER_HEIGHT;j++){
+    000000C8 A5*02            [ 3]  251 	lda	*_SetupCurrentLevel_sloc0_1_0
+    000000CA 4A               [ 2]  252 	lsr	a
+    000000CB 85*03            [ 3]  253 	sta	*_SetupCurrentLevel_sloc1_1_0
+    000000CD A0 00            [ 2]  254 	ldy	#0x00
+    000000CF                        255 00127$:
+    000000CF C0 1E            [ 2]  256 	cpy	#0x1e
+    000000D1 B0 1D            [ 4]  257 	bcs	00131$
+                                    258 ;	../../../include/nes/nes.h: 891: set_bkg_attribute_xy_nes16x16(x >> 1, y >> 1, a);
+    000000D3 98               [ 2]  259 	tya
+    000000D4 4A               [ 2]  260 	lsr	a
+    000000D5 A2 00            [ 2]  261 	ldx	#0x00
+    000000D7 8Er00r00         [ 4]  262 	stx	_set_bkg_attribute_xy_nes16x16_PARM_3
+    000000DA 85*00            [ 3]  263 	sta	*(REGTEMP+0)
+    000000DC 98               [ 2]  264 	tya
+    000000DD 48               [ 3]  265 	pha
+    000000DE A5*00            [ 3]  266 	lda	*(REGTEMP+0)
+    000000E0 AA               [ 2]  267 	tax
+    000000E1 A5*03            [ 3]  268 	lda	*_SetupCurrentLevel_sloc1_1_0
+    000000E3 20r00r00         [ 6]  269 	jsr	_set_bkg_attribute_xy_nes16x16
+    000000E6 85*00            [ 3]  270 	sta	*(REGTEMP+0)
+    000000E8 68               [ 4]  271 	pla
+    000000E9 A8               [ 2]  272 	tay
+    000000EA A5*00            [ 3]  273 	lda	*(REGTEMP+0)
+                                    274 ;	src/level.c: 77: for(uint8_t j=0;j<DEVICE_SCREEN_BUFFER_HEIGHT;j++){
+    000000EC C8               [ 2]  275 	iny
+    000000ED 4CrCFr00         [ 3]  276 	jmp	00127$
+    000000F0                        277 00131$:
+                                    278 ;	src/level.c: 76: for(uint8_t i=0;i<DEVICE_SCREEN_BUFFER_WIDTH;i++){
+    000000F0 E6*02            [ 5]  279 	inc	*_SetupCurrentLevel_sloc0_1_0
+    000000F2 4CrC2r00         [ 3]  280 	jmp	00130$
+    000000F5                        281 00102$:
+                                    282 ;	src/level.c: 85: switch(currentLevel % 3){
+    000000F5 ADr00r00         [ 4]  283 	lda	_currentLevel
+    000000F8 A2 03            [ 2]  284 	ldx	#0x03
+    000000FA 20r00r00         [ 6]  285 	jsr	__moduchar
+    000000FD A2 00            [ 2]  286 	ldx	#0x00
+    000000FF A8               [ 2]  287 	tay
+    00000100 B9r0Dr01         [ 5]  288 	lda	00172$,y
+    00000103 85*00            [ 3]  289 	sta	*(REGTEMP+0)
+    00000105 B9r10r01         [ 5]  290 	lda	00173$,y
+    00000108 85*01            [ 3]  291 	sta	*(REGTEMP+1)
+    0000010A 6Cr00r00         [ 5]  292 	jmp	[REGTEMP+0]
+    0000010D                        293 00172$:
+    0000010Dr13                     294 	.db	00103$
+    0000010Er78                     295 	.db	00104$
+    0000010FrE0                     296 	.db	00105$
+    00000110                        297 00173$:
+    00000110s01                     298 	.db	>00103$
+    00000111s01                     299 	.db	>00104$
+    00000112s01                     300 	.db	>00105$
+                                    301 ;	src/level.c: 86: case 0:
+    00000113                        302 00103$:
+                                    303 ;	src/level.c: 92: SWITCH_ROM(( BANK(World1Tileset)));
+    00000113 A9r00            [ 2]  304 	lda	#___bank_World1Tileset
+    00000115 20r00r00         [ 6]  305 	jsr	__switch_prg0
+                                    306 ;	src/level.c: 94: set_native_tile_data(0,World1Tileset_TILE_COUNT,World1Tileset_tiles);
+    00000118 A9s00            [ 2]  307 	lda	#>_World1Tileset_tiles
+    0000011A 8Dr01r00         [ 4]  308 	sta	(_set_bkg_native_data_PARM_3 + 1)
+    0000011D A9r00            [ 2]  309 	lda	#_World1Tileset_tiles
+    0000011F 8Dr00r00         [ 4]  310 	sta	_set_bkg_native_data_PARM_3
+                                    311 ;	../../../include/nes/nes.h: 1207: set_bkg_native_data(first_tile, nb_tiles, data);
+    00000122 A9 00            [ 2]  312 	lda	#0x00
+    00000124 A2 20            [ 2]  313 	ldx	#0x20
+    00000126 20r00r00         [ 6]  314 	jsr	_set_bkg_native_data
+                                    315 ;	src/level.c: 95: setBKGPalettes(World1Tileset_PALETTE_COUNT,World1Tileset_palettes);
+    00000129 A9s00            [ 2]  316 	lda	#>_World1Tileset_palettes
+    0000012B 8Dr01r00         [ 4]  317 	sta	(_setBKGPalettes_PARM_2 + 1)
+    0000012E A9r00            [ 2]  318 	lda	#_World1Tileset_palettes
+    00000130 8Dr00r00         [ 4]  319 	sta	_setBKGPalettes_PARM_2
+    00000133 A9 04            [ 2]  320 	lda	#0x04
+    00000135 20r00r00         [ 6]  321 	jsr	_setBKGPalettes
+                                    322 ;	src/level.c: 99: SWITCH_ROM((currentAreaBank = BANK(World1Area1)));
+    00000138 A9r00            [ 2]  323 	lda	#___bank_World1Area1
+    0000013A 8Dr0Br00         [ 4]  324 	sta	_currentAreaBank
+    0000013D 20r00r00         [ 6]  325 	jsr	__switch_prg0
+                                    326 ;	src/level.c: 101: currentLevelNonSolidTileCount=WORLD1_SOLID_TILE_COUNT;
+    00000140 A2 11            [ 2]  327 	ldx	#0x11
+    00000142 8Er0Ar00         [ 4]  328 	stx	_currentLevelNonSolidTileCount
+                                    329 ;	src/level.c: 102: currentLevelWidth = World1Area1_WIDTH;
+    00000145 A2 E0            [ 2]  330 	ldx	#0xe0
+    00000147 8Er00r00         [ 4]  331 	stx	_currentLevelWidth
+    0000014A A2 01            [ 2]  332 	ldx	#0x01
+    0000014C 8Er01r00         [ 4]  333 	stx	(_currentLevelWidth + 1)
+                                    334 ;	src/level.c: 103: currentLevelHeight = World1Area1_HEIGHT;
+    0000014F CA               [ 2]  335 	dex
+    00000150 8Er04r00         [ 4]  336 	stx	_currentLevelHeight
+    00000153 E8               [ 2]  337 	inx
+    00000154 8Er05r00         [ 4]  338 	stx	(_currentLevelHeight + 1)
+                                    339 ;	src/level.c: 104: currentLevelWidthInTiles = World1Area1_WIDTH>>3;
+    00000157 A2 3C            [ 2]  340 	ldx	#0x3c
+    00000159 8Er02r00         [ 4]  341 	stx	_currentLevelWidthInTiles
+    0000015C A2 00            [ 2]  342 	ldx	#0x00
+    0000015E 8Er03r00         [ 4]  343 	stx	(_currentLevelWidthInTiles + 1)
+                                    344 ;	src/level.c: 105: currentLevelHeightInTiles = World1Area1_HEIGHT>>3;            
+    00000161 A2 20            [ 2]  345 	ldx	#0x20
+    00000163 8Er06r00         [ 4]  346 	stx	_currentLevelHeightInTiles
+    00000166 A2 00            [ 2]  347 	ldx	#0x00
+    00000168 8Er07r00         [ 4]  348 	stx	(_currentLevelHeightInTiles + 1)
+                                    349 ;	src/level.c: 106: currentLevelMap= World1Area1_map;
+    0000016B A9s00            [ 2]  350 	lda	#>_World1Area1_map
+    0000016D 8Dr09r00         [ 4]  351 	sta	(_currentLevelMap + 1)
+    00000170 A9r00            [ 2]  352 	lda	#_World1Area1_map
+    00000172 8Dr08r00         [ 4]  353 	sta	_currentLevelMap
+                                    354 ;	src/level.c: 109: break;
+    00000175 4Cr42r02         [ 3]  355 	jmp	00106$
+                                    356 ;	src/level.c: 110: case 1:
+    00000178                        357 00104$:
+                                    358 ;	src/level.c: 115: SWITCH_ROM((currentAreaBank = BANK(World1Tileset)));
+    00000178 A9r00            [ 2]  359 	lda	#___bank_World1Tileset
+    0000017A 8Dr0Br00         [ 4]  360 	sta	_currentAreaBank
+    0000017D 20r00r00         [ 6]  361 	jsr	__switch_prg0
+                                    362 ;	src/level.c: 118: set_native_tile_data(0,World1Tileset_TILE_COUNT,World1Tileset_tiles);
+    00000180 A9s00            [ 2]  363 	lda	#>_World1Tileset_tiles
+    00000182 8Dr01r00         [ 4]  364 	sta	(_set_bkg_native_data_PARM_3 + 1)
+    00000185 A9r00            [ 2]  365 	lda	#_World1Tileset_tiles
+    00000187 8Dr00r00         [ 4]  366 	sta	_set_bkg_native_data_PARM_3
+                                    367 ;	../../../include/nes/nes.h: 1207: set_bkg_native_data(first_tile, nb_tiles, data);
+    0000018A A9 00            [ 2]  368 	lda	#0x00
+    0000018C A2 20            [ 2]  369 	ldx	#0x20
+    0000018E 20r00r00         [ 6]  370 	jsr	_set_bkg_native_data
+                                    371 ;	src/level.c: 119: setBKGPalettes(World1Tileset_PALETTE_COUNT,World1Tileset_palettes);
+    00000191 A9s00            [ 2]  372 	lda	#>_World1Tileset_palettes
+    00000193 8Dr01r00         [ 4]  373 	sta	(_setBKGPalettes_PARM_2 + 1)
+    00000196 A9r00            [ 2]  374 	lda	#_World1Tileset_palettes
+    00000198 8Dr00r00         [ 4]  375 	sta	_setBKGPalettes_PARM_2
+    0000019B A9 04            [ 2]  376 	lda	#0x04
+    0000019D 20r00r00         [ 6]  377 	jsr	_setBKGPalettes
+                                    378 ;	src/level.c: 124: SWITCH_ROM((currentAreaBank = BANK(World1Area2)));
+    000001A0 A9r00            [ 2]  379 	lda	#___bank_World1Area2
+    000001A2 8Dr0Br00         [ 4]  380 	sta	_currentAreaBank
+    000001A5 20r00r00         [ 6]  381 	jsr	__switch_prg0
+                                    382 ;	src/level.c: 126: currentLevelNonSolidTileCount=WORLD1_SOLID_TILE_COUNT;
+    000001A8 A2 11            [ 2]  383 	ldx	#0x11
+    000001AA 8Er0Ar00         [ 4]  384 	stx	_currentLevelNonSolidTileCount
+                                    385 ;	src/level.c: 127: currentLevelWidth = World1Area2_WIDTH;
+    000001AD A2 E0            [ 2]  386 	ldx	#0xe0
+    000001AF 8Er00r00         [ 4]  387 	stx	_currentLevelWidth
+    000001B2 A2 01            [ 2]  388 	ldx	#0x01
+    000001B4 8Er01r00         [ 4]  389 	stx	(_currentLevelWidth + 1)
+                                    390 ;	src/level.c: 128: currentLevelHeight = World1Area2_HEIGHT;
+    000001B7 CA               [ 2]  391 	dex
+    000001B8 8Er04r00         [ 4]  392 	stx	_currentLevelHeight
+    000001BB E8               [ 2]  393 	inx
+    000001BC 8Er05r00         [ 4]  394 	stx	(_currentLevelHeight + 1)
+                                    395 ;	src/level.c: 129: currentLevelWidthInTiles = World1Area2_WIDTH>>3;
+    000001BF A2 3C            [ 2]  396 	ldx	#0x3c
+    000001C1 8Er02r00         [ 4]  397 	stx	_currentLevelWidthInTiles
+    000001C4 A2 00            [ 2]  398 	ldx	#0x00
+    000001C6 8Er03r00         [ 4]  399 	stx	(_currentLevelWidthInTiles + 1)
+                                    400 ;	src/level.c: 130: currentLevelHeightInTiles = World1Area2_HEIGHT>>3;
+    000001C9 A2 20            [ 2]  401 	ldx	#0x20
+    000001CB 8Er06r00         [ 4]  402 	stx	_currentLevelHeightInTiles
+    000001CE A2 00            [ 2]  403 	ldx	#0x00
+    000001D0 8Er07r00         [ 4]  404 	stx	(_currentLevelHeightInTiles + 1)
+                                    405 ;	src/level.c: 131: currentLevelMap= World1Area2_map;
+    000001D3 A9s00            [ 2]  406 	lda	#>_World1Area2_map
+    000001D5 8Dr09r00         [ 4]  407 	sta	(_currentLevelMap + 1)
+    000001D8 A9r00            [ 2]  408 	lda	#_World1Area2_map
+    000001DA 8Dr08r00         [ 4]  409 	sta	_currentLevelMap
+                                    410 ;	src/level.c: 133: break;
+    000001DD 4Cr42r02         [ 3]  411 	jmp	00106$
+                                    412 ;	src/level.c: 134: case 2:
+    000001E0                        413 00105$:
+                                    414 ;	src/level.c: 139: SWITCH_ROM((BANK(World2Tileset)));
+    000001E0 A9r00            [ 2]  415 	lda	#___bank_World2Tileset
+    000001E2 20r00r00         [ 6]  416 	jsr	__switch_prg0
+                                    417 ;	src/level.c: 141: set_native_tile_data(0,World2Tileset_TILE_COUNT,World2Tileset_tiles);
+    000001E5 A9s00            [ 2]  418 	lda	#>_World2Tileset_tiles
+    000001E7 8Dr01r00         [ 4]  419 	sta	(_set_bkg_native_data_PARM_3 + 1)
+    000001EA A9r00            [ 2]  420 	lda	#_World2Tileset_tiles
+    000001EC 8Dr00r00         [ 4]  421 	sta	_set_bkg_native_data_PARM_3
+                                    422 ;	../../../include/nes/nes.h: 1207: set_bkg_native_data(first_tile, nb_tiles, data);
+    000001EF A9 00            [ 2]  423 	lda	#0x00
+    000001F1 A2 46            [ 2]  424 	ldx	#0x46
+    000001F3 20r00r00         [ 6]  425 	jsr	_set_bkg_native_data
+                                    426 ;	src/level.c: 142: setBKGPalettes(World2Tileset_PALETTE_COUNT,World2Tileset_palettes);
+    000001F6 A9s00            [ 2]  427 	lda	#>_World2Tileset_palettes
+    000001F8 8Dr01r00         [ 4]  428 	sta	(_setBKGPalettes_PARM_2 + 1)
+    000001FB A9r00            [ 2]  429 	lda	#_World2Tileset_palettes
+    000001FD 8Dr00r00         [ 4]  430 	sta	_setBKGPalettes_PARM_2
+    00000200 A9 04            [ 2]  431 	lda	#0x04
+    00000202 20r00r00         [ 6]  432 	jsr	_setBKGPalettes
+                                    433 ;	src/level.c: 147: SWITCH_ROM((currentAreaBank = BANK(World2Area1)));
+    00000205 A9r00            [ 2]  434 	lda	#___bank_World2Area1
+    00000207 8Dr0Br00         [ 4]  435 	sta	_currentAreaBank
+    0000020A 20r00r00         [ 6]  436 	jsr	__switch_prg0
+                                    437 ;	src/level.c: 149: currentLevelNonSolidTileCount=WORLD2_SOLID_TILE_COUNT;
+    0000020D A2 44            [ 2]  438 	ldx	#0x44
+    0000020F 8Er0Ar00         [ 4]  439 	stx	_currentLevelNonSolidTileCount
+                                    440 ;	src/level.c: 150: currentLevelWidth = World2Area1_WIDTH;
+    00000212 A2 E0            [ 2]  441 	ldx	#0xe0
+    00000214 8Er00r00         [ 4]  442 	stx	_currentLevelWidth
+    00000217 A2 01            [ 2]  443 	ldx	#0x01
+    00000219 8Er01r00         [ 4]  444 	stx	(_currentLevelWidth + 1)
+                                    445 ;	src/level.c: 151: currentLevelHeight = World2Area1_HEIGHT;
+    0000021C CA               [ 2]  446 	dex
+    0000021D 8Er04r00         [ 4]  447 	stx	_currentLevelHeight
+    00000220 E8               [ 2]  448 	inx
+    00000221 8Er05r00         [ 4]  449 	stx	(_currentLevelHeight + 1)
+                                    450 ;	src/level.c: 152: currentLevelWidthInTiles = World2Area1_WIDTH>>3;
+    00000224 A2 3C            [ 2]  451 	ldx	#0x3c
+    00000226 8Er02r00         [ 4]  452 	stx	_currentLevelWidthInTiles
+    00000229 A2 00            [ 2]  453 	ldx	#0x00
+    0000022B 8Er03r00         [ 4]  454 	stx	(_currentLevelWidthInTiles + 1)
+                                    455 ;	src/level.c: 153: currentLevelHeightInTiles = World2Area1_HEIGHT>>3;
+    0000022E A2 20            [ 2]  456 	ldx	#0x20
+    00000230 8Er06r00         [ 4]  457 	stx	_currentLevelHeightInTiles
+    00000233 A2 00            [ 2]  458 	ldx	#0x00
+    00000235 8Er07r00         [ 4]  459 	stx	(_currentLevelHeightInTiles + 1)
+                                    460 ;	src/level.c: 154: currentLevelMap= World2Area1_map;
+    00000238 A9s00            [ 2]  461 	lda	#>_World2Area1_map
+    0000023A 8Dr09r00         [ 4]  462 	sta	(_currentLevelMap + 1)
+    0000023D A9r00            [ 2]  463 	lda	#_World2Area1_map
+    0000023F 8Dr08r00         [ 4]  464 	sta	_currentLevelMap
+                                    465 ;	src/level.c: 157: }
+    00000242                        466 00106$:
+                                    467 ;	src/level.c: 159: SWITCH_ROM(_previous_bank);
+    00000242 ADr13r00         [ 4]  468 	lda	_SetupCurrentLevel__previous_bank_10000_124
+                                    469 ;	src/level.c: 160: }
+    00000245 4Cr00r00         [ 3]  470 	jmp	__switch_prg0
+                                    471 	.area _HOME
+                                    472 ;--------------------------------------------------------
+                                    473 ; code
+                                    474 ;--------------------------------------------------------
+                                    475 	.area _CODE
+                                    476 ;------------------------------------------------------------
+                                    477 ;Allocation info for local variables in function 'IsTileSolid'
+                                    478 ;------------------------------------------------------------
+                                    479 ;sloc0                     Allocated with name '_IsTileSolid_sloc0_1_0'
+                                    480 ;worldY                    Allocated with name '_IsTileSolid_PARM_2'
+                                    481 ;worldX                    Allocated to registers a x 
+                                    482 ;_previous_bank            Allocated with name '_IsTileSolid__previous_bank_10000_119'
+                                    483 ;column                    Allocated with name '_IsTileSolid_column_10001_120'
+                                    484 ;row                       Allocated with name '_IsTileSolid_row_10001_120'
+                                    485 ;worldMaxRow               Allocated to registers a x 
+                                    486 ;index                     Allocated to registers a x 
+                                    487 ;tile                      Allocated to registers a 
+                                    488 ;------------------------------------------------------------
+                                    489 ;------------------------------------------------------------
+                                    490 ;Allocation info for local variables in function 'SetupCurrentLevel'
+                                    491 ;------------------------------------------------------------
+                                    492 ;sloc0                     Allocated with name '_SetupCurrentLevel_sloc0_1_0'
+                                    493 ;sloc1                     Allocated with name '_SetupCurrentLevel_sloc1_1_0'
+                                    494 ;_previous_bank            Allocated with name '_SetupCurrentLevel__previous_bank_10000_124'
+                                    495 ;i                         Allocated to registers 
+                                    496 ;j                         Allocated to registers 
+                                    497 ;__600000006               Allocated to registers 
+                                    498 ;__600000007               Allocated to registers 
+                                    499 ;__600000008               Allocated to registers 
+                                    500 ;x                         Allocated to registers 
+                                    501 ;y                         Allocated to registers 
+                                    502 ;a                         Allocated to registers 
+                                    503 ;__300000010               Allocated to registers 
+                                    504 ;__300000011               Allocated to registers 
+                                    505 ;__300000012               Allocated to registers 
+                                    506 ;first_tile                Allocated to registers 
+                                    507 ;nb_tiles                  Allocated to registers 
+                                    508 ;data                      Allocated to registers 
+                                    509 ;__300000014               Allocated to registers 
+                                    510 ;__300000015               Allocated to registers 
+                                    511 ;__300000016               Allocated to registers 
+                                    512 ;first_tile                Allocated to registers 
+                                    513 ;nb_tiles                  Allocated to registers 
+                                    514 ;data                      Allocated to registers 
+                                    515 ;__300000018               Allocated to registers 
+                                    516 ;__300000019               Allocated to registers 
+                                    517 ;__300000020               Allocated to registers 
+                                    518 ;first_tile                Allocated to registers 
+                                    519 ;nb_tiles                  Allocated to registers 
+                                    520 ;data                      Allocated to registers 
+                                    521 ;------------------------------------------------------------
+                                    522 	.area _CODE
+                                    523 	.area _XINIT
+    00000000                        524 __xinit__currentLevel:
+    00000000 FF                     525 	.db #0xff	; 255
+    00000001                        526 __xinit__nextLevel:
+    00000001 00                     527 	.db #0x00	; 0
+                                    528 	.area _CABS    (ABS)

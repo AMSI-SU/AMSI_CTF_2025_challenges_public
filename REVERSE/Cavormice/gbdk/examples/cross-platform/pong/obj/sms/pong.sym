@@ -1,0 +1,75 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180 / ZX-Next / eZ80 / R800)                          Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _AUDIOCTRL                                                  =   000000F2 
+    _FMADDRESS                                                  =   000000F0 
+    _FMDATA                                                     =   000000F1 
+    _GG_EXT_7BIT                                                =   00000001 
+    _GG_EXT_CTL                                                 =   00000002 
+    _GG_SIO_CTL                                                 =   00000005 
+    _GG_SIO_RECV                                                =   00000004 
+    _GG_SIO_SEND                                                =   00000003 
+    _GG_SOUND_PAN                                               =   00000006 
+    _GG_STATE                                                   =   00000000 
+    _GLASSES_3D                                                 =   0000FFF8 
+    _HCOUNTER                                                   =   0000007F 
+  0 _HUD                                                            00000323 GR
+    _JOY_CTL                                                    =   0000003F 
+    _JOY_PORT1                                                  =   000000DC 
+    _JOY_PORT2                                                  =   000000DD 
+    _MAP_FRAME0                                                 =   0000FFFD 
+    _MAP_FRAME1                                                 =   0000FFFE 
+    _MAP_FRAME2                                                 =   0000FFFF 
+    _MEMORY_CTL                                                 =   0000003E 
+    _PSG                                                        =   0000007F 
+    _RAM_CONTROL                                                =   0000FFFC 
+    _VCOUNTER                                                   =   0000007E 
+    _VDP_CMD                                                    =   000000BF 
+    _VDP_DATA                                                   =   000000BE 
+    _VDP_STATUS                                                 =   000000BF 
+  0 ___str_0                                                        00000334 R
+    __current_2bpp_palette                                          ******** GX
+    __sprites_OFF                                                   ******** GX
+  7 __xinit__sprite_data                                            00000000 R
+  1 _ballX                                                          0000000B GR
+  1 _ballY                                                          0000000C GR
+    _gotoxy                                                         ******** GX
+  0 _init_pad                                                       00000000 GR
+    _joypad_ex                                                      ******** GX
+    _joypad_init                                                    ******** GX
+  1 _joypads                                                        00000000 GR
+  0 _main                                                           00000030 GR
+  1 _player1                                                        00000005 GR
+  1 _player1_score                                                  00000007 GR
+  1 _player2                                                        00000006 GR
+  1 _player2_score                                                  00000009 GR
+    _printf                                                         ******** GX
+    _set_tile_2bpp_data                                             ******** GX
+    _shadow_OAM                                                     ******** GX
+  1 _spd_ballX                                                      0000000D GR
+  1 _spd_ballY                                                      0000000E GR
+  2 _sprite_data                                                    00000000 GR
+    _vsync                                                          ******** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180 / ZX-Next / eZ80 / R800)                          Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      35D   flags    0
+   1 _DATA                                      size        F   flags    0
+   2 _INITIALIZED                               size       40   flags    0
+   3 _DABS                                      size        0   flags    8
+   4 _HOME                                      size        0   flags    0
+   5 _GSINIT                                    size        0   flags    0
+   6 _GSFINAL                                   size        0   flags    0
+   7 _INITIALIZER                               size       40   flags    0
+   8 _CABS                                      size        0   flags    8
+

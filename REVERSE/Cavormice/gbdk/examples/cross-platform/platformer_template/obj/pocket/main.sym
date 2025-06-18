@@ -1,0 +1,59 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _BGP_REG                                                        ******** GX
+    _LCDC_REG                                                       ******** GX
+    _NextLevel_map                                                  ******** GX
+    _NextLevel_palettes                                             ******** GX
+    _NextLevel_tiles                                                ******** GX
+    _OBP0_REG                                                       ******** GX
+    _OBP1_REG                                                       ******** GX
+    _SetCurrentLevelSubmap                                          ******** GX
+    _SetupCurrentLevel                                              ******** GX
+    _SetupPlayer                                                    ******** GX
+    _ShowCentered                                                   ******** GX
+    _TitleScreen_map                                                ******** GX
+    _TitleScreen_palettes                                           ******** GX
+    _TitleScreen_tiles                                              ******** GX
+    _UpdateCamera                                                   ******** GX
+    _UpdatePlayer                                                   ******** GX
+    _WaitForStartOrA                                                ******** GX
+    ___bank_NextLevel                                               ******** GX
+    ___bank_TitleScreen                                             ******** GX
+    ___sdcc_bcall_ehl                                               ******** GX
+    _camera_x                                                       ******** GX
+    _currentLevel                                                   ******** GX
+    _display_off                                                    ******** GX
+    _hide_sprites_range                                             ******** GX
+    _joypad                                                         ******** GX
+    _joypadCurrent                                                  ******** GX
+    _joypadPrevious                                                 ******** GX
+  0 _main                                                           00000000 GR
+    _nextLevel                                                      ******** GX
+    _vsync                                                          ******** GX
+    b_SetupPlayer                                                   ******** GX
+    b_UpdateCamera                                                  ******** GX
+    b_UpdatePlayer                                                  ******** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size       CF   flags    0
+   1 _DATA                                      size        0   flags    0
+   2 _INITIALIZED                               size        0   flags    0
+   3 _DABS                                      size        0   flags    8
+   4 _HOME                                      size        0   flags    0
+   5 _GSINIT                                    size        0   flags    0
+   6 _GSFINAL                                   size        0   flags    0
+   7 _INITIALIZER                               size        0   flags    0
+   8 _CABS                                      size        0   flags    8
+

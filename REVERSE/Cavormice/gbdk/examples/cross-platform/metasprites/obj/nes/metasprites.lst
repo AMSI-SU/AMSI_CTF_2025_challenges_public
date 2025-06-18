@@ -1,0 +1,1644 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module metasprites
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _green_pal
+                                     23 	.globl _cyan_pal
+                                     24 	.globl _pink_pal
+                                     25 	.globl _gray_pal
+                                     26 	.globl _reverse_bits
+                                     27 	.globl _pattern
+                                     28 	.globl _main
+                                     29 	.globl _load_and_duplicate_sprite_tile_data
+                                     30 	.globl _get_tile_offset
+                                     31 	.globl _set_tile
+                                     32 	.globl _hide_sprites_range
+                                     33 	.globl _fill_bkg_rect
+                                     34 	.globl _set_sprite_data
+                                     35 	.globl _set_bkg_data
+                                     36 	.globl _display_off
+                                     37 	.globl _display_on
+                                     38 	.globl _vsync
+                                     39 	.globl _joypad
+                                     40 	.globl _set_sprite_palette
+                                     41 	.globl _old_joyp
+                                     42 	.globl _joyp
+                                     43 	.globl _set_tile_PARM_4
+                                     44 	.globl _set_tile_PARM_3
+                                     45 	.globl _set_tile_PARM_2
+                                     46 	.globl _num_tiles
+                                     47 	.globl _flipped_data
+                                     48 	.globl _rot
+                                     49 	.globl _idx
+                                     50 	.globl _PosF
+                                     51 	.globl _SpdY
+                                     52 	.globl _SpdX
+                                     53 	.globl _PosY
+                                     54 	.globl _PosX
+                                     55 	.globl _OAMDMA
+                                     56 	.globl _PPUDATA
+                                     57 	.globl _PPUADDR
+                                     58 	.globl _PPUSCROLL
+                                     59 	.globl _OAMDATA
+                                     60 	.globl _OAMADDR
+                                     61 	.globl _PPUSTATUS
+                                     62 	.globl _PPUMASK
+                                     63 	.globl _PPUCTRL
+                                     64 ;--------------------------------------------------------
+                                     65 ; ZP ram data
+                                     66 ;--------------------------------------------------------
+                                     67 	.area _ZP      (PAG)
+    00000000                         68 _load_and_duplicate_sprite_tile_data_sloc0_1_0:
+    00000000                         69 	.ds 2
+    00000002                         70 _load_and_duplicate_sprite_tile_data_sloc1_1_0:
+    00000002                         71 	.ds 1
+    00000003                         72 _main_sloc0_1_0:
+    00000003                         73 	.ds 1
+    00000004                         74 _main_sloc1_1_0:
+    00000004                         75 	.ds 2
+    00000006                         76 _main_sloc2_1_0:
+    00000006                         77 	.ds 2
+                                     78 ;--------------------------------------------------------
+                                     79 ; overlayable items in ram
+                                     80 ;--------------------------------------------------------
+                                     81 	.area	OSEG    (PAG, OVR)
+    00000000                         82 _set_tile_sloc0_1_0:
+    00000000                         83 	.ds 2
+    00000002                         84 _set_tile_sloc1_1_0:
+    00000002                         85 	.ds 2
+    00000004                         86 _set_tile_sloc2_1_0:
+    00000004                         87 	.ds 2
+                                     88 ;--------------------------------------------------------
+                                     89 ; uninitialized external ram data
+                                     90 ;--------------------------------------------------------
+                                     91 	.area _BSS
+                         00002000    92 _PPUCTRL	=	0x2000
+                         00002001    93 _PPUMASK	=	0x2001
+                         00002002    94 _PPUSTATUS	=	0x2002
+                         00002003    95 _OAMADDR	=	0x2003
+                         00002004    96 _OAMDATA	=	0x2004
+                         00002005    97 _PPUSCROLL	=	0x2005
+                         00002006    98 _PPUADDR	=	0x2006
+                         00002007    99 _PPUDATA	=	0x2007
+                         00004014   100 _OAMDMA	=	0x4014
+    00000000                        101 _PosX::
+    00000000                        102 	.ds 2
+    00000002                        103 _PosY::
+    00000002                        104 	.ds 2
+    00000004                        105 _SpdX::
+    00000004                        106 	.ds 2
+    00000006                        107 _SpdY::
+    00000006                        108 	.ds 2
+    00000008                        109 _PosF::
+    00000008                        110 	.ds 1
+    00000009                        111 _idx::
+    00000009                        112 	.ds 1
+    0000000A                        113 _rot::
+    0000000A                        114 	.ds 1
+    0000000B                        115 _flipped_data::
+    0000000B                        116 	.ds 16
+    0000001B                        117 _num_tiles::
+    0000001B                        118 	.ds 2
+    0000001D                        119 _set_tile_PARM_2:
+    0000001D                        120 	.ds 2
+    0000001F                        121 _set_tile_PARM_3:
+    0000001F                        122 	.ds 1
+    00000020                        123 _set_tile_PARM_4:
+    00000020                        124 	.ds 1
+    00000021                        125 _set_tile_tile_idx_10000_115:
+    00000021                        126 	.ds 1
+    00000022                        127 _set_tile_y_30000_118:
+    00000022                        128 	.ds 2
+    00000024                        129 _main___400010009_40001_141:
+    00000024                        130 	.ds 1
+    00000025                        131 _main_x_50001_142:
+    00000025                        132 	.ds 2
+    00000027                        133 _main_y_50001_142:
+    00000027                        134 	.ds 2
+    00000029                        135 _main___400010017_40001_144:
+    00000029                        136 	.ds 1
+    0000002A                        137 _main___400010019_40001_144:
+    0000002A                        138 	.ds 2
+    0000002C                        139 _main_y_50001_145:
+    0000002C                        140 	.ds 2
+    0000002E                        141 _main___400010025_40001_147:
+    0000002E                        142 	.ds 1
+    0000002F                        143 _main___400010027_40001_147:
+    0000002F                        144 	.ds 2
+    00000031                        145 _main___400010028_40001_147:
+    00000031                        146 	.ds 2
+    00000033                        147 _main___400010033_40001_150:
+    00000033                        148 	.ds 1
+    00000034                        149 _main___400010035_40001_150:
+    00000034                        150 	.ds 2
+    00000036                        151 _main___400010036_40001_150:
+    00000036                        152 	.ds 2
+                                    153 ;--------------------------------------------------------
+                                    154 ; absolute external ram data
+                                    155 ;--------------------------------------------------------
+                                    156 	.area _DABS    (ABS)
+                                    157 ;--------------------------------------------------------
+                                    158 ; initialized external ram data
+                                    159 ;--------------------------------------------------------
+                                    160 	.area _DATA
+    00000000                        161 _joyp::
+    00000000                        162 	.ds 1
+    00000001                        163 _old_joyp::
+    00000001                        164 	.ds 1
+                                    165 ;--------------------------------------------------------
+                                    166 ; global & static initialisations
+                                    167 ;--------------------------------------------------------
+                                    168 	.area _HOME
+                                    169 	.area _GSINIT
+                                    170 	.area _GSFINAL
+                                    171 	.area _GSINIT
+                                    172 ;--------------------------------------------------------
+                                    173 ; Home
+                                    174 ;--------------------------------------------------------
+                                    175 	.area _HOME
+                                    176 	.area _HOME
+                                    177 ;--------------------------------------------------------
+                                    178 ; code
+                                    179 ;--------------------------------------------------------
+                                    180 	.area _CODE
+                                    181 ;------------------------------------------------------------
+                                    182 ;Allocation info for local variables in function 'set_tile'
+                                    183 ;------------------------------------------------------------
+                                    184 ;data                      Allocated with name '_set_tile_PARM_2'
+                                    185 ;flip_x                    Allocated with name '_set_tile_PARM_3'
+                                    186 ;flip_y                    Allocated with name '_set_tile_PARM_4'
+                                    187 ;tile_idx                  Allocated with name '_set_tile_tile_idx_10000_115'
+                                    188 ;i                         Allocated to registers 
+                                    189 ;y                         Allocated with name '_set_tile_y_30000_118'
+                                    190 ;sloc0                     Allocated with name '_set_tile_sloc0_1_0'
+                                    191 ;sloc1                     Allocated with name '_set_tile_sloc1_1_0'
+                                    192 ;sloc2                     Allocated with name '_set_tile_sloc2_1_0'
+                                    193 ;------------------------------------------------------------
+                                    194 ;	src/metasprites.c: 94: void set_tile(uint8_t tile_idx, uint8_t* data, uint8_t flip_x, uint8_t flip_y)
+                                    195 ;	-----------------------------------------
+                                    196 ;	 function set_tile
+                                    197 ;	-----------------------------------------
+                                    198 ;	Register assignment is optimal.
+                                    199 ;	Stack space usage: 0 bytes.
+    00000000                        200 _set_tile:
+    00000000 8Dr21r00         [ 4]  201 	sta	_set_tile_tile_idx_10000_115
+                                    202 ;	src/metasprites.c: 97: for(i = 0; i < TILE_HEIGHT; i++)
+    00000003 A2 00            [ 2]  203 	ldx	#0x00
+    00000005 86*00            [ 3]  204 	stx	*_set_tile_sloc0_1_0
+    00000007 86*01            [ 3]  205 	stx	*(_set_tile_sloc0_1_0 + 1)
+    00000009                        206 00102$:
+                                    207 ;	src/metasprites.c: 99: size_t y = flip_y ? (TILE_HEIGHT-1-i) : i; 
+    00000009 ADr20r00         [ 4]  208 	lda	_set_tile_PARM_4
+    0000000C F0 0F            [ 4]  209 	beq	00106$
+    0000000E A9 07            [ 2]  210 	lda	#0x07
+    00000010 38               [ 2]  211 	sec
+    00000011 E5*00            [ 3]  212 	sbc	*_set_tile_sloc0_1_0
+    00000013 48               [ 3]  213 	pha
+    00000014 A9 00            [ 2]  214 	lda	#0x00
+    00000016 E5*01            [ 3]  215 	sbc	*(_set_tile_sloc0_1_0 + 1)
+    00000018 AA               [ 2]  216 	tax
+    00000019 68               [ 4]  217 	pla
+    0000001A 4Cr21r00         [ 3]  218 	jmp	00107$
+    0000001D                        219 00106$:
+    0000001D A6*01            [ 3]  220 	ldx	*(_set_tile_sloc0_1_0 + 1)
+    0000001F A5*00            [ 3]  221 	lda	*_set_tile_sloc0_1_0
+    00000021                        222 00107$:
+    00000021 8Dr22r00         [ 4]  223 	sta	_set_tile_y_30000_118
+    00000024 8Er23r00         [ 4]  224 	stx	(_set_tile_y_30000_118 + 1)
+                                    225 ;	src/metasprites.c: 100: flipped_data[2*i] = flip_x ? reverse_bits[data[2*y]] : data[2*y];
+    00000027 A5*00            [ 3]  226 	lda	*_set_tile_sloc0_1_0
+    00000029 0A               [ 2]  227 	asl	a
+    0000002A A2 00            [ 2]  228 	ldx	#0x00
+    0000002C C9 00            [ 2]  229 	cmp	#0x00
+    0000002E 10 01            [ 4]  230 	bpl	00145$
+    00000030 CA               [ 2]  231 	dex
+    00000031                        232 00145$:
+    00000031 85*02            [ 3]  233 	sta	*_set_tile_sloc1_1_0
+    00000033 86*03            [ 3]  234 	stx	*(_set_tile_sloc1_1_0 + 1)
+    00000035 ADr1Fr00         [ 4]  235 	lda	_set_tile_PARM_3
+    00000038 F0 26            [ 4]  236 	beq	00108$
+    0000003A AEr23r00         [ 4]  237 	ldx	(_set_tile_y_30000_118 + 1)
+    0000003D ADr22r00         [ 4]  238 	lda	_set_tile_y_30000_118
+    00000040 86*00            [ 3]  239 	stx	*(REGTEMP+0)
+    00000042 0A               [ 2]  240 	asl	a
+    00000043 26*00            [ 5]  241 	rol	*(REGTEMP+0)
+    00000045 A6*00            [ 3]  242 	ldx	*(REGTEMP+0)
+    00000047 18               [ 2]  243 	clc
+    00000048 6Dr1Dr00         [ 4]  244 	adc	_set_tile_PARM_2
+    0000004B 85*04            [ 3]  245 	sta	*_set_tile_sloc2_1_0
+    0000004D 8A               [ 2]  246 	txa
+    0000004E 6Dr1Er00         [ 4]  247 	adc	(_set_tile_PARM_2 + 1)
+    00000051 85*05            [ 3]  248 	sta	*(_set_tile_sloc2_1_0 + 1)
+    00000053 A0 00            [ 2]  249 	ldy	#0x00
+    00000055 B1*04            [ 6]  250 	lda	[*_set_tile_sloc2_1_0],y
+    00000057 A2 00            [ 2]  251 	ldx	#0x00
+    00000059 A8               [ 2]  252 	tay
+    0000005A B9r6Cr07         [ 5]  253 	lda	(_reverse_bits+0+0x0000),y
+    0000005D 4Cr7Dr00         [ 3]  254 	jmp	00109$
+    00000060                        255 00108$:
+    00000060 AEr23r00         [ 4]  256 	ldx	(_set_tile_y_30000_118 + 1)
+    00000063 ADr22r00         [ 4]  257 	lda	_set_tile_y_30000_118
+    00000066 86*00            [ 3]  258 	stx	*(REGTEMP+0)
+    00000068 0A               [ 2]  259 	asl	a
+    00000069 26*00            [ 5]  260 	rol	*(REGTEMP+0)
+    0000006B A6*00            [ 3]  261 	ldx	*(REGTEMP+0)
+    0000006D 18               [ 2]  262 	clc
+    0000006E 6Dr1Dr00         [ 4]  263 	adc	_set_tile_PARM_2
+    00000071 85*04            [ 3]  264 	sta	*_set_tile_sloc2_1_0
+    00000073 8A               [ 2]  265 	txa
+    00000074 6Dr1Er00         [ 4]  266 	adc	(_set_tile_PARM_2 + 1)
+    00000077 85*05            [ 3]  267 	sta	*(_set_tile_sloc2_1_0 + 1)
+    00000079 A0 00            [ 2]  268 	ldy	#0x00
+    0000007B B1*04            [ 6]  269 	lda	[*_set_tile_sloc2_1_0],y
+    0000007D                        270 00109$:
+    0000007D 85*00            [ 3]  271 	sta	*(REGTEMP+0)
+    0000007F 18               [ 2]  272 	clc
+    00000080 A5*02            [ 3]  273 	lda	*_set_tile_sloc1_1_0
+    00000082 69r0B            [ 2]  274 	adc	#<(_flipped_data+0)
+    00000084 85*00            [ 3]  275 	sta	*(DPTR+0)
+    00000086 A5*03            [ 3]  276 	lda	*(_set_tile_sloc1_1_0 + 1)
+    00000088 69s00            [ 2]  277 	adc	#>(_flipped_data+0)
+    0000008A 85*01            [ 3]  278 	sta	*(DPTR+1)
+    0000008C A5*00            [ 3]  279 	lda	*(REGTEMP+0)
+    0000008E A0 00            [ 2]  280 	ldy	#0x00
+    00000090 91*00            [ 6]  281 	sta	[DPTR],y
+                                    282 ;	src/metasprites.c: 101: flipped_data[2*i+1] = flip_x ? reverse_bits[data[2*y+1]] : data[2*y+1];
+    00000092 A5*00            [ 3]  283 	lda	*_set_tile_sloc0_1_0
+    00000094 0A               [ 2]  284 	asl	a
+    00000095 A8               [ 2]  285 	tay
+    00000096 C8               [ 2]  286 	iny
+    00000097 A2 00            [ 2]  287 	ldx	#0x00
+    00000099 98               [ 2]  288 	tya
+    0000009A 10 01            [ 4]  289 	bpl	00148$
+    0000009C CA               [ 2]  290 	dex
+    0000009D                        291 00148$:
+    0000009D 85*04            [ 3]  292 	sta	*_set_tile_sloc2_1_0
+    0000009F 86*05            [ 3]  293 	stx	*(_set_tile_sloc2_1_0 + 1)
+    000000A1 ADr1Fr00         [ 4]  294 	lda	_set_tile_PARM_3
+    000000A4 F0 2C            [ 4]  295 	beq	00110$
+    000000A6 AEr23r00         [ 4]  296 	ldx	(_set_tile_y_30000_118 + 1)
+    000000A9 ADr22r00         [ 4]  297 	lda	_set_tile_y_30000_118
+    000000AC 86*00            [ 3]  298 	stx	*(REGTEMP+0)
+    000000AE 0A               [ 2]  299 	asl	a
+    000000AF 26*00            [ 5]  300 	rol	*(REGTEMP+0)
+    000000B1 A6*00            [ 3]  301 	ldx	*(REGTEMP+0)
+    000000B3 18               [ 2]  302 	clc
+    000000B4 69 01            [ 2]  303 	adc	#0x01
+    000000B6 90 01            [ 4]  304 	bcc	00151$
+    000000B8 E8               [ 2]  305 	inx
+    000000B9                        306 00151$:
+    000000B9 18               [ 2]  307 	clc
+    000000BA 6Dr1Dr00         [ 4]  308 	adc	_set_tile_PARM_2
+    000000BD 85*02            [ 3]  309 	sta	*_set_tile_sloc1_1_0
+    000000BF 8A               [ 2]  310 	txa
+    000000C0 6Dr1Er00         [ 4]  311 	adc	(_set_tile_PARM_2 + 1)
+    000000C3 85*03            [ 3]  312 	sta	*(_set_tile_sloc1_1_0 + 1)
+    000000C5 A0 00            [ 2]  313 	ldy	#0x00
+    000000C7 B1*02            [ 6]  314 	lda	[*_set_tile_sloc1_1_0],y
+    000000C9 A2 00            [ 2]  315 	ldx	#0x00
+    000000CB A8               [ 2]  316 	tay
+    000000CC B9r6Cr07         [ 5]  317 	lda	(_reverse_bits+0+0x0000),y
+    000000CF 4CrF5r00         [ 3]  318 	jmp	00111$
+    000000D2                        319 00110$:
+    000000D2 AEr23r00         [ 4]  320 	ldx	(_set_tile_y_30000_118 + 1)
+    000000D5 ADr22r00         [ 4]  321 	lda	_set_tile_y_30000_118
+    000000D8 86*00            [ 3]  322 	stx	*(REGTEMP+0)
+    000000DA 0A               [ 2]  323 	asl	a
+    000000DB 26*00            [ 5]  324 	rol	*(REGTEMP+0)
+    000000DD A6*00            [ 3]  325 	ldx	*(REGTEMP+0)
+    000000DF 18               [ 2]  326 	clc
+    000000E0 69 01            [ 2]  327 	adc	#0x01
+    000000E2 90 01            [ 4]  328 	bcc	00152$
+    000000E4 E8               [ 2]  329 	inx
+    000000E5                        330 00152$:
+    000000E5 18               [ 2]  331 	clc
+    000000E6 6Dr1Dr00         [ 4]  332 	adc	_set_tile_PARM_2
+    000000E9 85*02            [ 3]  333 	sta	*_set_tile_sloc1_1_0
+    000000EB 8A               [ 2]  334 	txa
+    000000EC 6Dr1Er00         [ 4]  335 	adc	(_set_tile_PARM_2 + 1)
+    000000EF 85*03            [ 3]  336 	sta	*(_set_tile_sloc1_1_0 + 1)
+    000000F1 A0 00            [ 2]  337 	ldy	#0x00
+    000000F3 B1*02            [ 6]  338 	lda	[*_set_tile_sloc1_1_0],y
+    000000F5                        339 00111$:
+    000000F5 85*00            [ 3]  340 	sta	*(REGTEMP+0)
+    000000F7 18               [ 2]  341 	clc
+    000000F8 A5*04            [ 3]  342 	lda	*_set_tile_sloc2_1_0
+    000000FA 69r0B            [ 2]  343 	adc	#<(_flipped_data+0)
+    000000FC 85*00            [ 3]  344 	sta	*(DPTR+0)
+    000000FE A5*05            [ 3]  345 	lda	*(_set_tile_sloc2_1_0 + 1)
+    00000100 69s00            [ 2]  346 	adc	#>(_flipped_data+0)
+    00000102 85*01            [ 3]  347 	sta	*(DPTR+1)
+    00000104 A5*00            [ 3]  348 	lda	*(REGTEMP+0)
+    00000106 A0 00            [ 2]  349 	ldy	#0x00
+    00000108 91*00            [ 6]  350 	sta	[DPTR],y
+                                    351 ;	src/metasprites.c: 97: for(i = 0; i < TILE_HEIGHT; i++)
+    0000010A E6*00            [ 5]  352 	inc	*_set_tile_sloc0_1_0
+    0000010C D0 02            [ 4]  353 	bne	00153$
+    0000010E E6*01            [ 5]  354 	inc	*(_set_tile_sloc0_1_0 + 1)
+    00000110                        355 00153$:
+    00000110 A5*00            [ 3]  356 	lda	*_set_tile_sloc0_1_0
+    00000112 38               [ 2]  357 	sec
+    00000113 E9 08            [ 2]  358 	sbc	#0x08
+    00000115 A5*01            [ 3]  359 	lda	*(_set_tile_sloc0_1_0 + 1)
+    00000117 E9 00            [ 2]  360 	sbc	#0x00
+    00000119 B0 03            [ 4]  361 	bcs	00154$
+    0000011B 4Cr09r00         [ 3]  362 	jmp	00102$
+    0000011E                        363 00154$:
+                                    364 ;	src/metasprites.c: 103: set_sprite_data(tile_idx, 1, flipped_data);
+    0000011E A9s00            [ 2]  365 	lda	#>_flipped_data
+    00000120 8Dr01r00         [ 4]  366 	sta	(_set_sprite_data_PARM_3 + 1)
+    00000123 A9r0B            [ 2]  367 	lda	#_flipped_data
+    00000125 8Dr00r00         [ 4]  368 	sta	_set_sprite_data_PARM_3
+    00000128 ADr21r00         [ 4]  369 	lda	_set_tile_tile_idx_10000_115
+    0000012B A2 01            [ 2]  370 	ldx	#0x01
+                                    371 ;	src/metasprites.c: 104: }
+    0000012D 4Cr00r00         [ 3]  372 	jmp	_set_sprite_data
+                                    373 ;------------------------------------------------------------
+                                    374 ;Allocation info for local variables in function 'get_tile_offset'
+                                    375 ;------------------------------------------------------------
+                                    376 ;flipy                     Allocated to registers 
+                                    377 ;flipx                     Allocated to registers 
+                                    378 ;offset                    Allocated to registers 
+                                    379 ;------------------------------------------------------------
+                                    380 ;	src/metasprites.c: 106: uint8_t get_tile_offset(uint8_t flipx, uint8_t flipy)
+                                    381 ;	-----------------------------------------
+                                    382 ;	 function get_tile_offset
+                                    383 ;	-----------------------------------------
+                                    384 ;	Register assignment is optimal.
+                                    385 ;	Stack space usage: 0 bytes.
+    00000130                        386 _get_tile_offset:
+                                    387 ;	src/metasprites.c: 117: return offset;
+    00000130 A9 00            [ 2]  388 	lda	#0x00
+                                    389 ;	src/metasprites.c: 118: }
+    00000132 60               [ 6]  390 	rts
+                                    391 ;------------------------------------------------------------
+                                    392 ;Allocation info for local variables in function 'load_and_duplicate_sprite_tile_data'
+                                    393 ;------------------------------------------------------------
+                                    394 ;sloc0                     Allocated with name '_load_and_duplicate_sprite_tile_data_sloc0_1_0'
+                                    395 ;sloc1                     Allocated with name '_load_and_duplicate_sprite_tile_data_sloc1_1_0'
+                                    396 ;i                         Allocated to registers 
+                                    397 ;------------------------------------------------------------
+                                    398 ;	src/metasprites.c: 123: void load_and_duplicate_sprite_tile_data(void)
+                                    399 ;	-----------------------------------------
+                                    400 ;	 function load_and_duplicate_sprite_tile_data
+                                    401 ;	-----------------------------------------
+                                    402 ;	Register assignment is optimal.
+                                    403 ;	Stack space usage: 0 bytes.
+    00000133                        404 _load_and_duplicate_sprite_tile_data:
+                                    405 ;	src/metasprites.c: 126: num_tiles = sizeof(sprite_tiles) >> 4;
+    00000133 A2 30            [ 2]  406 	ldx	#0x30
+    00000135 8Er1Br00         [ 4]  407 	stx	_num_tiles
+    00000138 A2 00            [ 2]  408 	ldx	#0x00
+    0000013A 8Er1Cr00         [ 4]  409 	stx	(_num_tiles + 1)
+                                    410 ;	src/metasprites.c: 127: for(i = 0; i < num_tiles; i++)
+    0000013D 86*00            [ 3]  411 	stx	*_load_and_duplicate_sprite_tile_data_sloc0_1_0
+    0000013F 86*01            [ 3]  412 	stx	*(_load_and_duplicate_sprite_tile_data_sloc0_1_0 + 1)
+    00000141                        413 00103$:
+    00000141 A5*00            [ 3]  414 	lda	*_load_and_duplicate_sprite_tile_data_sloc0_1_0
+    00000143 38               [ 2]  415 	sec
+    00000144 EDr1Br00         [ 4]  416 	sbc	_num_tiles
+    00000147 A5*01            [ 3]  417 	lda	*(_load_and_duplicate_sprite_tile_data_sloc0_1_0 + 1)
+    00000149 EDr1Cr00         [ 4]  418 	sbc	(_num_tiles + 1)
+    0000014C B0 46            [ 4]  419 	bcs	00105$
+                                    420 ;	src/metasprites.c: 129: set_tile(i + get_tile_offset(0, 0), sprite_tiles + (i << 4), 0, 0);
+    0000014E A5*00            [ 3]  421 	lda	*_load_and_duplicate_sprite_tile_data_sloc0_1_0
+    00000150 85*02            [ 3]  422 	sta	*_load_and_duplicate_sprite_tile_data_sloc1_1_0
+    00000152 A9 00            [ 2]  423 	lda	#0x00
+    00000154 AA               [ 2]  424 	tax
+    00000155 20r30r01         [ 6]  425 	jsr	_get_tile_offset
+    00000158 18               [ 2]  426 	clc
+    00000159 65*02            [ 3]  427 	adc	*_load_and_duplicate_sprite_tile_data_sloc1_1_0
+    0000015B A8               [ 2]  428 	tay
+    0000015C A6*01            [ 3]  429 	ldx	*(_load_and_duplicate_sprite_tile_data_sloc0_1_0 + 1)
+    0000015E A5*00            [ 3]  430 	lda	*_load_and_duplicate_sprite_tile_data_sloc0_1_0
+    00000160 86*00            [ 3]  431 	stx	*(REGTEMP+0)
+    00000162 0A               [ 2]  432 	asl	a
+    00000163 26*00            [ 5]  433 	rol	*(REGTEMP+0)
+    00000165 0A               [ 2]  434 	asl	a
+    00000166 26*00            [ 5]  435 	rol	*(REGTEMP+0)
+    00000168 0A               [ 2]  436 	asl	a
+    00000169 26*00            [ 5]  437 	rol	*(REGTEMP+0)
+    0000016B 0A               [ 2]  438 	asl	a
+    0000016C 26*00            [ 5]  439 	rol	*(REGTEMP+0)
+    0000016E A6*00            [ 3]  440 	ldx	*(REGTEMP+0)
+    00000170 18               [ 2]  441 	clc
+    00000171 69r00            [ 2]  442 	adc	#_sprite_tiles
+    00000173 48               [ 3]  443 	pha
+    00000174 8A               [ 2]  444 	txa
+    00000175 69s00            [ 2]  445 	adc	#>_sprite_tiles
+    00000177 AA               [ 2]  446 	tax
+    00000178 68               [ 4]  447 	pla
+    00000179 8Dr1Dr00         [ 4]  448 	sta	_set_tile_PARM_2
+    0000017C 8Er1Er00         [ 4]  449 	stx	(_set_tile_PARM_2 + 1)
+    0000017F A2 00            [ 2]  450 	ldx	#0x00
+    00000181 8Er1Fr00         [ 4]  451 	stx	_set_tile_PARM_3
+    00000184 8Er20r00         [ 4]  452 	stx	_set_tile_PARM_4
+    00000187 98               [ 2]  453 	tya
+    00000188 20r00r00         [ 6]  454 	jsr	_set_tile
+                                    455 ;	src/metasprites.c: 127: for(i = 0; i < num_tiles; i++)
+    0000018B E6*00            [ 5]  456 	inc	*_load_and_duplicate_sprite_tile_data_sloc0_1_0
+    0000018D D0 B2            [ 4]  457 	bne	00103$
+    0000018F E6*01            [ 5]  458 	inc	*(_load_and_duplicate_sprite_tile_data_sloc0_1_0 + 1)
+    00000191 4Cr41r01         [ 3]  459 	jmp	00103$
+    00000194                        460 00105$:
+                                    461 ;	src/metasprites.c: 140: }
+    00000194 60               [ 6]  462 	rts
+                                    463 ;------------------------------------------------------------
+                                    464 ;Allocation info for local variables in function 'main'
+                                    465 ;------------------------------------------------------------
+                                    466 ;sloc0                     Allocated with name '_main_sloc0_1_0'
+                                    467 ;sloc1                     Allocated with name '_main_sloc1_1_0'
+                                    468 ;sloc2                     Allocated with name '_main_sloc2_1_0'
+                                    469 ;hiwater                   Allocated to registers a 
+                                    470 ;subpal                    Allocated to registers y 
+                                    471 ;__400010030               Allocated to registers 
+                                    472 ;__400010022               Allocated to registers 
+                                    473 ;__400010014               Allocated to registers a 
+                                    474 ;__400010006               Allocated to registers a 
+                                    475 ;__400010007               Allocated to registers 
+                                    476 ;__400010008               Allocated to registers 
+                                    477 ;__400010009               Allocated with name '_main___400010009_40001_141'
+                                    478 ;__400010010               Allocated to registers 
+                                    479 ;__400010011               Allocated to registers 
+                                    480 ;__400010012               Allocated to registers 
+                                    481 ;metasprite                Allocated to registers a x 
+                                    482 ;base_tile                 Allocated to registers 
+                                    483 ;base_prop                 Allocated to registers 
+                                    484 ;base_sprite               Allocated to registers 
+                                    485 ;x                         Allocated with name '_main_x_50001_142'
+                                    486 ;y                         Allocated with name '_main_y_50001_142'
+                                    487 ;__400010015               Allocated to registers 
+                                    488 ;__400010016               Allocated to registers 
+                                    489 ;__400010017               Allocated with name '_main___400010017_40001_144'
+                                    490 ;__400010018               Allocated to registers 
+                                    491 ;__400010019               Allocated with name '_main___400010019_40001_144'
+                                    492 ;__400010020               Allocated to registers 
+                                    493 ;metasprite                Allocated to registers a x 
+                                    494 ;base_tile                 Allocated to registers 
+                                    495 ;base_prop                 Allocated to registers 
+                                    496 ;base_sprite               Allocated to registers 
+                                    497 ;x                         Allocated to registers 
+                                    498 ;y                         Allocated with name '_main_y_50001_145'
+                                    499 ;__400010023               Allocated to registers 
+                                    500 ;__400010024               Allocated to registers 
+                                    501 ;__400010025               Allocated with name '_main___400010025_40001_147'
+                                    502 ;__400010026               Allocated to registers 
+                                    503 ;__400010027               Allocated with name '_main___400010027_40001_147'
+                                    504 ;__400010028               Allocated with name '_main___400010028_40001_147'
+                                    505 ;metasprite                Allocated to registers a x 
+                                    506 ;base_tile                 Allocated to registers 
+                                    507 ;base_prop                 Allocated to registers 
+                                    508 ;base_sprite               Allocated to registers 
+                                    509 ;x                         Allocated to registers 
+                                    510 ;y                         Allocated to registers 
+                                    511 ;__400010031               Allocated to registers 
+                                    512 ;__400010032               Allocated to registers 
+                                    513 ;__400010033               Allocated with name '_main___400010033_40001_150'
+                                    514 ;__400010034               Allocated to registers 
+                                    515 ;__400010035               Allocated with name '_main___400010035_40001_150'
+                                    516 ;__400010036               Allocated with name '_main___400010036_40001_150'
+                                    517 ;metasprite                Allocated to registers a x 
+                                    518 ;base_tile                 Allocated to registers 
+                                    519 ;base_prop                 Allocated to registers 
+                                    520 ;base_sprite               Allocated to registers 
+                                    521 ;x                         Allocated to registers 
+                                    522 ;y                         Allocated to registers 
+                                    523 ;------------------------------------------------------------
+                                    524 ;	src/metasprites.c: 160: void main(void) {
+                                    525 ;	-----------------------------------------
+                                    526 ;	 function main
+                                    527 ;	-----------------------------------------
+                                    528 ;	Register assignment might be sub-optimal.
+                                    529 ;	Stack space usage: 0 bytes.
+    00000195                        530 _main:
+                                    531 ;	src/metasprites.c: 161: DISPLAY_OFF;
+    00000195 20r00r00         [ 6]  532 	jsr	_display_off
+                                    533 ;	src/metasprites.c: 170: set_sprite_palette(0, 1, gray_pal);
+    00000198 A9s08            [ 2]  534 	lda	#>_gray_pal
+    0000019A 8Dr01r00         [ 4]  535 	sta	(_set_sprite_palette_PARM_3 + 1)
+    0000019D A9r6C            [ 2]  536 	lda	#_gray_pal
+    0000019F 8Dr00r00         [ 4]  537 	sta	_set_sprite_palette_PARM_3
+    000001A2 A9 00            [ 2]  538 	lda	#0x00
+    000001A4 A2 01            [ 2]  539 	ldx	#0x01
+    000001A6 20r00r00         [ 6]  540 	jsr	_set_sprite_palette
+                                    541 ;	src/metasprites.c: 171: set_sprite_palette(1, 1, pink_pal);
+    000001A9 A9s08            [ 2]  542 	lda	#>_pink_pal
+    000001AB 8Dr01r00         [ 4]  543 	sta	(_set_sprite_palette_PARM_3 + 1)
+    000001AE A9r70            [ 2]  544 	lda	#_pink_pal
+    000001B0 8Dr00r00         [ 4]  545 	sta	_set_sprite_palette_PARM_3
+    000001B3 A9 01            [ 2]  546 	lda	#0x01
+    000001B5 AA               [ 2]  547 	tax
+    000001B6 20r00r00         [ 6]  548 	jsr	_set_sprite_palette
+                                    549 ;	src/metasprites.c: 172: set_sprite_palette(2, 1, cyan_pal);
+    000001B9 A9s08            [ 2]  550 	lda	#>_cyan_pal
+    000001BB 8Dr01r00         [ 4]  551 	sta	(_set_sprite_palette_PARM_3 + 1)
+    000001BE A9r74            [ 2]  552 	lda	#_cyan_pal
+    000001C0 8Dr00r00         [ 4]  553 	sta	_set_sprite_palette_PARM_3
+    000001C3 A9 02            [ 2]  554 	lda	#0x02
+    000001C5 A2 01            [ 2]  555 	ldx	#0x01
+    000001C7 20r00r00         [ 6]  556 	jsr	_set_sprite_palette
+                                    557 ;	src/metasprites.c: 173: set_sprite_palette(3, 1, green_pal);
+    000001CA A9s08            [ 2]  558 	lda	#>_green_pal
+    000001CC 8Dr01r00         [ 4]  559 	sta	(_set_sprite_palette_PARM_3 + 1)
+    000001CF A9r78            [ 2]  560 	lda	#_green_pal
+    000001D1 8Dr00r00         [ 4]  561 	sta	_set_sprite_palette_PARM_3
+    000001D4 A9 03            [ 2]  562 	lda	#0x03
+    000001D6 A2 01            [ 2]  563 	ldx	#0x01
+    000001D8 20r00r00         [ 6]  564 	jsr	_set_sprite_palette
+                                    565 ;	src/metasprites.c: 177: fill_bkg_rect(0, 0, DEVICE_SCREEN_WIDTH, DEVICE_SCREEN_HEIGHT, 0);
+    000001DB A2 20            [ 2]  566 	ldx	#0x20
+    000001DD 8Er00r00         [ 4]  567 	stx	_fill_bkg_rect_PARM_3
+    000001E0 A2 1E            [ 2]  568 	ldx	#0x1e
+    000001E2 8Er00r00         [ 4]  569 	stx	_fill_bkg_rect_PARM_4
+    000001E5 A2 00            [ 2]  570 	ldx	#0x00
+    000001E7 8Er00r00         [ 4]  571 	stx	_fill_bkg_rect_PARM_5
+    000001EA 8A               [ 2]  572 	txa
+    000001EB 20r00r00         [ 6]  573 	jsr	_fill_bkg_rect
+                                    574 ;	src/metasprites.c: 180: set_bkg_data(0, 1, pattern);
+    000001EE A9s07            [ 2]  575 	lda	#>_pattern
+    000001F0 8Dr01r00         [ 4]  576 	sta	(_set_bkg_data_PARM_3 + 1)
+    000001F3 A9r5C            [ 2]  577 	lda	#_pattern
+    000001F5 8Dr00r00         [ 4]  578 	sta	_set_bkg_data_PARM_3
+    000001F8 A9 00            [ 2]  579 	lda	#0x00
+    000001FA A2 01            [ 2]  580 	ldx	#0x01
+    000001FC 20r00r00         [ 6]  581 	jsr	_set_bkg_data
+                                    582 ;	src/metasprites.c: 183: load_and_duplicate_sprite_tile_data();
+    000001FF 20r33r01         [ 6]  583 	jsr	_load_and_duplicate_sprite_tile_data
+                                    584 ;	src/metasprites.c: 186: SHOW_BKG; SHOW_SPRITES;
+    00000202 ADr00r00         [ 4]  585 	lda	_shadow_PPUMASK
+    00000205 09 08            [ 2]  586 	ora	#0x08
+    00000207 8Dr00r00         [ 4]  587 	sta	_shadow_PPUMASK
+    0000020A ADr00r00         [ 4]  588 	lda	_shadow_PPUMASK
+    0000020D 09 10            [ 2]  589 	ora	#0x10
+    0000020F 8Dr00r00         [ 4]  590 	sta	_shadow_PPUMASK
+                                    591 ;	src/metasprites.c: 192: SPRITES_8x8;
+    00000212 ADr00r00         [ 4]  592 	lda	_shadow_PPUCTRL
+    00000215 29 DF            [ 2]  593 	and	#0xdf
+    00000217 8Dr00r00         [ 4]  594 	sta	_shadow_PPUCTRL
+                                    595 ;	src/metasprites.c: 194: DISPLAY_ON;
+    0000021A 20r00r00         [ 6]  596 	jsr	_display_on
+                                    597 ;	src/metasprites.c: 197: PosX = (DEVICE_SCREEN_PX_WIDTH / 2) << 4;
+    0000021D A2 00            [ 2]  598 	ldx	#0x00
+    0000021F 8Er00r00         [ 4]  599 	stx	_PosX
+    00000222 A2 08            [ 2]  600 	ldx	#0x08
+    00000224 8Er01r00         [ 4]  601 	stx	(_PosX + 1)
+                                    602 ;	src/metasprites.c: 198: PosY = (DEVICE_SCREEN_PX_HEIGHT / 2) << 4;
+    00000227 A2 80            [ 2]  603 	ldx	#0x80
+    00000229 8Er02r00         [ 4]  604 	stx	_PosY
+    0000022C A2 07            [ 2]  605 	ldx	#0x07
+    0000022E 8Er03r00         [ 4]  606 	stx	(_PosY + 1)
+                                    607 ;	src/metasprites.c: 199: SpdX = SpdY = 0;
+    00000231 A2 00            [ 2]  608 	ldx	#0x00
+    00000233 8Er06r00         [ 4]  609 	stx	_SpdY
+    00000236 8Er07r00         [ 4]  610 	stx	(_SpdY + 1)
+    00000239 8Er04r00         [ 4]  611 	stx	_SpdX
+    0000023C 8Er05r00         [ 4]  612 	stx	(_SpdX + 1)
+                                    613 ;	src/metasprites.c: 201: idx = 0; rot = 0;
+    0000023F 8Er09r00         [ 4]  614 	stx	_idx
+    00000242 8Er0Ar00         [ 4]  615 	stx	_rot
+                                    616 ;	src/metasprites.c: 203: while(TRUE) {        
+    00000245                        617 00145$:
+                                    618 ;	src/metasprites.c: 205: KEY_INPUT;
+    00000245 ADr00r00         [ 4]  619 	lda	_joyp
+    00000248 8Dr01r00         [ 4]  620 	sta	_old_joyp
+    0000024B 20r00r00         [ 6]  621 	jsr	_joypad
+    0000024E 8Dr00r00         [ 4]  622 	sta	_joyp
+                                    623 ;	src/metasprites.c: 207: PosF = 0;
+    00000251 A2 00            [ 2]  624 	ldx	#0x00
+    00000253 8Er08r00         [ 4]  625 	stx	_PosF
+                                    626 ;	src/metasprites.c: 209: if (KEY_DOWN(J_UP)) {
+    00000256 A2 08            [ 2]  627 	ldx	#0x08
+    00000258 86*00            [ 3]  628 	stx	*(REGTEMP+0)
+    0000025A 24*00            [ 3]  629 	bit	*(REGTEMP+0)
+    0000025C F0 3A            [ 4]  630 	beq	00108$
+                                    631 ;	src/metasprites.c: 210: SpdY -= 2;
+    0000025E AEr07r00         [ 4]  632 	ldx	(_SpdY + 1)
+    00000261 ADr06r00         [ 4]  633 	lda	_SpdY
+    00000264 38               [ 2]  634 	sec
+    00000265 E9 02            [ 2]  635 	sbc	#0x02
+    00000267 B0 01            [ 4]  636 	bcs	00319$
+    00000269 CA               [ 2]  637 	dex
+    0000026A                        638 00319$:
+    0000026A 8Dr06r00         [ 4]  639 	sta	_SpdY
+    0000026D 8Er07r00         [ 4]  640 	stx	(_SpdY + 1)
+                                    641 ;	src/metasprites.c: 211: if (SpdY < -32) SpdY = -32;
+    00000270 ADr06r00         [ 4]  642 	lda	_SpdY
+    00000273 38               [ 2]  643 	sec
+    00000274 E9 E0            [ 2]  644 	sbc	#0xe0
+    00000276 ADr07r00         [ 4]  645 	lda	(_SpdY + 1)
+    00000279 E9 FF            [ 2]  646 	sbc	#0xff
+    0000027B 50 04            [ 4]  647 	bvc	00321$
+    0000027D 10 04            [ 4]  648 	bpl	00320$
+    0000027F 30 0C            [ 4]  649 	bmi	00102$
+    00000281                        650 00321$:
+    00000281 10 0A            [ 4]  651 	bpl	00102$
+    00000283                        652 00320$:
+    00000283 A2 E0            [ 2]  653 	ldx	#0xe0
+    00000285 8Er06r00         [ 4]  654 	stx	_SpdY
+    00000288 A2 FF            [ 2]  655 	ldx	#0xff
+    0000028A 8Er07r00         [ 4]  656 	stx	(_SpdY + 1)
+    0000028D                        657 00102$:
+                                    658 ;	src/metasprites.c: 212: PosF |= ACC_Y;
+    0000028D ADr08r00         [ 4]  659 	lda	_PosF
+    00000290 09 02            [ 2]  660 	ora	#0x02
+    00000292 8Dr08r00         [ 4]  661 	sta	_PosF
+    00000295 4CrD5r02         [ 3]  662 	jmp	00109$
+    00000298                        663 00108$:
+                                    664 ;	src/metasprites.c: 213: } else if (KEY_DOWN(J_DOWN)) {
+    00000298 29 04            [ 2]  665 	and	#0x04
+    0000029A F0 39            [ 4]  666 	beq	00109$
+                                    667 ;	src/metasprites.c: 214: SpdY += 2;
+    0000029C AEr07r00         [ 4]  668 	ldx	(_SpdY + 1)
+    0000029F ADr06r00         [ 4]  669 	lda	_SpdY
+    000002A2 18               [ 2]  670 	clc
+    000002A3 69 02            [ 2]  671 	adc	#0x02
+    000002A5 90 01            [ 4]  672 	bcc	00324$
+    000002A7 E8               [ 2]  673 	inx
+    000002A8                        674 00324$:
+                                    675 ;	src/metasprites.c: 215: if (SpdY > 32) SpdY = 32;
+    000002A8 8Dr06r00         [ 4]  676 	sta	_SpdY
+    000002AB 8Er07r00         [ 4]  677 	stx	(_SpdY + 1)
+    000002AE 85*00            [ 3]  678 	sta	*(REGTEMP+0)
+    000002B0 A9 20            [ 2]  679 	lda	#0x20
+    000002B2 38               [ 2]  680 	sec
+    000002B3 E5*00            [ 3]  681 	sbc	*(REGTEMP+0)
+    000002B5 A9 00            [ 2]  682 	lda	#0x00
+    000002B7 86*00            [ 3]  683 	stx	*(REGTEMP+0)
+    000002B9 E5*00            [ 3]  684 	sbc	*(REGTEMP+0)
+    000002BB 50 04            [ 4]  685 	bvc	00326$
+    000002BD 10 04            [ 4]  686 	bpl	00325$
+    000002BF 30 0C            [ 4]  687 	bmi	00104$
+    000002C1                        688 00326$:
+    000002C1 10 0A            [ 4]  689 	bpl	00104$
+    000002C3                        690 00325$:
+    000002C3 A2 20            [ 2]  691 	ldx	#0x20
+    000002C5 8Er06r00         [ 4]  692 	stx	_SpdY
+    000002C8 A2 00            [ 2]  693 	ldx	#0x00
+    000002CA 8Er07r00         [ 4]  694 	stx	(_SpdY + 1)
+    000002CD                        695 00104$:
+                                    696 ;	src/metasprites.c: 216: PosF |= ACC_Y;
+    000002CD ADr08r00         [ 4]  697 	lda	_PosF
+    000002D0 09 02            [ 2]  698 	ora	#0x02
+    000002D2 8Dr08r00         [ 4]  699 	sta	_PosF
+    000002D5                        700 00109$:
+                                    701 ;	src/metasprites.c: 219: if (KEY_DOWN(J_LEFT)) {
+    000002D5 ADr00r00         [ 4]  702 	lda	_joyp
+    000002D8 A2 02            [ 2]  703 	ldx	#0x02
+    000002DA 86*00            [ 3]  704 	stx	*(REGTEMP+0)
+    000002DC 24*00            [ 3]  705 	bit	*(REGTEMP+0)
+    000002DE F0 3A            [ 4]  706 	beq	00117$
+                                    707 ;	src/metasprites.c: 220: SpdX -= 2;
+    000002E0 AEr05r00         [ 4]  708 	ldx	(_SpdX + 1)
+    000002E3 ADr04r00         [ 4]  709 	lda	_SpdX
+    000002E6 38               [ 2]  710 	sec
+    000002E7 E9 02            [ 2]  711 	sbc	#0x02
+    000002E9 B0 01            [ 4]  712 	bcs	00329$
+    000002EB CA               [ 2]  713 	dex
+    000002EC                        714 00329$:
+    000002EC 8Dr04r00         [ 4]  715 	sta	_SpdX
+    000002EF 8Er05r00         [ 4]  716 	stx	(_SpdX + 1)
+                                    717 ;	src/metasprites.c: 221: if (SpdX < -32) SpdX = -32;
+    000002F2 ADr04r00         [ 4]  718 	lda	_SpdX
+    000002F5 38               [ 2]  719 	sec
+    000002F6 E9 E0            [ 2]  720 	sbc	#0xe0
+    000002F8 ADr05r00         [ 4]  721 	lda	(_SpdX + 1)
+    000002FB E9 FF            [ 2]  722 	sbc	#0xff
+    000002FD 50 04            [ 4]  723 	bvc	00331$
+    000002FF 10 04            [ 4]  724 	bpl	00330$
+    00000301 30 0C            [ 4]  725 	bmi	00111$
+    00000303                        726 00331$:
+    00000303 10 0A            [ 4]  727 	bpl	00111$
+    00000305                        728 00330$:
+    00000305 A2 E0            [ 2]  729 	ldx	#0xe0
+    00000307 8Er04r00         [ 4]  730 	stx	_SpdX
+    0000030A A2 FF            [ 2]  731 	ldx	#0xff
+    0000030C 8Er05r00         [ 4]  732 	stx	(_SpdX + 1)
+    0000030F                        733 00111$:
+                                    734 ;	src/metasprites.c: 222: PosF |= ACC_X;
+    0000030F ADr08r00         [ 4]  735 	lda	_PosF
+    00000312 09 01            [ 2]  736 	ora	#0x01
+    00000314 8Dr08r00         [ 4]  737 	sta	_PosF
+    00000317 4Cr57r03         [ 3]  738 	jmp	00118$
+    0000031A                        739 00117$:
+                                    740 ;	src/metasprites.c: 223: } else if (KEY_DOWN(J_RIGHT)) {
+    0000031A 29 01            [ 2]  741 	and	#0x01
+    0000031C F0 39            [ 4]  742 	beq	00118$
+                                    743 ;	src/metasprites.c: 224: SpdX += 2;
+    0000031E AEr05r00         [ 4]  744 	ldx	(_SpdX + 1)
+    00000321 ADr04r00         [ 4]  745 	lda	_SpdX
+    00000324 18               [ 2]  746 	clc
+    00000325 69 02            [ 2]  747 	adc	#0x02
+    00000327 90 01            [ 4]  748 	bcc	00334$
+    00000329 E8               [ 2]  749 	inx
+    0000032A                        750 00334$:
+                                    751 ;	src/metasprites.c: 225: if (SpdX > 32) SpdX = 32;
+    0000032A 8Dr04r00         [ 4]  752 	sta	_SpdX
+    0000032D 8Er05r00         [ 4]  753 	stx	(_SpdX + 1)
+    00000330 85*00            [ 3]  754 	sta	*(REGTEMP+0)
+    00000332 A9 20            [ 2]  755 	lda	#0x20
+    00000334 38               [ 2]  756 	sec
+    00000335 E5*00            [ 3]  757 	sbc	*(REGTEMP+0)
+    00000337 A9 00            [ 2]  758 	lda	#0x00
+    00000339 86*00            [ 3]  759 	stx	*(REGTEMP+0)
+    0000033B E5*00            [ 3]  760 	sbc	*(REGTEMP+0)
+    0000033D 50 04            [ 4]  761 	bvc	00336$
+    0000033F 10 04            [ 4]  762 	bpl	00335$
+    00000341 30 0C            [ 4]  763 	bmi	00113$
+    00000343                        764 00336$:
+    00000343 10 0A            [ 4]  765 	bpl	00113$
+    00000345                        766 00335$:
+    00000345 A2 20            [ 2]  767 	ldx	#0x20
+    00000347 8Er04r00         [ 4]  768 	stx	_SpdX
+    0000034A A2 00            [ 2]  769 	ldx	#0x00
+    0000034C 8Er05r00         [ 4]  770 	stx	(_SpdX + 1)
+    0000034F                        771 00113$:
+                                    772 ;	src/metasprites.c: 226: PosF |= ACC_X;
+    0000034F ADr08r00         [ 4]  773 	lda	_PosF
+    00000352 09 01            [ 2]  774 	ora	#0x01
+    00000354 8Dr08r00         [ 4]  775 	sta	_PosF
+    00000357                        776 00118$:
+                                    777 ;	src/metasprites.c: 230: if (KEY_PRESSED(J_B)) {
+    00000357 ADr00r00         [ 4]  778 	lda	_joyp
+    0000035A 4Dr01r00         [ 4]  779 	eor	_old_joyp
+    0000035D 2Dr00r00         [ 4]  780 	and	_joyp
+    00000360 29 40            [ 2]  781 	and	#0x40
+    00000362 F0 0F            [ 4]  782 	beq	00122$
+                                    783 ;	src/metasprites.c: 231: idx++; if (idx >= (sizeof(sprite_metasprites) >> 1)) idx = 0;
+    00000364 EEr09r00         [ 6]  784 	inc	_idx
+    00000367 ADr09r00         [ 4]  785 	lda	_idx
+    0000036A C9 05            [ 2]  786 	cmp	#0x05
+    0000036C 90 05            [ 4]  787 	bcc	00122$
+    0000036E A2 00            [ 2]  788 	ldx	#0x00
+    00000370 8Er09r00         [ 4]  789 	stx	_idx
+    00000373                        790 00122$:
+                                    791 ;	src/metasprites.c: 235: if (KEY_PRESSED(J_A)) {
+    00000373 ADr00r00         [ 4]  792 	lda	_joyp
+    00000376 4Dr01r00         [ 4]  793 	eor	_old_joyp
+    00000379 2Dr00r00         [ 4]  794 	and	_joyp
+    0000037C 29 80            [ 2]  795 	and	#0x80
+    0000037E F0 0B            [ 4]  796 	beq	00124$
+                                    797 ;	src/metasprites.c: 236: rot++; rot &= 0xF;
+    00000380 EEr0Ar00         [ 6]  798 	inc	_rot
+    00000383 ADr0Ar00         [ 4]  799 	lda	_rot
+    00000386 29 0F            [ 2]  800 	and	#0x0f
+    00000388 8Dr0Ar00         [ 4]  801 	sta	_rot
+    0000038B                        802 00124$:
+                                    803 ;	src/metasprites.c: 239: PosX += SpdX, PosY += SpdY; 
+    0000038B ADr00r00         [ 4]  804 	lda	_PosX
+    0000038E 18               [ 2]  805 	clc
+    0000038F 6Dr04r00         [ 4]  806 	adc	_SpdX
+    00000392 8Dr00r00         [ 4]  807 	sta	_PosX
+    00000395 ADr01r00         [ 4]  808 	lda	(_PosX + 1)
+    00000398 6Dr05r00         [ 4]  809 	adc	(_SpdX + 1)
+    0000039B 8Dr01r00         [ 4]  810 	sta	(_PosX + 1)
+    0000039E ADr02r00         [ 4]  811 	lda	_PosY
+    000003A1 18               [ 2]  812 	clc
+    000003A2 6Dr06r00         [ 4]  813 	adc	_SpdY
+    000003A5 8Dr02r00         [ 4]  814 	sta	_PosY
+    000003A8 ADr03r00         [ 4]  815 	lda	(_PosY + 1)
+    000003AB 6Dr07r00         [ 4]  816 	adc	(_SpdY + 1)
+    000003AE 8Dr03r00         [ 4]  817 	sta	(_PosY + 1)
+                                    818 ;	src/metasprites.c: 241: uint8_t hiwater = SPR_NUM_START;
+    000003B1 A2 00            [ 2]  819 	ldx	#0x00
+    000003B3 86*03            [ 3]  820 	stx	*_main_sloc0_1_0
+                                    821 ;	src/metasprites.c: 250: uint8_t subpal = rot >> 2;
+    000003B5 ADr0Ar00         [ 4]  822 	lda	_rot
+    000003B8 4A               [ 2]  823 	lsr	a
+    000003B9 4A               [ 2]  824 	lsr	a
+    000003BA A8               [ 2]  825 	tay
+                                    826 ;	src/metasprites.c: 251: switch (rot & 0x3) {
+    000003BB ADr0Ar00         [ 4]  827 	lda	_rot
+    000003BE 29 03            [ 2]  828 	and	#0x03
+    000003C0 C9 01            [ 2]  829 	cmp	#0x01
+    000003C2 F0 11            [ 4]  830 	beq	00125$
+    000003C4 C9 02            [ 2]  831 	cmp	#0x02
+    000003C6 D0 03            [ 4]  832 	bne	00342$
+    000003C8 4CrA1r04         [ 3]  833 	jmp	00126$
+    000003CB                        834 00342$:
+    000003CB C9 03            [ 2]  835 	cmp	#0x03
+    000003CD D0 03            [ 4]  836 	bne	00343$
+    000003CF 4Cr7Ar05         [ 3]  837 	jmp	00127$
+    000003D2                        838 00343$:
+    000003D2 4Cr27r06         [ 3]  839 	jmp	00128$
+                                    840 ;	src/metasprites.c: 252: case 1:
+    000003D5                        841 00125$:
+                                    842 ;	src/metasprites.c: 258: DEVICE_SPRITE_PX_OFFSET_Y + (PosY >> 4));
+    000003D5 AEr03r00         [ 4]  843 	ldx	(_PosY + 1)
+    000003D8 ADr02r00         [ 4]  844 	lda	_PosY
+    000003DB 86*00            [ 3]  845 	stx	*(REGTEMP+0)
+    000003DD E0 80            [ 2]  846 	cpx	#0x80
+    000003DF 66*00            [ 5]  847 	ror	*(REGTEMP+0)
+    000003E1 6A               [ 2]  848 	ror	a
+    000003E2 E0 80            [ 2]  849 	cpx	#0x80
+    000003E4 66*00            [ 5]  850 	ror	*(REGTEMP+0)
+    000003E6 6A               [ 2]  851 	ror	a
+    000003E7 E0 80            [ 2]  852 	cpx	#0x80
+    000003E9 66*00            [ 5]  853 	ror	*(REGTEMP+0)
+    000003EB 6A               [ 2]  854 	ror	a
+    000003EC E0 80            [ 2]  855 	cpx	#0x80
+    000003EE 66*00            [ 5]  856 	ror	*(REGTEMP+0)
+    000003F0 6A               [ 2]  857 	ror	a
+    000003F1 A6*00            [ 3]  858 	ldx	*(REGTEMP+0)
+    000003F3 18               [ 2]  859 	clc
+    000003F4 69 FF            [ 2]  860 	adc	#0xff
+    000003F6 48               [ 3]  861 	pha
+    000003F7 8A               [ 2]  862 	txa
+    000003F8 69 FF            [ 2]  863 	adc	#0xff
+    000003FA AA               [ 2]  864 	tax
+    000003FB 68               [ 4]  865 	pla
+    000003FC 8Dr27r00         [ 4]  866 	sta	_main_y_50001_142
+    000003FF 8Er28r00         [ 4]  867 	stx	(_main_y_50001_142 + 1)
+                                    868 ;	src/metasprites.c: 257: DEVICE_SPRITE_PX_OFFSET_X + (PosX >> 4),
+    00000402 AEr01r00         [ 4]  869 	ldx	(_PosX + 1)
+    00000405 ADr00r00         [ 4]  870 	lda	_PosX
+    00000408 86*00            [ 3]  871 	stx	*(REGTEMP+0)
+    0000040A E0 80            [ 2]  872 	cpx	#0x80
+    0000040C 66*00            [ 5]  873 	ror	*(REGTEMP+0)
+    0000040E 6A               [ 2]  874 	ror	a
+    0000040F E0 80            [ 2]  875 	cpx	#0x80
+    00000411 66*00            [ 5]  876 	ror	*(REGTEMP+0)
+    00000413 6A               [ 2]  877 	ror	a
+    00000414 E0 80            [ 2]  878 	cpx	#0x80
+    00000416 66*00            [ 5]  879 	ror	*(REGTEMP+0)
+    00000418 6A               [ 2]  880 	ror	a
+    00000419 E0 80            [ 2]  881 	cpx	#0x80
+    0000041B 66*00            [ 5]  882 	ror	*(REGTEMP+0)
+    0000041D 6A               [ 2]  883 	ror	a
+    0000041E A6*00            [ 3]  884 	ldx	*(REGTEMP+0)
+    00000420 8Dr25r00         [ 4]  885 	sta	_main_x_50001_142
+    00000423 8Er26r00         [ 4]  886 	stx	(_main_x_50001_142 + 1)
+    00000426 8Cr24r00         [ 4]  887 	sty	_main___400010009_40001_141
+                                    888 ;	src/metasprites.c: 254: TILE_NUM_START + get_tile_offset(0, 1),
+    00000429 A9 00            [ 2]  889 	lda	#0x00
+    0000042B A2 01            [ 2]  890 	ldx	#0x01
+    0000042D 20r30r01         [ 6]  891 	jsr	_get_tile_offset
+    00000430 8Dr00r00         [ 4]  892 	sta	___current_base_tile
+                                    893 ;	src/metasprites.c: 253: hiwater += move_metasprite_flipy( sprite_metasprites[idx],
+    00000433 A2 00            [ 2]  894 	ldx	#0x00
+    00000435 ADr09r00         [ 4]  895 	lda	_idx
+    00000438 86*00            [ 3]  896 	stx	*(REGTEMP+0)
+    0000043A 0A               [ 2]  897 	asl	a
+    0000043B 26*00            [ 5]  898 	rol	*(REGTEMP+0)
+    0000043D A6*00            [ 3]  899 	ldx	*(REGTEMP+0)
+    0000043F 18               [ 2]  900 	clc
+    00000440 69r00            [ 2]  901 	adc	#<(_sprite_metasprites+0)
+    00000442 85*00            [ 3]  902 	sta	*(DPTR+0)
+    00000444 8A               [ 2]  903 	txa
+    00000445 69s00            [ 2]  904 	adc	#>(_sprite_metasprites+0)
+    00000447 85*01            [ 3]  905 	sta	*(DPTR+1)
+    00000449 A0 01            [ 2]  906 	ldy	#0x01
+    0000044B B1*00            [ 6]  907 	lda	[DPTR],y
+    0000044D AA               [ 2]  908 	tax
+    0000044E 88               [ 2]  909 	dey
+    0000044F B1*00            [ 6]  910 	lda	[DPTR],y
+                                    911 ;	../../../include/nes/metasprites.h: 170: __current_metasprite = metasprite;
+    00000451 8Dr00r00         [ 4]  912 	sta	___current_metasprite
+    00000454 8Er01r00         [ 4]  913 	stx	(___current_metasprite + 1)
+                                    914 ;	../../../include/nes/metasprites.h: 172: __current_base_prop = base_prop;
+    00000457 ADr24r00         [ 4]  915 	lda	_main___400010009_40001_141
+    0000045A 8Dr00r00         [ 4]  916 	sta	___current_base_prop
+                                    917 ;	../../../include/nes/metasprites.h: 173: return __move_metasprite_flipy(base_sprite, x, y - ((shadow_PPUCTRL & PPUCTRL_SPR_8X16) ? 16 : 8) );
+    0000045D ADr00r00         [ 4]  918 	lda	_shadow_PPUCTRL
+    00000460 29 20            [ 2]  919 	and	#0x20
+    00000462 F0 09            [ 4]  920 	beq	00153$
+    00000464 A2 10            [ 2]  921 	ldx	#0x10
+    00000466 86*04            [ 3]  922 	stx	*_main_sloc1_1_0
+    00000468 84*05            [ 3]  923 	sty	*(_main_sloc1_1_0 + 1)
+    0000046A 4Cr75r04         [ 3]  924 	jmp	00154$
+    0000046D                        925 00153$:
+    0000046D A2 08            [ 2]  926 	ldx	#0x08
+    0000046F 86*04            [ 3]  927 	stx	*_main_sloc1_1_0
+    00000471 A2 00            [ 2]  928 	ldx	#0x00
+    00000473 86*05            [ 3]  929 	stx	*(_main_sloc1_1_0 + 1)
+    00000475                        930 00154$:
+    00000475 AEr28r00         [ 4]  931 	ldx	(_main_y_50001_142 + 1)
+    00000478 ADr27r00         [ 4]  932 	lda	_main_y_50001_142
+    0000047B 38               [ 2]  933 	sec
+    0000047C E5*04            [ 3]  934 	sbc	*_main_sloc1_1_0
+    0000047E 48               [ 3]  935 	pha
+    0000047F 8A               [ 2]  936 	txa
+    00000480 E5*05            [ 3]  937 	sbc	*(_main_sloc1_1_0 + 1)
+    00000482 AA               [ 2]  938 	tax
+    00000483 68               [ 4]  939 	pla
+    00000484 8Dr00r00         [ 4]  940 	sta	___move_metasprite_flipy_PARM_3
+    00000487 8Er01r00         [ 4]  941 	stx	(___move_metasprite_flipy_PARM_3 + 1)
+    0000048A ADr26r00         [ 4]  942 	lda	(_main_x_50001_142 + 1)
+    0000048D 8Dr01r00         [ 4]  943 	sta	(___move_metasprite_flipy_PARM_2 + 1)
+    00000490 ADr25r00         [ 4]  944 	lda	_main_x_50001_142
+    00000493 8Dr00r00         [ 4]  945 	sta	___move_metasprite_flipy_PARM_2
+    00000496 A9 00            [ 2]  946 	lda	#0x00
+    00000498 20r00r00         [ 6]  947 	jsr	___move_metasprite_flipy
+                                    948 ;	src/metasprites.c: 258: DEVICE_SPRITE_PX_OFFSET_Y + (PosY >> 4));
+    0000049B 18               [ 2]  949 	clc
+    0000049C 65*03            [ 3]  950 	adc	*_main_sloc0_1_0
+                                    951 ;	src/metasprites.c: 259: break;
+    0000049E 4CrCAr06         [ 3]  952 	jmp	00129$
+                                    953 ;	src/metasprites.c: 260: case 2:
+    000004A1                        954 00126$:
+                                    955 ;	src/metasprites.c: 266: DEVICE_SPRITE_PX_OFFSET_Y + (PosY >> 4));
+    000004A1 AEr03r00         [ 4]  956 	ldx	(_PosY + 1)
+    000004A4 ADr02r00         [ 4]  957 	lda	_PosY
+    000004A7 86*00            [ 3]  958 	stx	*(REGTEMP+0)
+    000004A9 E0 80            [ 2]  959 	cpx	#0x80
+    000004AB 66*00            [ 5]  960 	ror	*(REGTEMP+0)
+    000004AD 6A               [ 2]  961 	ror	a
+    000004AE E0 80            [ 2]  962 	cpx	#0x80
+    000004B0 66*00            [ 5]  963 	ror	*(REGTEMP+0)
+    000004B2 6A               [ 2]  964 	ror	a
+    000004B3 E0 80            [ 2]  965 	cpx	#0x80
+    000004B5 66*00            [ 5]  966 	ror	*(REGTEMP+0)
+    000004B7 6A               [ 2]  967 	ror	a
+    000004B8 E0 80            [ 2]  968 	cpx	#0x80
+    000004BA 66*00            [ 5]  969 	ror	*(REGTEMP+0)
+    000004BC 6A               [ 2]  970 	ror	a
+    000004BD A6*00            [ 3]  971 	ldx	*(REGTEMP+0)
+    000004BF 18               [ 2]  972 	clc
+    000004C0 69 FF            [ 2]  973 	adc	#0xff
+    000004C2 48               [ 3]  974 	pha
+    000004C3 8A               [ 2]  975 	txa
+    000004C4 69 FF            [ 2]  976 	adc	#0xff
+    000004C6 AA               [ 2]  977 	tax
+    000004C7 68               [ 4]  978 	pla
+    000004C8 8Dr2Cr00         [ 4]  979 	sta	_main_y_50001_145
+    000004CB 8Er2Dr00         [ 4]  980 	stx	(_main_y_50001_145 + 1)
+                                    981 ;	src/metasprites.c: 265: DEVICE_SPRITE_PX_OFFSET_X + (PosX >> 4),
+    000004CE AEr01r00         [ 4]  982 	ldx	(_PosX + 1)
+    000004D1 ADr00r00         [ 4]  983 	lda	_PosX
+    000004D4 86*00            [ 3]  984 	stx	*(REGTEMP+0)
+    000004D6 E0 80            [ 2]  985 	cpx	#0x80
+    000004D8 66*00            [ 5]  986 	ror	*(REGTEMP+0)
+    000004DA 6A               [ 2]  987 	ror	a
+    000004DB E0 80            [ 2]  988 	cpx	#0x80
+    000004DD 66*00            [ 5]  989 	ror	*(REGTEMP+0)
+    000004DF 6A               [ 2]  990 	ror	a
+    000004E0 E0 80            [ 2]  991 	cpx	#0x80
+    000004E2 66*00            [ 5]  992 	ror	*(REGTEMP+0)
+    000004E4 6A               [ 2]  993 	ror	a
+    000004E5 E0 80            [ 2]  994 	cpx	#0x80
+    000004E7 66*00            [ 5]  995 	ror	*(REGTEMP+0)
+    000004E9 6A               [ 2]  996 	ror	a
+    000004EA A6*00            [ 3]  997 	ldx	*(REGTEMP+0)
+    000004EC 8Dr2Ar00         [ 4]  998 	sta	_main___400010019_40001_144
+    000004EF 8Er2Br00         [ 4]  999 	stx	(_main___400010019_40001_144 + 1)
+    000004F2 8Cr29r00         [ 4] 1000 	sty	_main___400010017_40001_144
+                                   1001 ;	src/metasprites.c: 262: TILE_NUM_START + get_tile_offset(1, 1),
+    000004F5 A9 01            [ 2] 1002 	lda	#0x01
+    000004F7 AA               [ 2] 1003 	tax
+    000004F8 20r30r01         [ 6] 1004 	jsr	_get_tile_offset
+    000004FB 8Dr00r00         [ 4] 1005 	sta	___current_base_tile
+                                   1006 ;	src/metasprites.c: 261: hiwater += move_metasprite_flipxy(sprite_metasprites[idx],
+    000004FE A2 00            [ 2] 1007 	ldx	#0x00
+    00000500 ADr09r00         [ 4] 1008 	lda	_idx
+    00000503 86*00            [ 3] 1009 	stx	*(REGTEMP+0)
+    00000505 0A               [ 2] 1010 	asl	a
+    00000506 26*00            [ 5] 1011 	rol	*(REGTEMP+0)
+    00000508 A6*00            [ 3] 1012 	ldx	*(REGTEMP+0)
+    0000050A 18               [ 2] 1013 	clc
+    0000050B 69r00            [ 2] 1014 	adc	#<(_sprite_metasprites+0)
+    0000050D 85*00            [ 3] 1015 	sta	*(DPTR+0)
+    0000050F 8A               [ 2] 1016 	txa
+    00000510 69s00            [ 2] 1017 	adc	#>(_sprite_metasprites+0)
+    00000512 85*01            [ 3] 1018 	sta	*(DPTR+1)
+    00000514 A0 01            [ 2] 1019 	ldy	#0x01
+    00000516 B1*00            [ 6] 1020 	lda	[DPTR],y
+    00000518 AA               [ 2] 1021 	tax
+    00000519 88               [ 2] 1022 	dey
+    0000051A B1*00            [ 6] 1023 	lda	[DPTR],y
+                                   1024 ;	../../../include/nes/metasprites.h: 209: __current_metasprite = metasprite;
+    0000051C 8Dr00r00         [ 4] 1025 	sta	___current_metasprite
+    0000051F 8Er01r00         [ 4] 1026 	stx	(___current_metasprite + 1)
+                                   1027 ;	../../../include/nes/metasprites.h: 211: __current_base_prop = base_prop;
+    00000522 ADr29r00         [ 4] 1028 	lda	_main___400010017_40001_144
+    00000525 8Dr00r00         [ 4] 1029 	sta	___current_base_prop
+                                   1030 ;	../../../include/nes/metasprites.h: 212: return __move_metasprite_flipxy(base_sprite, x - 8, y - ((shadow_PPUCTRL & PPUCTRL_SPR_8X16) ? 16 : 8));
+    00000528 AEr2Br00         [ 4] 1031 	ldx	(_main___400010019_40001_144 + 1)
+    0000052B ADr2Ar00         [ 4] 1032 	lda	_main___400010019_40001_144
+    0000052E 38               [ 2] 1033 	sec
+    0000052F E9 08            [ 2] 1034 	sbc	#0x08
+    00000531 B0 01            [ 4] 1035 	bcs	00345$
+    00000533 CA               [ 2] 1036 	dex
+    00000534                       1037 00345$:
+    00000534 85*04            [ 3] 1038 	sta	*_main_sloc1_1_0
+    00000536 86*05            [ 3] 1039 	stx	*(_main_sloc1_1_0 + 1)
+    00000538 ADr00r00         [ 4] 1040 	lda	_shadow_PPUCTRL
+    0000053B 29 20            [ 2] 1041 	and	#0x20
+    0000053D F0 09            [ 4] 1042 	beq	00155$
+    0000053F A2 10            [ 2] 1043 	ldx	#0x10
+    00000541 86*06            [ 3] 1044 	stx	*_main_sloc2_1_0
+    00000543 84*07            [ 3] 1045 	sty	*(_main_sloc2_1_0 + 1)
+    00000545 4Cr50r05         [ 3] 1046 	jmp	00156$
+    00000548                       1047 00155$:
+    00000548 A2 08            [ 2] 1048 	ldx	#0x08
+    0000054A 86*06            [ 3] 1049 	stx	*_main_sloc2_1_0
+    0000054C A2 00            [ 2] 1050 	ldx	#0x00
+    0000054E 86*07            [ 3] 1051 	stx	*(_main_sloc2_1_0 + 1)
+    00000550                       1052 00156$:
+    00000550 AEr2Dr00         [ 4] 1053 	ldx	(_main_y_50001_145 + 1)
+    00000553 ADr2Cr00         [ 4] 1054 	lda	_main_y_50001_145
+    00000556 38               [ 2] 1055 	sec
+    00000557 E5*06            [ 3] 1056 	sbc	*_main_sloc2_1_0
+    00000559 48               [ 3] 1057 	pha
+    0000055A 8A               [ 2] 1058 	txa
+    0000055B E5*07            [ 3] 1059 	sbc	*(_main_sloc2_1_0 + 1)
+    0000055D AA               [ 2] 1060 	tax
+    0000055E 68               [ 4] 1061 	pla
+    0000055F 8Dr00r00         [ 4] 1062 	sta	___move_metasprite_flipxy_PARM_3
+    00000562 8Er01r00         [ 4] 1063 	stx	(___move_metasprite_flipxy_PARM_3 + 1)
+    00000565 A5*05            [ 3] 1064 	lda	*(_main_sloc1_1_0 + 1)
+    00000567 8Dr01r00         [ 4] 1065 	sta	(___move_metasprite_flipxy_PARM_2 + 1)
+    0000056A A5*04            [ 3] 1066 	lda	*_main_sloc1_1_0
+    0000056C 8Dr00r00         [ 4] 1067 	sta	___move_metasprite_flipxy_PARM_2
+    0000056F A9 00            [ 2] 1068 	lda	#0x00
+    00000571 20r00r00         [ 6] 1069 	jsr	___move_metasprite_flipxy
+                                   1070 ;	src/metasprites.c: 266: DEVICE_SPRITE_PX_OFFSET_Y + (PosY >> 4));
+    00000574 18               [ 2] 1071 	clc
+    00000575 65*03            [ 3] 1072 	adc	*_main_sloc0_1_0
+                                   1073 ;	src/metasprites.c: 267: break;
+    00000577 4CrCAr06         [ 3] 1074 	jmp	00129$
+                                   1075 ;	src/metasprites.c: 268: case 3:
+    0000057A                       1076 00127$:
+                                   1077 ;	src/metasprites.c: 274: DEVICE_SPRITE_PX_OFFSET_Y + (PosY >> 4));
+    0000057A AEr03r00         [ 4] 1078 	ldx	(_PosY + 1)
+    0000057D ADr02r00         [ 4] 1079 	lda	_PosY
+    00000580 86*00            [ 3] 1080 	stx	*(REGTEMP+0)
+    00000582 E0 80            [ 2] 1081 	cpx	#0x80
+    00000584 66*00            [ 5] 1082 	ror	*(REGTEMP+0)
+    00000586 6A               [ 2] 1083 	ror	a
+    00000587 E0 80            [ 2] 1084 	cpx	#0x80
+    00000589 66*00            [ 5] 1085 	ror	*(REGTEMP+0)
+    0000058B 6A               [ 2] 1086 	ror	a
+    0000058C E0 80            [ 2] 1087 	cpx	#0x80
+    0000058E 66*00            [ 5] 1088 	ror	*(REGTEMP+0)
+    00000590 6A               [ 2] 1089 	ror	a
+    00000591 E0 80            [ 2] 1090 	cpx	#0x80
+    00000593 66*00            [ 5] 1091 	ror	*(REGTEMP+0)
+    00000595 6A               [ 2] 1092 	ror	a
+    00000596 A6*00            [ 3] 1093 	ldx	*(REGTEMP+0)
+    00000598 18               [ 2] 1094 	clc
+    00000599 69 FF            [ 2] 1095 	adc	#0xff
+    0000059B 48               [ 3] 1096 	pha
+    0000059C 8A               [ 2] 1097 	txa
+    0000059D 69 FF            [ 2] 1098 	adc	#0xff
+    0000059F AA               [ 2] 1099 	tax
+    000005A0 68               [ 4] 1100 	pla
+    000005A1 8Dr31r00         [ 4] 1101 	sta	_main___400010028_40001_147
+    000005A4 8Er32r00         [ 4] 1102 	stx	(_main___400010028_40001_147 + 1)
+                                   1103 ;	src/metasprites.c: 273: DEVICE_SPRITE_PX_OFFSET_X + (PosX >> 4),
+    000005A7 AEr01r00         [ 4] 1104 	ldx	(_PosX + 1)
+    000005AA ADr00r00         [ 4] 1105 	lda	_PosX
+    000005AD 86*00            [ 3] 1106 	stx	*(REGTEMP+0)
+    000005AF E0 80            [ 2] 1107 	cpx	#0x80
+    000005B1 66*00            [ 5] 1108 	ror	*(REGTEMP+0)
+    000005B3 6A               [ 2] 1109 	ror	a
+    000005B4 E0 80            [ 2] 1110 	cpx	#0x80
+    000005B6 66*00            [ 5] 1111 	ror	*(REGTEMP+0)
+    000005B8 6A               [ 2] 1112 	ror	a
+    000005B9 E0 80            [ 2] 1113 	cpx	#0x80
+    000005BB 66*00            [ 5] 1114 	ror	*(REGTEMP+0)
+    000005BD 6A               [ 2] 1115 	ror	a
+    000005BE E0 80            [ 2] 1116 	cpx	#0x80
+    000005C0 66*00            [ 5] 1117 	ror	*(REGTEMP+0)
+    000005C2 6A               [ 2] 1118 	ror	a
+    000005C3 A6*00            [ 3] 1119 	ldx	*(REGTEMP+0)
+    000005C5 8Dr2Fr00         [ 4] 1120 	sta	_main___400010027_40001_147
+    000005C8 8Er30r00         [ 4] 1121 	stx	(_main___400010027_40001_147 + 1)
+    000005CB 8Cr2Er00         [ 4] 1122 	sty	_main___400010025_40001_147
+                                   1123 ;	src/metasprites.c: 270: TILE_NUM_START + get_tile_offset(1, 0),
+    000005CE A9 01            [ 2] 1124 	lda	#0x01
+    000005D0 A2 00            [ 2] 1125 	ldx	#0x00
+    000005D2 20r30r01         [ 6] 1126 	jsr	_get_tile_offset
+    000005D5 8Dr00r00         [ 4] 1127 	sta	___current_base_tile
+                                   1128 ;	src/metasprites.c: 269: hiwater += move_metasprite_flipx( sprite_metasprites[idx],
+    000005D8 A2 00            [ 2] 1129 	ldx	#0x00
+    000005DA ADr09r00         [ 4] 1130 	lda	_idx
+    000005DD 86*00            [ 3] 1131 	stx	*(REGTEMP+0)
+    000005DF 0A               [ 2] 1132 	asl	a
+    000005E0 26*00            [ 5] 1133 	rol	*(REGTEMP+0)
+    000005E2 A6*00            [ 3] 1134 	ldx	*(REGTEMP+0)
+    000005E4 18               [ 2] 1135 	clc
+    000005E5 69r00            [ 2] 1136 	adc	#<(_sprite_metasprites+0)
+    000005E7 85*00            [ 3] 1137 	sta	*(DPTR+0)
+    000005E9 8A               [ 2] 1138 	txa
+    000005EA 69s00            [ 2] 1139 	adc	#>(_sprite_metasprites+0)
+    000005EC 85*01            [ 3] 1140 	sta	*(DPTR+1)
+    000005EE A0 01            [ 2] 1141 	ldy	#0x01
+    000005F0 B1*00            [ 6] 1142 	lda	[DPTR],y
+    000005F2 AA               [ 2] 1143 	tax
+    000005F3 88               [ 2] 1144 	dey
+    000005F4 B1*00            [ 6] 1145 	lda	[DPTR],y
+                                   1146 ;	../../../include/nes/metasprites.h: 130: __current_metasprite = metasprite;
+    000005F6 8Dr00r00         [ 4] 1147 	sta	___current_metasprite
+    000005F9 8Er01r00         [ 4] 1148 	stx	(___current_metasprite + 1)
+                                   1149 ;	../../../include/nes/metasprites.h: 132: __current_base_prop = base_prop;
+    000005FC ADr2Er00         [ 4] 1150 	lda	_main___400010025_40001_147
+    000005FF 8Dr00r00         [ 4] 1151 	sta	___current_base_prop
+                                   1152 ;	../../../include/nes/metasprites.h: 133: return __move_metasprite_flipx(base_sprite, x - 8, y);
+    00000602 AEr30r00         [ 4] 1153 	ldx	(_main___400010027_40001_147 + 1)
+    00000605 ADr2Fr00         [ 4] 1154 	lda	_main___400010027_40001_147
+    00000608 38               [ 2] 1155 	sec
+    00000609 E9 08            [ 2] 1156 	sbc	#0x08
+    0000060B B0 01            [ 4] 1157 	bcs	00347$
+    0000060D CA               [ 2] 1158 	dex
+    0000060E                       1159 00347$:
+    0000060E 8Dr00r00         [ 4] 1160 	sta	___move_metasprite_flipx_PARM_2
+    00000611 8Er01r00         [ 4] 1161 	stx	(___move_metasprite_flipx_PARM_2 + 1)
+    00000614 ADr32r00         [ 4] 1162 	lda	(_main___400010028_40001_147 + 1)
+    00000617 8Dr01r00         [ 4] 1163 	sta	(___move_metasprite_flipx_PARM_3 + 1)
+    0000061A ADr31r00         [ 4] 1164 	lda	_main___400010028_40001_147
+    0000061D 8Dr00r00         [ 4] 1165 	sta	___move_metasprite_flipx_PARM_3
+    00000620 98               [ 2] 1166 	tya
+    00000621 20r00r00         [ 6] 1167 	jsr	___move_metasprite_flipx
+                                   1168 ;	src/metasprites.c: 275: break;
+    00000624 4CrCAr06         [ 3] 1169 	jmp	00129$
+                                   1170 ;	src/metasprites.c: 276: default:
+    00000627                       1171 00128$:
+                                   1172 ;	src/metasprites.c: 282: DEVICE_SPRITE_PX_OFFSET_Y + (PosY >> 4));
+    00000627 AEr03r00         [ 4] 1173 	ldx	(_PosY + 1)
+    0000062A ADr02r00         [ 4] 1174 	lda	_PosY
+    0000062D 86*00            [ 3] 1175 	stx	*(REGTEMP+0)
+    0000062F E0 80            [ 2] 1176 	cpx	#0x80
+    00000631 66*00            [ 5] 1177 	ror	*(REGTEMP+0)
+    00000633 6A               [ 2] 1178 	ror	a
+    00000634 E0 80            [ 2] 1179 	cpx	#0x80
+    00000636 66*00            [ 5] 1180 	ror	*(REGTEMP+0)
+    00000638 6A               [ 2] 1181 	ror	a
+    00000639 E0 80            [ 2] 1182 	cpx	#0x80
+    0000063B 66*00            [ 5] 1183 	ror	*(REGTEMP+0)
+    0000063D 6A               [ 2] 1184 	ror	a
+    0000063E E0 80            [ 2] 1185 	cpx	#0x80
+    00000640 66*00            [ 5] 1186 	ror	*(REGTEMP+0)
+    00000642 6A               [ 2] 1187 	ror	a
+    00000643 A6*00            [ 3] 1188 	ldx	*(REGTEMP+0)
+    00000645 18               [ 2] 1189 	clc
+    00000646 69 FF            [ 2] 1190 	adc	#0xff
+    00000648 48               [ 3] 1191 	pha
+    00000649 8A               [ 2] 1192 	txa
+    0000064A 69 FF            [ 2] 1193 	adc	#0xff
+    0000064C AA               [ 2] 1194 	tax
+    0000064D 68               [ 4] 1195 	pla
+    0000064E 8Dr36r00         [ 4] 1196 	sta	_main___400010036_40001_150
+    00000651 8Er37r00         [ 4] 1197 	stx	(_main___400010036_40001_150 + 1)
+                                   1198 ;	src/metasprites.c: 281: DEVICE_SPRITE_PX_OFFSET_X + (PosX >> 4),
+    00000654 AEr01r00         [ 4] 1199 	ldx	(_PosX + 1)
+    00000657 ADr00r00         [ 4] 1200 	lda	_PosX
+    0000065A 86*00            [ 3] 1201 	stx	*(REGTEMP+0)
+    0000065C E0 80            [ 2] 1202 	cpx	#0x80
+    0000065E 66*00            [ 5] 1203 	ror	*(REGTEMP+0)
+    00000660 6A               [ 2] 1204 	ror	a
+    00000661 E0 80            [ 2] 1205 	cpx	#0x80
+    00000663 66*00            [ 5] 1206 	ror	*(REGTEMP+0)
+    00000665 6A               [ 2] 1207 	ror	a
+    00000666 E0 80            [ 2] 1208 	cpx	#0x80
+    00000668 66*00            [ 5] 1209 	ror	*(REGTEMP+0)
+    0000066A 6A               [ 2] 1210 	ror	a
+    0000066B E0 80            [ 2] 1211 	cpx	#0x80
+    0000066D 66*00            [ 5] 1212 	ror	*(REGTEMP+0)
+    0000066F 6A               [ 2] 1213 	ror	a
+    00000670 A6*00            [ 3] 1214 	ldx	*(REGTEMP+0)
+    00000672 8Dr34r00         [ 4] 1215 	sta	_main___400010035_40001_150
+    00000675 8Er35r00         [ 4] 1216 	stx	(_main___400010035_40001_150 + 1)
+    00000678 8Cr33r00         [ 4] 1217 	sty	_main___400010033_40001_150
+                                   1218 ;	src/metasprites.c: 278: TILE_NUM_START + get_tile_offset(0, 0),
+    0000067B A9 00            [ 2] 1219 	lda	#0x00
+    0000067D AA               [ 2] 1220 	tax
+    0000067E 20r30r01         [ 6] 1221 	jsr	_get_tile_offset
+    00000681 8Dr00r00         [ 4] 1222 	sta	___current_base_tile
+                                   1223 ;	src/metasprites.c: 277: hiwater += move_metasprite_ex(    sprite_metasprites[idx],
+    00000684 A2 00            [ 2] 1224 	ldx	#0x00
+    00000686 ADr09r00         [ 4] 1225 	lda	_idx
+    00000689 86*00            [ 3] 1226 	stx	*(REGTEMP+0)
+    0000068B 0A               [ 2] 1227 	asl	a
+    0000068C 26*00            [ 5] 1228 	rol	*(REGTEMP+0)
+    0000068E A6*00            [ 3] 1229 	ldx	*(REGTEMP+0)
+    00000690 18               [ 2] 1230 	clc
+    00000691 69r00            [ 2] 1231 	adc	#<(_sprite_metasprites+0)
+    00000693 85*00            [ 3] 1232 	sta	*(DPTR+0)
+    00000695 8A               [ 2] 1233 	txa
+    00000696 69s00            [ 2] 1234 	adc	#>(_sprite_metasprites+0)
+    00000698 85*01            [ 3] 1235 	sta	*(DPTR+1)
+    0000069A A0 01            [ 2] 1236 	ldy	#0x01
+    0000069C B1*00            [ 6] 1237 	lda	[DPTR],y
+    0000069E AA               [ 2] 1238 	tax
+    0000069F 88               [ 2] 1239 	dey
+    000006A0 B1*00            [ 6] 1240 	lda	[DPTR],y
+                                   1241 ;	../../../include/nes/metasprites.h: 91: __current_metasprite = metasprite;
+    000006A2 8Dr00r00         [ 4] 1242 	sta	___current_metasprite
+    000006A5 8Er01r00         [ 4] 1243 	stx	(___current_metasprite + 1)
+                                   1244 ;	../../../include/nes/metasprites.h: 93: __current_base_prop = base_prop;
+    000006A8 ADr33r00         [ 4] 1245 	lda	_main___400010033_40001_150
+    000006AB 8Dr00r00         [ 4] 1246 	sta	___current_base_prop
+                                   1247 ;	../../../include/nes/metasprites.h: 94: return __move_metasprite(base_sprite, x, y);
+    000006AE ADr35r00         [ 4] 1248 	lda	(_main___400010035_40001_150 + 1)
+    000006B1 8Dr01r00         [ 4] 1249 	sta	(___move_metasprite_PARM_2 + 1)
+    000006B4 ADr34r00         [ 4] 1250 	lda	_main___400010035_40001_150
+    000006B7 8Dr00r00         [ 4] 1251 	sta	___move_metasprite_PARM_2
+    000006BA ADr37r00         [ 4] 1252 	lda	(_main___400010036_40001_150 + 1)
+    000006BD 8Dr01r00         [ 4] 1253 	sta	(___move_metasprite_PARM_3 + 1)
+    000006C0 ADr36r00         [ 4] 1254 	lda	_main___400010036_40001_150
+    000006C3 8Dr00r00         [ 4] 1255 	sta	___move_metasprite_PARM_3
+    000006C6 98               [ 2] 1256 	tya
+    000006C7 20r00r00         [ 6] 1257 	jsr	___move_metasprite
+                                   1258 ;	src/metasprites.c: 284: }
+    000006CA                       1259 00129$:
+                                   1260 ;	src/metasprites.c: 287: hide_sprites_range(hiwater, MAX_HARDWARE_SPRITES);        
+    000006CA A2 40            [ 2] 1261 	ldx	#0x40
+    000006CC 20r00r00         [ 6] 1262 	jsr	_hide_sprites_range
+                                   1263 ;	src/metasprites.c: 290: if (!(PosF & ACC_Y)) {
+    000006CF ADr08r00         [ 4] 1264 	lda	_PosF
+    000006D2 29 02            [ 2] 1265 	and	#0x02
+    000006D4 D0 3C            [ 4] 1266 	bne	00136$
+                                   1267 ;	src/metasprites.c: 291: if (SpdY != 0) {
+    000006D6 ADr07r00         [ 4] 1268 	lda	(_SpdY + 1)
+    000006D9 0Dr06r00         [ 4] 1269 	ora	_SpdY
+    000006DC F0 34            [ 4] 1270 	beq	00136$
+                                   1271 ;	src/metasprites.c: 292: if (SpdY > 0) SpdY--;
+    000006DE AEr07r00         [ 4] 1272 	ldx	(_SpdY + 1)
+    000006E1 ADr06r00         [ 4] 1273 	lda	_SpdY
+    000006E4 85*00            [ 3] 1274 	sta	*(REGTEMP+0)
+    000006E6 A9 00            [ 2] 1275 	lda	#0x00
+    000006E8 38               [ 2] 1276 	sec
+    000006E9 E5*00            [ 3] 1277 	sbc	*(REGTEMP+0)
+    000006EB A9 00            [ 2] 1278 	lda	#0x00
+    000006ED 86*00            [ 3] 1279 	stx	*(REGTEMP+0)
+    000006EF E5*00            [ 3] 1280 	sbc	*(REGTEMP+0)
+    000006F1 50 04            [ 4] 1281 	bvc	00352$
+    000006F3 10 04            [ 4] 1282 	bpl	00351$
+    000006F5 30 13            [ 4] 1283 	bmi	00131$
+    000006F7                       1284 00352$:
+    000006F7 10 11            [ 4] 1285 	bpl	00131$
+    000006F9                       1286 00351$:
+    000006F9 38               [ 2] 1287 	sec
+    000006FA ADr06r00         [ 4] 1288 	lda	_SpdY
+    000006FD E9 01            [ 2] 1289 	sbc	#0x01
+    000006FF 8Dr06r00         [ 4] 1290 	sta	_SpdY
+    00000702 B0 0E            [ 4] 1291 	bcs	00136$
+    00000704 CEr07r00         [ 6] 1292 	dec	(_SpdY + 1)
+    00000707 4Cr12r07         [ 3] 1293 	jmp	00136$
+    0000070A                       1294 00131$:
+                                   1295 ;	src/metasprites.c: 293: else SpdY ++;
+    0000070A EEr06r00         [ 6] 1296 	inc	_SpdY
+    0000070D D0 03            [ 4] 1297 	bne	00355$
+    0000070F EEr07r00         [ 6] 1298 	inc	(_SpdY + 1)
+    00000712                       1299 00355$:
+    00000712                       1300 00136$:
+                                   1301 ;	src/metasprites.c: 298: if (!(PosF & ACC_X)) {
+    00000712 ADr08r00         [ 4] 1302 	lda	_PosF
+    00000715 29 01            [ 2] 1303 	and	#0x01
+    00000717 D0 3C            [ 4] 1304 	bne	00143$
+                                   1305 ;	src/metasprites.c: 299: if (SpdX != 0) {
+    00000719 ADr05r00         [ 4] 1306 	lda	(_SpdX + 1)
+    0000071C 0Dr04r00         [ 4] 1307 	ora	_SpdX
+    0000071F F0 34            [ 4] 1308 	beq	00143$
+                                   1309 ;	src/metasprites.c: 300: if (SpdX > 0) SpdX--;
+    00000721 AEr05r00         [ 4] 1310 	ldx	(_SpdX + 1)
+    00000724 ADr04r00         [ 4] 1311 	lda	_SpdX
+    00000727 85*00            [ 3] 1312 	sta	*(REGTEMP+0)
+    00000729 A9 00            [ 2] 1313 	lda	#0x00
+    0000072B 38               [ 2] 1314 	sec
+    0000072C E5*00            [ 3] 1315 	sbc	*(REGTEMP+0)
+    0000072E A9 00            [ 2] 1316 	lda	#0x00
+    00000730 86*00            [ 3] 1317 	stx	*(REGTEMP+0)
+    00000732 E5*00            [ 3] 1318 	sbc	*(REGTEMP+0)
+    00000734 50 04            [ 4] 1319 	bvc	00360$
+    00000736 10 04            [ 4] 1320 	bpl	00359$
+    00000738 30 13            [ 4] 1321 	bmi	00138$
+    0000073A                       1322 00360$:
+    0000073A 10 11            [ 4] 1323 	bpl	00138$
+    0000073C                       1324 00359$:
+    0000073C 38               [ 2] 1325 	sec
+    0000073D ADr04r00         [ 4] 1326 	lda	_SpdX
+    00000740 E9 01            [ 2] 1327 	sbc	#0x01
+    00000742 8Dr04r00         [ 4] 1328 	sta	_SpdX
+    00000745 B0 0E            [ 4] 1329 	bcs	00143$
+    00000747 CEr05r00         [ 6] 1330 	dec	(_SpdX + 1)
+    0000074A 4Cr55r07         [ 3] 1331 	jmp	00143$
+    0000074D                       1332 00138$:
+                                   1333 ;	src/metasprites.c: 301: else SpdX ++;
+    0000074D EEr04r00         [ 6] 1334 	inc	_SpdX
+    00000750 D0 03            [ 4] 1335 	bne	00363$
+    00000752 EEr05r00         [ 6] 1336 	inc	(_SpdX + 1)
+    00000755                       1337 00363$:
+    00000755                       1338 00143$:
+                                   1339 ;	src/metasprites.c: 307: vsync();
+    00000755 20r00r00         [ 6] 1340 	jsr	_vsync
+    00000758 4Cr45r02         [ 3] 1341 	jmp	00145$
+                                   1342 ;	src/metasprites.c: 309: }
+    0000075B 60               [ 6] 1343 	rts
+                                   1344 	.area _CODE
+    0000075C                       1345 _pattern:
+    0000075C 80                    1346 	.db #0x80	; 128
+    0000075D 80                    1347 	.db #0x80	; 128
+    0000075E 40                    1348 	.db #0x40	; 64
+    0000075F 40                    1349 	.db #0x40	; 64
+    00000760 20                    1350 	.db #0x20	; 32
+    00000761 20                    1351 	.db #0x20	; 32
+    00000762 10                    1352 	.db #0x10	; 16
+    00000763 10                    1353 	.db #0x10	; 16
+    00000764 08                    1354 	.db #0x08	; 8
+    00000765 08                    1355 	.db #0x08	; 8
+    00000766 04                    1356 	.db #0x04	; 4
+    00000767 04                    1357 	.db #0x04	; 4
+    00000768 02                    1358 	.db #0x02	; 2
+    00000769 02                    1359 	.db #0x02	; 2
+    0000076A 01                    1360 	.db #0x01	; 1
+    0000076B 01                    1361 	.db #0x01	; 1
+    0000076C                       1362 _reverse_bits:
+    0000076C 00                    1363 	.db #0x00	; 0
+    0000076D 80                    1364 	.db #0x80	; 128
+    0000076E 40                    1365 	.db #0x40	; 64
+    0000076F C0                    1366 	.db #0xc0	; 192
+    00000770 20                    1367 	.db #0x20	; 32
+    00000771 A0                    1368 	.db #0xa0	; 160
+    00000772 60                    1369 	.db #0x60	; 96
+    00000773 E0                    1370 	.db #0xe0	; 224
+    00000774 10                    1371 	.db #0x10	; 16
+    00000775 90                    1372 	.db #0x90	; 144
+    00000776 50                    1373 	.db #0x50	; 80	'P'
+    00000777 D0                    1374 	.db #0xd0	; 208
+    00000778 30                    1375 	.db #0x30	; 48	'0'
+    00000779 B0                    1376 	.db #0xb0	; 176
+    0000077A 70                    1377 	.db #0x70	; 112	'p'
+    0000077B F0                    1378 	.db #0xf0	; 240
+    0000077C 08                    1379 	.db #0x08	; 8
+    0000077D 88                    1380 	.db #0x88	; 136
+    0000077E 48                    1381 	.db #0x48	; 72	'H'
+    0000077F C8                    1382 	.db #0xc8	; 200
+    00000780 28                    1383 	.db #0x28	; 40
+    00000781 A8                    1384 	.db #0xa8	; 168
+    00000782 68                    1385 	.db #0x68	; 104	'h'
+    00000783 E8                    1386 	.db #0xe8	; 232
+    00000784 18                    1387 	.db #0x18	; 24
+    00000785 98                    1388 	.db #0x98	; 152
+    00000786 58                    1389 	.db #0x58	; 88	'X'
+    00000787 D8                    1390 	.db #0xd8	; 216
+    00000788 38                    1391 	.db #0x38	; 56	'8'
+    00000789 B8                    1392 	.db #0xb8	; 184
+    0000078A 78                    1393 	.db #0x78	; 120	'x'
+    0000078B F8                    1394 	.db #0xf8	; 248
+    0000078C 04                    1395 	.db #0x04	; 4
+    0000078D 84                    1396 	.db #0x84	; 132
+    0000078E 44                    1397 	.db #0x44	; 68	'D'
+    0000078F C4                    1398 	.db #0xc4	; 196
+    00000790 24                    1399 	.db #0x24	; 36
+    00000791 A4                    1400 	.db #0xa4	; 164
+    00000792 64                    1401 	.db #0x64	; 100	'd'
+    00000793 E4                    1402 	.db #0xe4	; 228
+    00000794 14                    1403 	.db #0x14	; 20
+    00000795 94                    1404 	.db #0x94	; 148
+    00000796 54                    1405 	.db #0x54	; 84	'T'
+    00000797 D4                    1406 	.db #0xd4	; 212
+    00000798 34                    1407 	.db #0x34	; 52	'4'
+    00000799 B4                    1408 	.db #0xb4	; 180
+    0000079A 74                    1409 	.db #0x74	; 116	't'
+    0000079B F4                    1410 	.db #0xf4	; 244
+    0000079C 0C                    1411 	.db #0x0c	; 12
+    0000079D 8C                    1412 	.db #0x8c	; 140
+    0000079E 4C                    1413 	.db #0x4c	; 76	'L'
+    0000079F CC                    1414 	.db #0xcc	; 204
+    000007A0 2C                    1415 	.db #0x2c	; 44
+    000007A1 AC                    1416 	.db #0xac	; 172
+    000007A2 6C                    1417 	.db #0x6c	; 108	'l'
+    000007A3 EC                    1418 	.db #0xec	; 236
+    000007A4 1C                    1419 	.db #0x1c	; 28
+    000007A5 9C                    1420 	.db #0x9c	; 156
+    000007A6 5C                    1421 	.db #0x5c	; 92
+    000007A7 DC                    1422 	.db #0xdc	; 220
+    000007A8 3C                    1423 	.db #0x3c	; 60
+    000007A9 BC                    1424 	.db #0xbc	; 188
+    000007AA 7C                    1425 	.db #0x7c	; 124
+    000007AB FC                    1426 	.db #0xfc	; 252
+    000007AC 02                    1427 	.db #0x02	; 2
+    000007AD 82                    1428 	.db #0x82	; 130
+    000007AE 42                    1429 	.db #0x42	; 66	'B'
+    000007AF C2                    1430 	.db #0xc2	; 194
+    000007B0 22                    1431 	.db #0x22	; 34
+    000007B1 A2                    1432 	.db #0xa2	; 162
+    000007B2 62                    1433 	.db #0x62	; 98	'b'
+    000007B3 E2                    1434 	.db #0xe2	; 226
+    000007B4 12                    1435 	.db #0x12	; 18
+    000007B5 92                    1436 	.db #0x92	; 146
+    000007B6 52                    1437 	.db #0x52	; 82	'R'
+    000007B7 D2                    1438 	.db #0xd2	; 210
+    000007B8 32                    1439 	.db #0x32	; 50	'2'
+    000007B9 B2                    1440 	.db #0xb2	; 178
+    000007BA 72                    1441 	.db #0x72	; 114	'r'
+    000007BB F2                    1442 	.db #0xf2	; 242
+    000007BC 0A                    1443 	.db #0x0a	; 10
+    000007BD 8A                    1444 	.db #0x8a	; 138
+    000007BE 4A                    1445 	.db #0x4a	; 74	'J'
+    000007BF CA                    1446 	.db #0xca	; 202
+    000007C0 2A                    1447 	.db #0x2a	; 42
+    000007C1 AA                    1448 	.db #0xaa	; 170
+    000007C2 6A                    1449 	.db #0x6a	; 106	'j'
+    000007C3 EA                    1450 	.db #0xea	; 234
+    000007C4 1A                    1451 	.db #0x1a	; 26
+    000007C5 9A                    1452 	.db #0x9a	; 154
+    000007C6 5A                    1453 	.db #0x5a	; 90	'Z'
+    000007C7 DA                    1454 	.db #0xda	; 218
+    000007C8 3A                    1455 	.db #0x3a	; 58
+    000007C9 BA                    1456 	.db #0xba	; 186
+    000007CA 7A                    1457 	.db #0x7a	; 122	'z'
+    000007CB FA                    1458 	.db #0xfa	; 250
+    000007CC 06                    1459 	.db #0x06	; 6
+    000007CD 86                    1460 	.db #0x86	; 134
+    000007CE 46                    1461 	.db #0x46	; 70	'F'
+    000007CF C6                    1462 	.db #0xc6	; 198
+    000007D0 26                    1463 	.db #0x26	; 38
+    000007D1 A6                    1464 	.db #0xa6	; 166
+    000007D2 66                    1465 	.db #0x66	; 102	'f'
+    000007D3 E6                    1466 	.db #0xe6	; 230
+    000007D4 16                    1467 	.db #0x16	; 22
+    000007D5 96                    1468 	.db #0x96	; 150
+    000007D6 56                    1469 	.db #0x56	; 86	'V'
+    000007D7 D6                    1470 	.db #0xd6	; 214
+    000007D8 36                    1471 	.db #0x36	; 54	'6'
+    000007D9 B6                    1472 	.db #0xb6	; 182
+    000007DA 76                    1473 	.db #0x76	; 118	'v'
+    000007DB F6                    1474 	.db #0xf6	; 246
+    000007DC 0E                    1475 	.db #0x0e	; 14
+    000007DD 8E                    1476 	.db #0x8e	; 142
+    000007DE 4E                    1477 	.db #0x4e	; 78	'N'
+    000007DF CE                    1478 	.db #0xce	; 206
+    000007E0 2E                    1479 	.db #0x2e	; 46
+    000007E1 AE                    1480 	.db #0xae	; 174
+    000007E2 6E                    1481 	.db #0x6e	; 110	'n'
+    000007E3 EE                    1482 	.db #0xee	; 238
+    000007E4 1E                    1483 	.db #0x1e	; 30
+    000007E5 9E                    1484 	.db #0x9e	; 158
+    000007E6 5E                    1485 	.db #0x5e	; 94
+    000007E7 DE                    1486 	.db #0xde	; 222
+    000007E8 3E                    1487 	.db #0x3e	; 62
+    000007E9 BE                    1488 	.db #0xbe	; 190
+    000007EA 7E                    1489 	.db #0x7e	; 126
+    000007EB FE                    1490 	.db #0xfe	; 254
+    000007EC 01                    1491 	.db #0x01	; 1
+    000007ED 81                    1492 	.db #0x81	; 129
+    000007EE 41                    1493 	.db #0x41	; 65	'A'
+    000007EF C1                    1494 	.db #0xc1	; 193
+    000007F0 21                    1495 	.db #0x21	; 33
+    000007F1 A1                    1496 	.db #0xa1	; 161
+    000007F2 61                    1497 	.db #0x61	; 97	'a'
+    000007F3 E1                    1498 	.db #0xe1	; 225
+    000007F4 11                    1499 	.db #0x11	; 17
+    000007F5 91                    1500 	.db #0x91	; 145
+    000007F6 51                    1501 	.db #0x51	; 81	'Q'
+    000007F7 D1                    1502 	.db #0xd1	; 209
+    000007F8 31                    1503 	.db #0x31	; 49	'1'
+    000007F9 B1                    1504 	.db #0xb1	; 177
+    000007FA 71                    1505 	.db #0x71	; 113	'q'
+    000007FB F1                    1506 	.db #0xf1	; 241
+    000007FC 09                    1507 	.db #0x09	; 9
+    000007FD 89                    1508 	.db #0x89	; 137
+    000007FE 49                    1509 	.db #0x49	; 73	'I'
+    000007FF C9                    1510 	.db #0xc9	; 201
+    00000800 29                    1511 	.db #0x29	; 41
+    00000801 A9                    1512 	.db #0xa9	; 169
+    00000802 69                    1513 	.db #0x69	; 105	'i'
+    00000803 E9                    1514 	.db #0xe9	; 233
+    00000804 19                    1515 	.db #0x19	; 25
+    00000805 99                    1516 	.db #0x99	; 153
+    00000806 59                    1517 	.db #0x59	; 89	'Y'
+    00000807 D9                    1518 	.db #0xd9	; 217
+    00000808 39                    1519 	.db #0x39	; 57	'9'
+    00000809 B9                    1520 	.db #0xb9	; 185
+    0000080A 79                    1521 	.db #0x79	; 121	'y'
+    0000080B F9                    1522 	.db #0xf9	; 249
+    0000080C 05                    1523 	.db #0x05	; 5
+    0000080D 85                    1524 	.db #0x85	; 133
+    0000080E 45                    1525 	.db #0x45	; 69	'E'
+    0000080F C5                    1526 	.db #0xc5	; 197
+    00000810 25                    1527 	.db #0x25	; 37
+    00000811 A5                    1528 	.db #0xa5	; 165
+    00000812 65                    1529 	.db #0x65	; 101	'e'
+    00000813 E5                    1530 	.db #0xe5	; 229
+    00000814 15                    1531 	.db #0x15	; 21
+    00000815 95                    1532 	.db #0x95	; 149
+    00000816 55                    1533 	.db #0x55	; 85	'U'
+    00000817 D5                    1534 	.db #0xd5	; 213
+    00000818 35                    1535 	.db #0x35	; 53	'5'
+    00000819 B5                    1536 	.db #0xb5	; 181
+    0000081A 75                    1537 	.db #0x75	; 117	'u'
+    0000081B F5                    1538 	.db #0xf5	; 245
+    0000081C 0D                    1539 	.db #0x0d	; 13
+    0000081D 8D                    1540 	.db #0x8d	; 141
+    0000081E 4D                    1541 	.db #0x4d	; 77	'M'
+    0000081F CD                    1542 	.db #0xcd	; 205
+    00000820 2D                    1543 	.db #0x2d	; 45
+    00000821 AD                    1544 	.db #0xad	; 173
+    00000822 6D                    1545 	.db #0x6d	; 109	'm'
+    00000823 ED                    1546 	.db #0xed	; 237
+    00000824 1D                    1547 	.db #0x1d	; 29
+    00000825 9D                    1548 	.db #0x9d	; 157
+    00000826 5D                    1549 	.db #0x5d	; 93
+    00000827 DD                    1550 	.db #0xdd	; 221
+    00000828 3D                    1551 	.db #0x3d	; 61
+    00000829 BD                    1552 	.db #0xbd	; 189
+    0000082A 7D                    1553 	.db #0x7d	; 125
+    0000082B FD                    1554 	.db #0xfd	; 253
+    0000082C 03                    1555 	.db #0x03	; 3
+    0000082D 83                    1556 	.db #0x83	; 131
+    0000082E 43                    1557 	.db #0x43	; 67	'C'
+    0000082F C3                    1558 	.db #0xc3	; 195
+    00000830 23                    1559 	.db #0x23	; 35
+    00000831 A3                    1560 	.db #0xa3	; 163
+    00000832 63                    1561 	.db #0x63	; 99	'c'
+    00000833 E3                    1562 	.db #0xe3	; 227
+    00000834 13                    1563 	.db #0x13	; 19
+    00000835 93                    1564 	.db #0x93	; 147
+    00000836 53                    1565 	.db #0x53	; 83	'S'
+    00000837 D3                    1566 	.db #0xd3	; 211
+    00000838 33                    1567 	.db #0x33	; 51	'3'
+    00000839 B3                    1568 	.db #0xb3	; 179
+    0000083A 73                    1569 	.db #0x73	; 115	's'
+    0000083B F3                    1570 	.db #0xf3	; 243
+    0000083C 0B                    1571 	.db #0x0b	; 11
+    0000083D 8B                    1572 	.db #0x8b	; 139
+    0000083E 4B                    1573 	.db #0x4b	; 75	'K'
+    0000083F CB                    1574 	.db #0xcb	; 203
+    00000840 2B                    1575 	.db #0x2b	; 43
+    00000841 AB                    1576 	.db #0xab	; 171
+    00000842 6B                    1577 	.db #0x6b	; 107	'k'
+    00000843 EB                    1578 	.db #0xeb	; 235
+    00000844 1B                    1579 	.db #0x1b	; 27
+    00000845 9B                    1580 	.db #0x9b	; 155
+    00000846 5B                    1581 	.db #0x5b	; 91
+    00000847 DB                    1582 	.db #0xdb	; 219
+    00000848 3B                    1583 	.db #0x3b	; 59
+    00000849 BB                    1584 	.db #0xbb	; 187
+    0000084A 7B                    1585 	.db #0x7b	; 123
+    0000084B FB                    1586 	.db #0xfb	; 251
+    0000084C 07                    1587 	.db #0x07	; 7
+    0000084D 87                    1588 	.db #0x87	; 135
+    0000084E 47                    1589 	.db #0x47	; 71	'G'
+    0000084F C7                    1590 	.db #0xc7	; 199
+    00000850 27                    1591 	.db #0x27	; 39
+    00000851 A7                    1592 	.db #0xa7	; 167
+    00000852 67                    1593 	.db #0x67	; 103	'g'
+    00000853 E7                    1594 	.db #0xe7	; 231
+    00000854 17                    1595 	.db #0x17	; 23
+    00000855 97                    1596 	.db #0x97	; 151
+    00000856 57                    1597 	.db #0x57	; 87	'W'
+    00000857 D7                    1598 	.db #0xd7	; 215
+    00000858 37                    1599 	.db #0x37	; 55	'7'
+    00000859 B7                    1600 	.db #0xb7	; 183
+    0000085A 77                    1601 	.db #0x77	; 119	'w'
+    0000085B F7                    1602 	.db #0xf7	; 247
+    0000085C 0F                    1603 	.db #0x0f	; 15
+    0000085D 8F                    1604 	.db #0x8f	; 143
+    0000085E 4F                    1605 	.db #0x4f	; 79	'O'
+    0000085F CF                    1606 	.db #0xcf	; 207
+    00000860 2F                    1607 	.db #0x2f	; 47
+    00000861 AF                    1608 	.db #0xaf	; 175
+    00000862 6F                    1609 	.db #0x6f	; 111	'o'
+    00000863 EF                    1610 	.db #0xef	; 239
+    00000864 1F                    1611 	.db #0x1f	; 31
+    00000865 9F                    1612 	.db #0x9f	; 159
+    00000866 5F                    1613 	.db #0x5f	; 95
+    00000867 DF                    1614 	.db #0xdf	; 223
+    00000868 3F                    1615 	.db #0x3f	; 63
+    00000869 BF                    1616 	.db #0xbf	; 191
+    0000086A 7F                    1617 	.db #0x7f	; 127
+    0000086B FF                    1618 	.db #0xff	; 255
+    0000086C                       1619 _gray_pal:
+    0000086C 20                    1620 	.db #0x20	; 32
+    0000086D 3D                    1621 	.db #0x3d	; 61
+    0000086E 00                    1622 	.db #0x00	; 0
+    0000086F 1D                    1623 	.db #0x1d	; 29
+    00000870                       1624 _pink_pal:
+    00000870 20                    1625 	.db #0x20	; 32
+    00000871 24                    1626 	.db #0x24	; 36
+    00000872 14                    1627 	.db #0x14	; 20
+    00000873 04                    1628 	.db #0x04	; 4
+    00000874                       1629 _cyan_pal:
+    00000874 20                    1630 	.db #0x20	; 32
+    00000875 3C                    1631 	.db #0x3c	; 60
+    00000876 2C                    1632 	.db #0x2c	; 44
+    00000877 1C                    1633 	.db #0x1c	; 28
+    00000878                       1634 _green_pal:
+    00000878 20                    1635 	.db #0x20	; 32
+    00000879 3A                    1636 	.db #0x3a	; 58
+    0000087A 2A                    1637 	.db #0x2a	; 42
+    0000087B 19                    1638 	.db #0x19	; 25
+                                   1639 	.area _XINIT
+    00000000                       1640 __xinit__joyp:
+    00000000 00                    1641 	.db #0x00	; 0
+    00000001                       1642 __xinit__old_joyp:
+    00000001 00                    1643 	.db #0x00	; 0
+                                   1644 	.area _CABS    (ABS)

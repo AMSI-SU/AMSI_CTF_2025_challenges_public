@@ -1,0 +1,68 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    REGTEMP                                                         ******** GX
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+    ___bank_map_compressed                                      =   00000000 G
+    ___bank_map_tiles                                           =   00000000 G
+  0 ___func_map_compressed                                          00000780 GR
+  0 ___func_map_tiles                                               00000000 GR
+    ___size_map_compressed                                      =   000006C5 G
+    ___size_map_tiles                                           =   00000780 G
+  6 __xinit__datapos                                                00000001 R
+  6 __xinit__scrollpos                                              00000000 R
+    _bkg_scroll_x                                                   ******** GX
+    _bkg_scroll_y                                                   ******** GX
+  8 _data                                                           00000000 GR
+  7 _datapos                                                        00000001 GR
+  0 _main                                                           00000E45 GR
+  8 _main_map_x_column_30001_101                                    00000012 R
+  1 _main_sloc0_1_0                                                 00000000 R
+  0 _map_compressed                                                 00000780 GR
+  0 _map_tiles                                                      00000000 GR
+    _rle_decompress                                                 ******** GX
+    _rle_decompress_PARM_2                                          ******** GX
+    _rle_init                                                       ******** GX
+  7 _scrollpos                                                      00000000 GR
+    _set_bkg_data                                                   ******** GX
+    _set_bkg_data_PARM_3                                            ******** GX
+    _set_bkg_tiles                                                  ******** GX
+    _set_bkg_tiles_PARM_3                                           ******** GX
+    _set_bkg_tiles_PARM_4                                           ******** GX
+    _set_bkg_tiles_PARM_5                                           ******** GX
+    _shadow_PPUMASK                                                 ******** GX
+    _vsync                                                          ******** GX
+    b___func_map_compressed                                     =   00000000 L
+    b___func_map_tiles                                          =   00000000 L
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      F29   flags    0
+   1 _ZP                                        size        1   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size        0   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size        2   flags    0
+   7 _DATA                                      size        2   flags    0
+   8 _BSS                                       size       13   flags    0
+   9 _DABS                                      size        0   flags    8
+   A _CABS                                      size        0   flags    8
+

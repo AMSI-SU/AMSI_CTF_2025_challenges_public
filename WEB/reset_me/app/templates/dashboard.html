@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>BDE 2019 | Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Salut {{ username }} 🍾</h1>
+  <p>Bienvenue sur l’ancien intranet du BDE 2019. Certaines fonctionnalités ne sont plus disponibles.</p>
+  <p>⚠️ Site archivé automatiquement en septembre 2019. À vos risques et périls.</p>
+
+  <ul>
+    <li><a href="#">📅 Planning des intégrations</a></li>
+     <li><a href="#">📅 Liste invites gala</a></li>
+  </ul>
+
+  <ul>
+  <li><a href="{{ url_for('static', filename='files/CR_reunion_1.txt') }}" download>📄 CR_réunion_janv.txt</a></li>
+  <li><a href="{{ url_for('static', filename='files/CR_reunion_2.txt') }}" download>📄 CR_réunion_fevr.txt</a></li>
+  <li><a href="{{ url_for('static', filename='files/CR_reunion_4.txt') }}" download>📄 CR_réunion_sept.txt</a></li>
+  <li><a href="{{ url_for('static', filename='files/photo_soiree_2019.txt') }}" download>📸 Photos de la soirée Chicha LAN 2019</a></li>
+  <li><a href="{{ url_for('static', filename='files/sweats_bde_commandes.csv') }}" download>🧢 Commande de sweats BDE (archives)</a></li>
+  <li><a href="{{ url_for('static', filename='files/liste_noire_bde.txt') }}" download>💀 Liste noire (staff)</a></li>
+</ul>
+  <a href="/logout">🚪 Déconnexion</a>
+</body>
+</html>

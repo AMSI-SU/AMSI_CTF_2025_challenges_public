@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+<head>
+    <title>Staff - CoteAI™ Internal Tool</title>
+    
+<style>
+    body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f4f6fa;
+        color: #212529;
+        padding: 2rem;
+        margin: 0;
+    }
+
+    h1, h2, h3 {
+        color: #0055ff;
+        text-align: center;
+    }
+
+    p, li, label {
+        font-size: 1rem;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+        text-align: center;
+    }
+
+    li {
+        margin-bottom: 0.5rem;
+    }
+
+    a.button, button {
+        display: inline-block;
+        background-color: #0055ff;
+        color: white;
+        padding: 0.6rem 1.2rem;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+    }
+
+    a.button:hover, button:hover {
+        background-color: #003fbb;
+    }
+
+    input, select {
+        padding: 0.5rem;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    form {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    footer {
+        text-align: center;
+        font-size: 0.85rem;
+        margin-top: 4rem;
+        color: #888;
+    }
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+</style>
+
+</head>
+<body>
+<div class="container">
+    <h2>🔐 Panel Staff - Générateur de Cotes</h2>
+    <p>Vous utilisez le module <strong>CoteAI™</strong> d'analyse réservé au personnel technique.</p>
+    <form method="GET" action="/generate-odds">
+        <label for="team">Nom de l'équipe :</label><br>
+        <input type="text" id="team" name="team" placeholder="Ex: PSG"><br><br>
+        <label for="form">Formation :</label><br>
+        <input type="text" id="form" name="form" placeholder="Ex: 4-4-2"><br><br>
+        <button type="submit">Analyser avec CoteAI™</button>
+    </form>
+    <div class="btn-group"><a class="button" href="/">← Retour à l'accueil</a></div>
+</div>
+</body>
+</html>

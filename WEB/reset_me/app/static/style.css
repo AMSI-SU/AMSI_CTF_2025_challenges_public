@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0e0024;
+  background-size: cover;
+  background-attachment: fixed;
+  color: #ffffff;
+  font-family: 'Press Start 2P', cursive;
+  text-align: center;
+  line-height: 1.6;
+}
+
+h1 {
+  color: #ff6600;
+  font-size: 1.5em;
+  text-shadow: 0 0 5px #ff6600, 0 0 10px #ff6600, 0 0 20px #ff6600;
+  margin-top: 40px;
+}
+
+form {
+  background: rgba(0, 0, 0, 0.65);
+  padding: 20px;
+  display: inline-block;
+  border: 2px dashed #00ffff;
+  border-radius: 12px;
+  margin-top: 20px;
+}
+
+input, button {
+  padding: 12px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9em;
+  font-family: 'Press Start 2P', cursive;
+}
+
+input {
+  background-color: #1a0033;
+  color: #39ff14;
+  width: 250px;
+}
+
+button {
+  background: linear-gradient(45deg, #ff6600, #ff00cc);
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px #ff00cc;
+}
+
+a {
+  display: inline-block;
+  margin-top: 15px;
+  color: #00ffff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+marquee {
+  color: #ff00cc;
+  font-size: 0.8em;
+  margin-bottom: 20px;
+}
+
+pre {
+  background: #1a0033;
+  padding: 15px;
+  border: 2px dotted #ff6600;
+  color: #00ffff;
+  display: inline-block;
+  margin-top: 30px;
+  font-size: 0.75em;
+  text-align: left;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px;
+  color: #00ffff;
+  font-size: 0.8em;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #0A001A;  
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 1;
+}

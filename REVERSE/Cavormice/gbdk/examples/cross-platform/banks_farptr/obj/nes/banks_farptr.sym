@@ -1,0 +1,71 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    REGTEMP                                                         ******** GX
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+    ___SDCC_m6502_ret2                                              ******** GX
+    ___SDCC_m6502_ret3                                              ******** GX
+    ___bank_some_bank2_proc0                                        ******** GX
+    ___bank_some_bank2_proc1                                        ******** GX
+    ___call__banked                                                 ******** GX
+    ___call_banked_ptr                                              ******** GX
+    ___sdcc_bcall                                                   ******** GX
+  0 ___str_0                                                        000001D3 R
+  0 ___str_1                                                        000001E4 R
+  0 ___str_2                                                        000001F5 R
+  0 ___str_3                                                        00000203 R
+  0 ___str_4                                                        00000216 R
+  0 ___str_5                                                        00000224 R
+  0 ___str_6                                                        00000235 R
+    __current_bank                                                  ******** GX
+    __sdcc_indirect_jsr                                             ******** GX
+  8 _farptr_var0                                                    00000000 GR
+  8 _farptr_var1                                                    00000004 GR
+  8 _farptr_var2                                                    00000008 GR
+  8 _farptr_var3                                                    0000000C GR
+  0 _main                                                           0000019D GR
+    _printf                                                         ******** GX
+  8 _res                                                            00000010 GR
+  0 _run                                                            00000000 GR
+  1 _run_sloc0_1_0                                                  00000000 R
+  1 _run_sloc1_1_0                                                  00000002 R
+    _some_bank2_proc0                                               ******** GX
+    _some_bank2_proc1                                               ******** GX
+    _some_bank2_proc2                                               ******** GX
+    _to_far_ptr                                                     ******** GX
+    _to_far_ptr_PARM_2                                              ******** GX
+    b_some_bank2_proc0                                              ******** GX
+    b_some_bank2_proc1                                              ******** GX
+    b_some_bank2_proc2                                              ******** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      246   flags    0
+   1 _ZP                                        size        4   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size        0   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size        0   flags    0
+   7 _DATA                                      size        0   flags    0
+   8 _BSS                                       size       12   flags    0
+   9 _DABS                                      size        0   flags    8
+   A _CABS                                      size        0   flags    8
+

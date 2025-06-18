@@ -1,0 +1,346 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module bank2code
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl b_some_bank2_proc2
+                                     23 	.globl _some_bank2_proc2
+                                     24 	.globl b___func_some_bank2_proc2
+                                     25 	.globl ___func_some_bank2_proc2
+                                     26 	.globl b_some_bank2_proc1
+                                     27 	.globl _some_bank2_proc1
+                                     28 	.globl b___func_some_bank2_proc1
+                                     29 	.globl ___func_some_bank2_proc1
+                                     30 	.globl b_some_bank2_proc0
+                                     31 	.globl _some_bank2_proc0
+                                     32 	.globl b___func_some_bank2_proc0
+                                     33 	.globl ___func_some_bank2_proc0
+                                     34 	.globl _printf
+                                     35 	.globl _OAMDMA
+                                     36 	.globl _PPUDATA
+                                     37 	.globl _PPUADDR
+                                     38 	.globl _PPUSCROLL
+                                     39 	.globl _OAMDATA
+                                     40 	.globl _OAMADDR
+                                     41 	.globl _PPUSTATUS
+                                     42 	.globl _PPUMASK
+                                     43 	.globl _PPUCTRL
+                                     44 ;--------------------------------------------------------
+                                     45 ; ZP ram data
+                                     46 ;--------------------------------------------------------
+                                     47 	.area _ZP      (PAG)
+    00000000                         48 _local_bank2_proc_sloc0_1_0:
+    00000000                         49 	.ds 2
+    00000002                         50 _local_bank2_proc_sloc1_1_0:
+    00000002                         51 	.ds 2
+                                     52 ;--------------------------------------------------------
+                                     53 ; overlayable items in ram
+                                     54 ;--------------------------------------------------------
+                                     55 ;--------------------------------------------------------
+                                     56 ; uninitialized external ram data
+                                     57 ;--------------------------------------------------------
+                                     58 	.area _BSS
+                         00002000    59 _PPUCTRL	=	0x2000
+                         00002001    60 _PPUMASK	=	0x2001
+                         00002002    61 _PPUSTATUS	=	0x2002
+                         00002003    62 _OAMADDR	=	0x2003
+                         00002004    63 _OAMDATA	=	0x2004
+                         00002005    64 _PPUSCROLL	=	0x2005
+                         00002006    65 _PPUADDR	=	0x2006
+                         00002007    66 _PPUDATA	=	0x2007
+                         00004014    67 _OAMDMA	=	0x4014
+    00000000                         68 _local_bank2_proc_PARM_2:
+    00000000                         69 	.ds 2
+    00000002                         70 _some_bank2_proc1_param2_10000_102:
+    00000002                         71 	.ds 1
+    00000003                         72 _some_bank2_proc1_param1_10000_102:
+    00000003                         73 	.ds 1
+                                     74 ;--------------------------------------------------------
+                                     75 ; absolute external ram data
+                                     76 ;--------------------------------------------------------
+                                     77 	.area _DABS    (ABS)
+                                     78 ;--------------------------------------------------------
+                                     79 ; initialized external ram data
+                                     80 ;--------------------------------------------------------
+                                     81 	.area _DATA
+                                     82 ;--------------------------------------------------------
+                                     83 ; global & static initialisations
+                                     84 ;--------------------------------------------------------
+                                     85 	.area _HOME
+                                     86 	.area _GSINIT
+                                     87 	.area _GSFINAL
+                                     88 	.area _GSINIT
+                                     89 ;--------------------------------------------------------
+                                     90 ; Home
+                                     91 ;--------------------------------------------------------
+                                     92 	.area _HOME
+                                     93 	.area _HOME
+                                     94 ;--------------------------------------------------------
+                                     95 ; code
+                                     96 ;--------------------------------------------------------
+                                     97 	.area _CODE_2
+                                     98 ;------------------------------------------------------------
+                                     99 ;Allocation info for local variables in function 'local_bank2_proc'
+                                    100 ;------------------------------------------------------------
+                                    101 ;sloc0                     Allocated with name '_local_bank2_proc_sloc0_1_0'
+                                    102 ;sloc1                     Allocated with name '_local_bank2_proc_sloc1_1_0'
+                                    103 ;param2                    Allocated with name '_local_bank2_proc_PARM_2'
+                                    104 ;param1                    Allocated to registers a x 
+                                    105 ;------------------------------------------------------------
+                                    106 ;	src/bank2code.c: 7: static int local_bank2_proc(int param1, int param2) {
+                                    107 ;	-----------------------------------------
+                                    108 ;	 function local_bank2_proc
+                                    109 ;	-----------------------------------------
+                                    110 ;	Register assignment is optimal.
+                                    111 ;	Stack space usage: 0 bytes.
+    00000000                        112 _local_bank2_proc:
+                                    113 ;	src/bank2code.c: 8: printf("  sum: %d (bank=%d)\n", param1 + param2, (int)CURRENT_BANK);
+    00000000 ACr00r00         [ 4]  114 	ldy	__current_bank
+    00000003 84*00            [ 3]  115 	sty	*_local_bank2_proc_sloc0_1_0
+    00000005 A0 00            [ 2]  116 	ldy	#0x00
+    00000007 84*01            [ 3]  117 	sty	*(_local_bank2_proc_sloc0_1_0 + 1)
+    00000009 18               [ 2]  118 	clc
+    0000000A 6Dr00r00         [ 4]  119 	adc	_local_bank2_proc_PARM_2
+    0000000D 85*02            [ 3]  120 	sta	*_local_bank2_proc_sloc1_1_0
+    0000000F 8A               [ 2]  121 	txa
+    00000010 6Dr01r00         [ 4]  122 	adc	(_local_bank2_proc_PARM_2 + 1)
+    00000013 85*03            [ 3]  123 	sta	*(_local_bank2_proc_sloc1_1_0 + 1)
+    00000015 A5*01            [ 3]  124 	lda	*(_local_bank2_proc_sloc0_1_0 + 1)
+    00000017 48               [ 3]  125 	pha
+    00000018 A5*00            [ 3]  126 	lda	*_local_bank2_proc_sloc0_1_0
+    0000001A 48               [ 3]  127 	pha
+    0000001B A5*03            [ 3]  128 	lda	*(_local_bank2_proc_sloc1_1_0 + 1)
+    0000001D 48               [ 3]  129 	pha
+    0000001E A5*02            [ 3]  130 	lda	*_local_bank2_proc_sloc1_1_0
+    00000020 48               [ 3]  131 	pha
+    00000021 A9s00            [ 2]  132 	lda	#>___str_0
+    00000023 48               [ 3]  133 	pha
+    00000024 A9rBE            [ 2]  134 	lda	#___str_0
+    00000026 48               [ 3]  135 	pha
+    00000027 20r00r00         [ 6]  136 	jsr	_printf
+    0000002A 68               [ 4]  137 	pla
+    0000002B 68               [ 4]  138 	pla
+    0000002C 68               [ 4]  139 	pla
+    0000002D 68               [ 4]  140 	pla
+    0000002E 68               [ 4]  141 	pla
+    0000002F 68               [ 4]  142 	pla
+                                    143 ;	src/bank2code.c: 9: return (param1 + param2) << 1;
+    00000030 A6*03            [ 3]  144 	ldx	*(_local_bank2_proc_sloc1_1_0 + 1)
+    00000032 A5*02            [ 3]  145 	lda	*_local_bank2_proc_sloc1_1_0
+    00000034 86*00            [ 3]  146 	stx	*(REGTEMP+0)
+    00000036 0A               [ 2]  147 	asl	a
+    00000037 26*00            [ 5]  148 	rol	*(REGTEMP+0)
+    00000039 A6*00            [ 3]  149 	ldx	*(REGTEMP+0)
+                                    150 ;	src/bank2code.c: 10: }
+    0000003B 60               [ 6]  151 	rts
+                                    152 ;------------------------------------------------------------
+                                    153 ;Allocation info for local variables in function '__func_some_bank2_proc0'
+                                    154 ;------------------------------------------------------------
+                                    155 ;	src/bank2code.c: 12: BANKREF(some_bank2_proc0)
+                                    156 ;	-----------------------------------------
+                                    157 ;	 function __func_some_bank2_proc0
+                                    158 ;	-----------------------------------------
+                                    159 ;	Register assignment is optimal.
+                                    160 ;	Stack space usage: 0 bytes.
+                         00000002   161 	b___func_some_bank2_proc0	= 2
+    0000003C                        162 ___func_some_bank2_proc0:
+                                    163 ;	naked function: no prologue.
+                                    164 		.local b___func_some_bank2_proc0 
+                         00000002   165 	 ___bank_some_bank2_proc0 = b___func_some_bank2_proc0 
+                                    166 	 .globl ___bank_some_bank2_proc0 
+                                    167 ;	naked function: no epilogue.
+                                    168 ;------------------------------------------------------------
+                                    169 ;Allocation info for local variables in function 'some_bank2_proc0'
+                                    170 ;------------------------------------------------------------
+                                    171 ;	src/bank2code.c: 13: void some_bank2_proc0(void) BANKED {
+                                    172 ;	-----------------------------------------
+                                    173 ;	 function some_bank2_proc0
+                                    174 ;	-----------------------------------------
+                                    175 ;	Register assignment is optimal.
+                                    176 ;	Stack space usage: 0 bytes.
+                         00000002   177 	b_some_bank2_proc0	= 2
+    0000003C                        178 _some_bank2_proc0:
+                                    179 ;	src/bank2code.c: 14: printf("some_bank2_proc0\n");
+    0000003C A9s00            [ 2]  180 	lda	#>___str_1
+    0000003E 48               [ 3]  181 	pha
+    0000003F A9rD3            [ 2]  182 	lda	#___str_1
+    00000041 48               [ 3]  183 	pha
+    00000042 20r00r00         [ 6]  184 	jsr	_printf
+    00000045 68               [ 4]  185 	pla
+    00000046 68               [ 4]  186 	pla
+                                    187 ;	src/bank2code.c: 15: }
+    00000047 60               [ 6]  188 	rts
+                                    189 ;------------------------------------------------------------
+                                    190 ;Allocation info for local variables in function '__func_some_bank2_proc1'
+                                    191 ;------------------------------------------------------------
+                                    192 ;	src/bank2code.c: 17: BANKREF(some_bank2_proc1)
+                                    193 ;	-----------------------------------------
+                                    194 ;	 function __func_some_bank2_proc1
+                                    195 ;	-----------------------------------------
+                                    196 ;	Register assignment is optimal.
+                                    197 ;	Stack space usage: 0 bytes.
+                         00000002   198 	b___func_some_bank2_proc1	= 2
+    00000048                        199 ___func_some_bank2_proc1:
+                                    200 ;	naked function: no prologue.
+                                    201 		.local b___func_some_bank2_proc1 
+                         00000002   202 	 ___bank_some_bank2_proc1 = b___func_some_bank2_proc1 
+                                    203 	 .globl ___bank_some_bank2_proc1 
+                                    204 ;	naked function: no epilogue.
+                                    205 ;------------------------------------------------------------
+                                    206 ;Allocation info for local variables in function 'some_bank2_proc1'
+                                    207 ;------------------------------------------------------------
+                                    208 ;param2                    Allocated with name '_some_bank2_proc1_param2_10000_102'
+                                    209 ;param1                    Allocated with name '_some_bank2_proc1_param1_10000_102'
+                                    210 ;------------------------------------------------------------
+                                    211 ;	src/bank2code.c: 18: int some_bank2_proc1(uint8_t param1, uint8_t param2) BANKED {
+                                    212 ;	-----------------------------------------
+                                    213 ;	 function some_bank2_proc1
+                                    214 ;	-----------------------------------------
+                                    215 ;	Register assignment is optimal.
+                                    216 ;	Stack space usage: 0 bytes.
+                         00000002   217 	b_some_bank2_proc1	= 2
+    00000048                        218 _some_bank2_proc1:
+    00000048 8Dr03r00         [ 4]  219 	sta	_some_bank2_proc1_param1_10000_102
+    0000004B 8Er02r00         [ 4]  220 	stx	_some_bank2_proc1_param2_10000_102
+                                    221 ;	src/bank2code.c: 19: printf("some_bank2_proc1\n");
+    0000004E A9s00            [ 2]  222 	lda	#>___str_2
+    00000050 48               [ 3]  223 	pha
+    00000051 A9rE5            [ 2]  224 	lda	#___str_2
+    00000053 48               [ 3]  225 	pha
+    00000054 20r00r00         [ 6]  226 	jsr	_printf
+    00000057 68               [ 4]  227 	pla
+    00000058 68               [ 4]  228 	pla
+                                    229 ;	src/bank2code.c: 20: return local_bank2_proc(param1, param2);
+    00000059 A2 00            [ 2]  230 	ldx	#0x00
+    0000005B ADr03r00         [ 4]  231 	lda	_some_bank2_proc1_param1_10000_102
+    0000005E ACr02r00         [ 4]  232 	ldy	_some_bank2_proc1_param2_10000_102
+    00000061 8Cr00r00         [ 4]  233 	sty	_local_bank2_proc_PARM_2
+    00000064 8Er01r00         [ 4]  234 	stx	(_local_bank2_proc_PARM_2 + 1)
+                                    235 ;	src/bank2code.c: 21: }
+    00000067 4Cr00r00         [ 3]  236 	jmp	_local_bank2_proc
+                                    237 ;------------------------------------------------------------
+                                    238 ;Allocation info for local variables in function '__func_some_bank2_proc2'
+                                    239 ;------------------------------------------------------------
+                                    240 ;	src/bank2code.c: 23: BANKREF(some_bank2_proc2)
+                                    241 ;	-----------------------------------------
+                                    242 ;	 function __func_some_bank2_proc2
+                                    243 ;	-----------------------------------------
+                                    244 ;	Register assignment is optimal.
+                                    245 ;	Stack space usage: 0 bytes.
+                         00000002   246 	b___func_some_bank2_proc2	= 2
+    0000006A                        247 ___func_some_bank2_proc2:
+                                    248 ;	naked function: no prologue.
+                                    249 		.local b___func_some_bank2_proc2 
+                         00000002   250 	 ___bank_some_bank2_proc2 = b___func_some_bank2_proc2 
+                                    251 	 .globl ___bank_some_bank2_proc2 
+                                    252 ;	naked function: no epilogue.
+                                    253 ;------------------------------------------------------------
+                                    254 ;Allocation info for local variables in function 'some_bank2_proc2'
+                                    255 ;------------------------------------------------------------
+                                    256 ;param3                    Allocated to stack - sp +9 +1 
+                                    257 ;param2                    Allocated to registers y 
+                                    258 ;param1                    Allocated to stack - sp +3 +1 
+                                    259 ;sloc0                     Allocated to stack - sp +1 +2 
+                                    260 ;------------------------------------------------------------
+                                    261 ;	src/bank2code.c: 24: int some_bank2_proc2(uint8_t param1, uint8_t param2, uint8_t param3) BANKED REENTRANT {
+                                    262 ;	-----------------------------------------
+                                    263 ;	 function some_bank2_proc2
+                                    264 ;	-----------------------------------------
+                                    265 ;	Register assignment is optimal.
+                                    266 ;	Stack space usage: 3 bytes.
+                         00000002   267 	b_some_bank2_proc2	= 2
+    0000006A                        268 _some_bank2_proc2:
+    0000006A 48               [ 3]  269 	pha
+    0000006B 48               [ 3]  270 	pha
+    0000006C 48               [ 3]  271 	pha
+    0000006D 86*00            [ 3]  272 	stx	*(REGTEMP+0)
+    0000006F A4*00            [ 3]  273 	ldy	*(REGTEMP+0)
+                                    274 ;	src/bank2code.c: 25: printf("some_bank2_proc2\n");
+    00000071 85*00            [ 3]  275 	sta	*(REGTEMP+0)
+    00000073 98               [ 2]  276 	tya
+    00000074 48               [ 3]  277 	pha
+    00000075 A9s00            [ 2]  278 	lda	#>___str_3
+    00000077 48               [ 3]  279 	pha
+    00000078 A9rF7            [ 2]  280 	lda	#___str_3
+    0000007A 48               [ 3]  281 	pha
+    0000007B 20r00r00         [ 6]  282 	jsr	_printf
+    0000007E 68               [ 4]  283 	pla
+    0000007F 68               [ 4]  284 	pla
+    00000080 85*00            [ 3]  285 	sta	*(REGTEMP+0)
+    00000082 68               [ 4]  286 	pla
+    00000083 A8               [ 2]  287 	tay
+    00000084 A5*00            [ 3]  288 	lda	*(REGTEMP+0)
+                                    289 ;	src/bank2code.c: 26: return local_bank2_proc(param1, param2 * param3);
+    00000086 BA               [ 2]  290 	tsx
+    00000087 BD 03 01         [ 5]  291 	lda	0x103,x
+    0000008A 9D 01 01         [ 5]  292 	sta	0x101,x
+    0000008D A9 00            [ 2]  293 	lda	#0x00
+    0000008F 9D 02 01         [ 5]  294 	sta	0x102,x
+    00000092 98               [ 2]  295 	tya
+    00000093 85*00            [ 3]  296 	sta	*(REGTEMP+0)
+    00000095 BD 09 01         [ 5]  297 	lda	0x109,x
+    00000098 AA               [ 2]  298 	tax
+    00000099 A5*00            [ 3]  299 	lda	*(REGTEMP+0)
+    0000009B 20r00r00         [ 6]  300 	jsr	__muluchar
+    0000009E 8Dr00r00         [ 4]  301 	sta	_local_bank2_proc_PARM_2
+    000000A1 8Er01r00         [ 4]  302 	stx	(_local_bank2_proc_PARM_2 + 1)
+    000000A4 BA               [ 2]  303 	tsx
+    000000A5 BD 02 01         [ 5]  304 	lda	0x102,x
+    000000A8 AA               [ 2]  305 	tax
+    000000A9 86*00            [ 3]  306 	stx	*(REGTEMP+0)
+    000000AB BA               [ 2]  307 	tsx
+    000000AC BD 01 01         [ 5]  308 	lda	0x101,x
+    000000AF 08               [ 3]  309 	php
+    000000B0 A6*00            [ 3]  310 	ldx	*(REGTEMP+0)
+    000000B2 28               [ 4]  311 	plp
+    000000B3 20r00r00         [ 6]  312 	jsr	_local_bank2_proc
+                                    313 ;	src/bank2code.c: 27: }
+    000000B6 85*00            [ 3]  314 	sta	*(REGTEMP+0)
+    000000B8 68               [ 4]  315 	pla
+    000000B9 68               [ 4]  316 	pla
+    000000BA 68               [ 4]  317 	pla
+    000000BB A5*00            [ 3]  318 	lda	*(REGTEMP+0)
+    000000BD 60               [ 6]  319 	rts
+                                    320 	.area _CODE_2
+    000000BE                        321 ___str_0:
+    000000BE 20 20 73 75 6D 3A 20   322 	.ascii "  sum: %d (bank=%d)"
+             25 64 20 28 62 61 6E
+             6B 3D 25 64 29
+    000000D1 0A                     323 	.db 0x0a
+    000000D2 00                     324 	.db 0x00
+    000000D3                        325 ___str_1:
+    000000D3 73 6F 6D 65 5F 62 61   326 	.ascii "some_bank2_proc0"
+             6E 6B 32 5F 70 72 6F
+             63 30
+    000000E3 0A                     327 	.db 0x0a
+    000000E4 00                     328 	.db 0x00
+    000000E5                        329 ___str_2:
+    000000E5 73 6F 6D 65 5F 62 61   330 	.ascii "some_bank2_proc1"
+             6E 6B 32 5F 70 72 6F
+             63 31
+    000000F5 0A                     331 	.db 0x0a
+    000000F6 00                     332 	.db 0x00
+    000000F7                        333 ___str_3:
+    000000F7 73 6F 6D 65 5F 62 61   334 	.ascii "some_bank2_proc2"
+             6E 6B 32 5F 70 72 6F
+             63 32
+    00000107 0A                     335 	.db 0x0a
+    00000108 00                     336 	.db 0x00
+                                    337 	.area _XINIT
+                                    338 	.area _CABS    (ABS)

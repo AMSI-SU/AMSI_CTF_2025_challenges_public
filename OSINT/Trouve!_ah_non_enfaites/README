@@ -1,0 +1,34 @@
+# OSINT : 01 -  trouve!_ah_non_enfaites
+
+- **Auteur :** flav-sns
+- **Catégorie :** OSINT
+- **Diffculté :** Facile
+- **Points :** -
+- **Points dynamiques :** oui
+- **Indice 1 :**
+```
+Pas d'indice 1.
+```
+
+- **Description :**
+```
+The C3N brought in an OSINT specialist as skilled as you for this mission. A DGSI agent managed to photograph the criminal’s laptop screen aboard a flight departing from CDG and landing at NYC airport. The screen reveals the meeting point with his accomplice. It's crucial to determine the exact location shown in the image so U.S. authorities can coordinate and intercept him in time.
+
+Flag format : AMSI{number_road_city}
+
+Example : AMSI{100_Houston-Ave_Oak-Ridge}
+```
+
+- **Remarques :**
+```
+Pas de remarque.
+```
+
+- **Dialogues :**
+```
+Pas de dialogue.
+```
+
+
+
+

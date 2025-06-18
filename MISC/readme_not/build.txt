@@ -1,0 +1,6 @@
+docker build -t misc_1 .
+docker run -p <PORT>:22 --rm -it misc_1
+
+ssh ctf@localhost -p <PORT>
+# Mot de passe: ctf
+# Cible: /opt/target/runme

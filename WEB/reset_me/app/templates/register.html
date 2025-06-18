@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>BDE 2019 | Inscription</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>🌈 Inscris-toi au portail BDE 🌈</h1>
+  <form method="POST">
+    <input name="username" placeholder="pseudo"><br>
+    <input name="password" type="password" placeholder="mot de passe"><br>
+    <button type="submit">Rejoindre le BDE</button>
+  </form>
+  
+  {% if error %}
+  <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+{% if success %}
+  <p style="color:lime;">{{ success }}</p>
+  <script>
+    setTimeout(function() {
+      window.location.href = "{{ url_for('index') }}";
+    }, 3000);
+  </script>
+{% endif %}
+<br>
+  <a href="/">Retour</a>
+</body>
+</html>

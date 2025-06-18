@@ -1,0 +1,61 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+  4 _DrawPlayer                                                     00000053 GR
+    _IsTileSolid                                                    ******** GX
+    _PlayerCharacterSprites_metasprites                             ******** GX
+    _PlayerCharacterSprites_tiles                                   ******** GX
+  4 _PlayerPalettesGGSMS                                            00000022 GR
+  4 _SetPlayerPalettes                                              00000042 GR
+  7 _SetupPlayer                                                    00000000 GR
+  7 _UpdatePlayer                                                   00000022 GR
+  4 _UpdatePlayerVRAMTiles                                          00000000 GR
+    ___bank_PlayerCharacterSprites                                  ******** GX
+    ___current_base_prop                                            ******** GX
+    ___current_base_tile                                            ******** GX
+    ___current_metasprite                                           ******** GX
+    ___move_metasprite                                              ******** GX
+    __current_bank                                                  ******** GX
+  8 __xinit__facingRight                                            00000000 R
+  8 __xinit__playerJumpIncrease                                     00000001 R
+  8 __xinit__threeFrameCounter                                      00000002 R
+  4 _baseProp                                                       00000021 GR
+    _camera_x                                                       ******** GX
+    _currentLevelWidth                                              ******** GX
+  2 _facingRight                                                    00000000 GR
+    _joypadCurrent                                                  ******** GX
+    _joypadPrevious                                                 ******** GX
+    _nextLevel                                                      ******** GX
+  2 _playerJumpIncrease                                             00000001 GR
+  1 _playerX                                                        00000000 GR
+  1 _playerXVelocity                                                00000004 GR
+  1 _playerY                                                        00000002 GR
+  1 _playerYVelocity                                                00000006 GR
+    _rROMB0                                                         ******** GX
+    _set_sprite_data                                                ******** GX
+  2 _threeFrameCounter                                              00000002 GR
+    b_SetupPlayer                                               =   000000FF G
+    b_UpdatePlayer                                              =   000000FF G
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size        0   flags    0
+   1 _DATA                                      size        8   flags    0
+   2 _INITIALIZED                               size        3   flags    0
+   3 _DABS                                      size        0   flags    8
+   4 _HOME                                      size       A4   flags    0
+   5 _GSINIT                                    size        0   flags    0
+   6 _GSFINAL                                   size        0   flags    0
+   7 _CODE_255                                  size      5AE   flags    0
+   8 _INITIALIZER                               size        3   flags    0
+   9 _CABS                                      size        0   flags    8
+

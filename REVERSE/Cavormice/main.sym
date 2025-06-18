@@ -1,0 +1,92 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _LCDC_REG                                                       ******** GX
+    _SCX_REG                                                        ******** GX
+    _SCY_REG                                                        ******** GX
+    _WX_REG                                                         ******** GX
+    _WY_REG                                                         ******** GX
+  0 ___str_0                                                        000003AD R
+  7 __xinit__current_room                                           00000468 R
+  7 __xinit__path                                                   0000073F R
+  7 __xinit__path_hash                                              0000075F R
+  7 __xinit__path_num                                               0000076F R
+  7 __xinit__player_sprite_id                                       00000772 R
+  7 __xinit__player_x                                               0000073A R
+  7 __xinit__player_y                                               0000073C R
+  7 __xinit__room_1                                                 00000030 R
+  7 __xinit__room_2                                                 00000198 R
+  7 __xinit__room_3                                                 00000300 R
+  7 __xinit__sprite_tiles                                           00000000 R
+  7 __xinit__start_screen                                           0000046A R
+  7 __xinit__time                                                   00000770 R
+  7 __xinit__you_win                                                0000073E R
+  0 _background_tileset                                             0000001D GR
+  2 _current_room                                                   00000468 GR
+  0 _draw_player                                                    00000718 GR
+  0 _get_bkg_tile_from_pos                                          0000047B GR
+    _gotogxy                                                        ******** GX
+    _gprintf                                                        ******** GX
+    _joypad                                                         ******** GX
+  0 _lose_map                                                       000003ED GR
+  0 _main                                                           000008CA GR
+  2 _path                                                           0000073F GR
+  2 _path_hash                                                      0000075F GR
+  2 _path_num                                                       0000076F GR
+  2 _player_sprite_id                                               00000772 GR
+  2 _player_x                                                       0000073A GR
+  2 _player_y                                                       0000073C GR
+  0 _print_text                                                     00000000 GR
+  2 _room_1                                                         00000030 GR
+  2 _room_2                                                         00000198 GR
+  2 _room_3                                                         00000300 GR
+    _set_bkg_data                                                   ******** GX
+    _set_bkg_tiles                                                  ******** GX
+  0 _set_end_screen                                                 0000045E GR
+  0 _set_mid_room                                                   00000768 GR
+    _set_sprite_data                                                ******** GX
+  0 _set_start_room                                                 000003B0 GR
+  0 _set_start_screen                                               00000400 GR
+    _set_win_tiles                                                  ******** GX
+    _shadow_OAM                                                     ******** GX
+  2 _sprite_tiles                                                   00000000 GR
+  2 _start_screen                                                   0000046A GR
+  0 _test_win                                                       00000529 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+  2 _time                                                           00000770 GR
+  0 _update_path                                                    000004FC GR
+  0 _update_player                                                  00000589 GR
+  0 _update_room                                                    000007A7 GR
+    _vsync                                                          ******** GX
+  0 _win_map                                                        000003DA GR
+  0 _win_room                                                       00000784 GR
+  0 _window_lose                                                    0000043C GR
+  0 _window_map                                                     000003C7 GR
+  0 _window_win                                                     0000041A GR
+  2 _you_win                                                        0000073E GR
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 3
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      979   flags    0
+   1 _DATA                                      size        0   flags    0
+   2 _INITIALIZED                               size      774   flags    0
+   3 _DABS                                      size        0   flags    8
+   4 _HOME                                      size        0   flags    0
+   5 _GSINIT                                    size        0   flags    0
+   6 _GSFINAL                                   size        0   flags    0
+   7 _INITIALIZER                               size      774   flags    0
+   8 _CABS                                      size        0   flags    8
+

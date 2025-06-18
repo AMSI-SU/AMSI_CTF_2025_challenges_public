@@ -1,0 +1,2 @@
+The winner flag is : 
+AMSI{Im_g0NNa_b3_R1cH_w17h_InG3n}

@@ -1,0 +1,210 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module display_system
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _main
+                                     23 	.globl _get_system_name
+                                     24 	.globl _gotoxy
+                                     25 	.globl _font_load
+                                     26 	.globl _font_init
+                                     27 	.globl _display_on
+                                     28 	.globl _vsync
+                                     29 	.globl _printf
+                                     30 	.globl _OAMDMA
+                                     31 	.globl _PPUDATA
+                                     32 	.globl _PPUADDR
+                                     33 	.globl _PPUSCROLL
+                                     34 	.globl _OAMDATA
+                                     35 	.globl _OAMADDR
+                                     36 	.globl _PPUSTATUS
+                                     37 	.globl _PPUMASK
+                                     38 	.globl _PPUCTRL
+                                     39 ;--------------------------------------------------------
+                                     40 ; ZP ram data
+                                     41 ;--------------------------------------------------------
+                                     42 	.area _ZP      (PAG)
+                                     43 ;--------------------------------------------------------
+                                     44 ; overlayable items in ram
+                                     45 ;--------------------------------------------------------
+                                     46 ;--------------------------------------------------------
+                                     47 ; uninitialized external ram data
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _BSS
+                         00002000    50 _PPUCTRL	=	0x2000
+                         00002001    51 _PPUMASK	=	0x2001
+                         00002002    52 _PPUSTATUS	=	0x2002
+                         00002003    53 _OAMADDR	=	0x2003
+                         00002004    54 _OAMDATA	=	0x2004
+                         00002005    55 _PPUSCROLL	=	0x2005
+                         00002006    56 _PPUADDR	=	0x2006
+                         00002007    57 _PPUDATA	=	0x2007
+                         00004014    58 _OAMDMA	=	0x4014
+                                     59 ;--------------------------------------------------------
+                                     60 ; absolute external ram data
+                                     61 ;--------------------------------------------------------
+                                     62 	.area _DABS    (ABS)
+                                     63 ;--------------------------------------------------------
+                                     64 ; initialized external ram data
+                                     65 ;--------------------------------------------------------
+                                     66 	.area _DATA
+                                     67 ;--------------------------------------------------------
+                                     68 ; global & static initialisations
+                                     69 ;--------------------------------------------------------
+                                     70 	.area _HOME
+                                     71 	.area _GSINIT
+                                     72 	.area _GSFINAL
+                                     73 	.area _GSINIT
+                                     74 ;--------------------------------------------------------
+                                     75 ; Home
+                                     76 ;--------------------------------------------------------
+                                     77 	.area _HOME
+                                     78 	.area _HOME
+                                     79 ;--------------------------------------------------------
+                                     80 ; code
+                                     81 ;--------------------------------------------------------
+                                     82 	.area _CODE
+                                     83 ;------------------------------------------------------------
+                                     84 ;Allocation info for local variables in function 'get_system_name'
+                                     85 ;------------------------------------------------------------
+                                     86 ;system                    Allocated to registers a 
+                                     87 ;------------------------------------------------------------
+                                     88 ;	src/display_system.c: 18: const char* get_system_name(uint8_t system)
+                                     89 ;	-----------------------------------------
+                                     90 ;	 function get_system_name
+                                     91 ;	-----------------------------------------
+                                     92 ;	Register assignment is optimal.
+                                     93 ;	Stack space usage: 0 bytes.
+    00000000                         94 _get_system_name:
+                                     95 ;	src/display_system.c: 20: switch(system)
+    00000000 C9 00            [ 2]   96 	cmp	#0x00
+    00000002 F0 07            [ 4]   97 	beq	00101$
+    00000004 C9 01            [ 2]   98 	cmp	#0x01
+    00000006 F0 08            [ 4]   99 	beq	00102$
+    00000008 4Cr23r00         [ 3]  100 	jmp	00106$
+                                    101 ;	src/display_system.c: 22: case SYSTEM_60HZ:
+    0000000B                        102 00101$:
+                                    103 ;	src/display_system.c: 23: return "60 Hz";
+    0000000B A2s00            [ 2]  104 	ldx	#>___str_0
+    0000000D A9r67            [ 2]  105 	lda	#___str_0
+    0000000F 60               [ 6]  106 	rts
+                                    107 ;	src/display_system.c: 24: case SYSTEM_50HZ:
+    00000010                        108 00102$:
+                                    109 ;	src/display_system.c: 30: if((_SYSTEM & 0xC0) == SYSTEM_BITS_DENDY)
+    00000010 ADr00r00         [ 4]  110 	lda	__SYSTEM
+    00000013 29 C0            [ 2]  111 	and	#0xc0
+    00000015 C9 80            [ 2]  112 	cmp	#0x80
+    00000017 D0 05            [ 4]  113 	bne	00104$
+                                    114 ;	src/display_system.c: 31: return "50 Hz (Dendy-like)";
+    00000019 A2s00            [ 2]  115 	ldx	#>___str_1
+    0000001B A9r6D            [ 2]  116 	lda	#___str_1
+    0000001D 60               [ 6]  117 	rts
+    0000001E                        118 00104$:
+                                    119 ;	src/display_system.c: 33: return "50 Hz";
+    0000001E A2s00            [ 2]  120 	ldx	#>___str_2
+    00000020 A9r80            [ 2]  121 	lda	#___str_2
+    00000022 60               [ 6]  122 	rts
+                                    123 ;	src/display_system.c: 37: default:
+    00000023                        124 00106$:
+                                    125 ;	src/display_system.c: 38: return "Unknown";
+    00000023 A2s00            [ 2]  126 	ldx	#>___str_3
+    00000025 A9r86            [ 2]  127 	lda	#___str_3
+                                    128 ;	src/display_system.c: 39: }
+                                    129 ;	src/display_system.c: 40: }
+    00000027 60               [ 6]  130 	rts
+                                    131 ;------------------------------------------------------------
+                                    132 ;Allocation info for local variables in function 'main'
+                                    133 ;------------------------------------------------------------
+                                    134 ;__200000006               Allocated to registers a 
+                                    135 ;ibm_font                  Allocated to registers 
+                                    136 ;system                    Allocated to registers 
+                                    137 ;------------------------------------------------------------
+                                    138 ;	src/display_system.c: 42: void main(void)
+                                    139 ;	-----------------------------------------
+                                    140 ;	 function main
+                                    141 ;	-----------------------------------------
+                                    142 ;	Register assignment is optimal.
+                                    143 ;	Stack space usage: 0 bytes.
+    00000028                        144 _main:
+                                    145 ;	src/display_system.c: 45: uint8_t system = get_system();
+    00000028 ADr00r00         [ 4]  146 	lda	__SYSTEM
+    0000002B D0 05            [ 4]  147 	bne	00102$
+    0000002D A9 00            [ 2]  148 	lda	#0x00
+    0000002F 4Cr34r00         [ 3]  149 	jmp	00104$
+    00000032                        150 00102$:
+    00000032 A9 01            [ 2]  151 	lda	#0x01
+    00000034                        152 00104$:
+                                    153 ;	src/display_system.c: 47: font_init();
+    00000034 48               [ 3]  154 	pha
+    00000035 20r00r00         [ 6]  155 	jsr	_font_init
+    00000038 68               [ 4]  156 	pla
+                                    157 ;	src/display_system.c: 48: ibm_font = font_load(font_ibm);
+    00000039 48               [ 3]  158 	pha
+    0000003A A2s00            [ 2]  159 	ldx	#>_font_ibm
+    0000003C A9r00            [ 2]  160 	lda	#_font_ibm
+    0000003E 20r00r00         [ 6]  161 	jsr	_font_load
+    00000041 68               [ 4]  162 	pla
+                                    163 ;	src/display_system.c: 49: DISPLAY_ON;
+    00000042 48               [ 3]  164 	pha
+    00000043 20r00r00         [ 6]  165 	jsr	_display_on
+                                    166 ;	src/display_system.c: 50: gotoxy(4, 4);
+    00000046 A9 04            [ 2]  167 	lda	#0x04
+    00000048 AA               [ 2]  168 	tax
+    00000049 20r00r00         [ 6]  169 	jsr	_gotoxy
+    0000004C 68               [ 4]  170 	pla
+                                    171 ;	src/display_system.c: 51: printf("System: %s", get_system_name(system));
+    0000004D 20r00r00         [ 6]  172 	jsr	_get_system_name
+    00000050 85*00            [ 3]  173 	sta	*(REGTEMP+0)
+    00000052 8A               [ 2]  174 	txa
+    00000053 48               [ 3]  175 	pha
+    00000054 A5*00            [ 3]  176 	lda	*(REGTEMP+0)
+    00000056 48               [ 3]  177 	pha
+    00000057 A9s00            [ 2]  178 	lda	#>___str_4
+    00000059 48               [ 3]  179 	pha
+    0000005A A9r8E            [ 2]  180 	lda	#___str_4
+    0000005C 48               [ 3]  181 	pha
+    0000005D 20r00r00         [ 6]  182 	jsr	_printf
+    00000060 68               [ 4]  183 	pla
+    00000061 68               [ 4]  184 	pla
+    00000062 68               [ 4]  185 	pla
+    00000063 68               [ 4]  186 	pla
+                                    187 ;	src/display_system.c: 52: vsync();
+                                    188 ;	src/display_system.c: 53: }
+    00000064 4Cr00r00         [ 3]  189 	jmp	_vsync
+                                    190 	.area _CODE
+    00000067                        191 ___str_0:
+    00000067 36 30 20 48 7A         192 	.ascii "60 Hz"
+    0000006C 00                     193 	.db 0x00
+    0000006D                        194 ___str_1:
+    0000006D 35 30 20 48 7A 20 28   195 	.ascii "50 Hz (Dendy-like)"
+             44 65 6E 64 79 2D 6C
+             69 6B 65 29
+    0000007F 00                     196 	.db 0x00
+    00000080                        197 ___str_2:
+    00000080 35 30 20 48 7A         198 	.ascii "50 Hz"
+    00000085 00                     199 	.db 0x00
+    00000086                        200 ___str_3:
+    00000086 55 6E 6B 6E 6F 77 6E   201 	.ascii "Unknown"
+    0000008D 00                     202 	.db 0x00
+    0000008E                        203 ___str_4:
+    0000008E 53 79 73 74 65 6D 3A   204 	.ascii "System: %s"
+             20 25 73
+    00000098 00                     205 	.db 0x00
+                                    206 	.area _XINIT
+                                    207 	.area _CABS    (ABS)

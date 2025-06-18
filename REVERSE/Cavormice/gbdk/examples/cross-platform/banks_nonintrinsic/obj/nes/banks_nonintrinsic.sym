@@ -1,0 +1,74 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    DPTR                                                            ******** GX
+    REGTEMP                                                         ******** GX
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+  8 ___dummy_variable                                               00000000 GR
+  0 ___str_0                                                        0000043F R
+  0 ___str_1                                                        0000044D R
+  0 ___str_2                                                        00000450 R
+  7 __current_ram_bank                                              00000000 GR
+    __switch_prg0                                                   ******** GX
+  6 __xinit___current_ram_bank                                      00000000 R
+  6 __xinit__add_num_wram                                           00000015 R
+  6 __xinit__data                                                   00000001 R
+  C _add_num__ptr                                                   00000013 GR
+  A _add_num_sram_0                                                 00000014 GR
+  9 _add_num_sram_1a                                                00000014 GR
+  9 _add_num_sram_1b                                                00000016 GR
+  7 _add_num_wram                                                   00000015 GR
+  7 _data                                                           00000001 GR
+  0 _hello_code                                                     0000042E GR
+  C _hello_rom_1                                                    00000000 GR
+  B _hello_rom_2                                                    00000000 GR
+  A _hello_sram_0                                                   00000000 GR
+  9 _hello_sram_1                                                   00000000 GR
+  0 _main                                                           00000000 GR
+  1 _main_sloc0_1_0                                                 00000000 R
+  1 _main_sloc1_1_0                                                 00000001 R
+  1 _main_sloc2_1_0                                                 00000003 R
+  1 _main_sloc3_1_0                                                 00000004 R
+    _printf                                                         ******** GX
+    _putchar                                                        ******** GX
+  3 _set_RAM_bank0                                                  0000000A GR
+  3 _set_RAM_bank1                                                  00000010 GR
+  3 _set_ROM_bank1                                                  00000000 GR
+  3 _set_ROM_bank2                                                  00000005 GR
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      45D   flags    0
+   1 _ZP                                        size        6   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size       16   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size       17   flags    0
+   7 _DATA                                      size       17   flags    0
+   8 _BSS                                       size        1   flags    0
+   9 _DATA_1                                    size       18   flags    0
+   A _DATA_0                                    size       16   flags    0
+   B _CODE_2                                    size       13   flags    0
+   C _CODE_1                                    size       17   flags    0
+   D _DABS                                      size        0   flags    8
+   E _CABS                                      size        0   flags    8
+

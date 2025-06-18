@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+    <title>Résultat du Pari - Bet2Win</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f4f6fa;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background-color: white;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+        }
+
+        .result {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .won {
+            color: #28a745;
+        }
+
+        .lost {
+            color: #dc3545;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #0055ff;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #003fbb;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>💸 Votre Pari a été enregistré !</h2>
+    <p>Match : <strong>{{ match }}</strong></p>
+    <p>Montant misé : <strong>{{ amount }} €</strong></p>
+    <p class="result {{ 'won' if result == 'gagné' else 'lost' }}">
+        Résultat : <strong>{{ result|capitalize }} !</strong>
+    </p>
+    <div class="buttons">
+        <a class="button" href="/">Accueil</a>
+        <a class="button" href="/leaderboard">Classement</a>
+    </div>
+</div>
+</body>
+</html>

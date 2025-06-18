@@ -1,0 +1,469 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module libc_string
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _main
+                                     23 	.globl _font_set
+                                     24 	.globl _font_load
+                                     25 	.globl _font_init
+                                     26 	.globl _strncpy
+                                     27 	.globl _strncmp
+                                     28 	.globl _strncat
+                                     29 	.globl _strlen
+                                     30 	.globl _strcat
+                                     31 	.globl _strcmp
+                                     32 	.globl _strcpy
+                                     33 	.globl _printf
+                                     34 	.globl _OAMDMA
+                                     35 	.globl _PPUDATA
+                                     36 	.globl _PPUADDR
+                                     37 	.globl _PPUSCROLL
+                                     38 	.globl _OAMDATA
+                                     39 	.globl _OAMADDR
+                                     40 	.globl _PPUSTATUS
+                                     41 	.globl _PPUMASK
+                                     42 	.globl _PPUCTRL
+                                     43 ;--------------------------------------------------------
+                                     44 ; ZP ram data
+                                     45 ;--------------------------------------------------------
+                                     46 	.area _ZP      (PAG)
+                                     47 ;--------------------------------------------------------
+                                     48 ; overlayable items in ram
+                                     49 ;--------------------------------------------------------
+                                     50 ;--------------------------------------------------------
+                                     51 ; uninitialized external ram data
+                                     52 ;--------------------------------------------------------
+                                     53 	.area _BSS
+                         00002000    54 _PPUCTRL	=	0x2000
+                         00002001    55 _PPUMASK	=	0x2001
+                         00002002    56 _PPUSTATUS	=	0x2002
+                         00002003    57 _OAMADDR	=	0x2003
+                         00002004    58 _OAMDATA	=	0x2004
+                         00002005    59 _PPUSCROLL	=	0x2005
+                         00002006    60 _PPUADDR	=	0x2006
+                         00002007    61 _PPUDATA	=	0x2007
+                         00004014    62 _OAMDMA	=	0x4014
+    00000000                         63 _main_dst_20000_117:
+    00000000                         64 	.ds 4
+    00000004                         65 _main_dst_20000_118:
+    00000004                         66 	.ds 4
+    00000008                         67 _main_dst_20000_119:
+    00000008                         68 	.ds 9
+    00000011                         69 _main_dst2_20000_119:
+    00000011                         70 	.ds 9
+                                     71 ;--------------------------------------------------------
+                                     72 ; absolute external ram data
+                                     73 ;--------------------------------------------------------
+                                     74 	.area _DABS    (ABS)
+                                     75 ;--------------------------------------------------------
+                                     76 ; initialized external ram data
+                                     77 ;--------------------------------------------------------
+                                     78 	.area _DATA
+                                     79 ;--------------------------------------------------------
+                                     80 ; global & static initialisations
+                                     81 ;--------------------------------------------------------
+                                     82 	.area _HOME
+                                     83 	.area _GSINIT
+                                     84 	.area _GSFINAL
+                                     85 	.area _GSINIT
+                                     86 ;--------------------------------------------------------
+                                     87 ; Home
+                                     88 ;--------------------------------------------------------
+                                     89 	.area _HOME
+                                     90 	.area _HOME
+                                     91 ;--------------------------------------------------------
+                                     92 ; code
+                                     93 ;--------------------------------------------------------
+                                     94 	.area _CODE
+                                     95 ;------------------------------------------------------------
+                                     96 ;Allocation info for local variables in function 'main'
+                                     97 ;------------------------------------------------------------
+                                     98 ;ibm_font                  Allocated to registers a x 
+                                     99 ;dst                       Allocated with name '_main_dst_20000_117'
+                                    100 ;src                       Allocated to registers 
+                                    101 ;dst                       Allocated with name '_main_dst_20000_118'
+                                    102 ;src                       Allocated to registers 
+                                    103 ;dst                       Allocated with name '_main_dst_20000_119'
+                                    104 ;dst2                      Allocated with name '_main_dst2_20000_119'
+                                    105 ;------------------------------------------------------------
+                                    106 ;	src/libc_string.c: 12: void main(void)
+                                    107 ;	-----------------------------------------
+                                    108 ;	 function main
+                                    109 ;	-----------------------------------------
+                                    110 ;	Register assignment is optimal.
+                                    111 ;	Stack space usage: 0 bytes.
+    00000000                        112 _main:
+                                    113 ;	src/libc_string.c: 17: font_init();
+    00000000 20r00r00         [ 6]  114 	jsr	_font_init
+                                    115 ;	src/libc_string.c: 18: ibm_font = font_load(font_ibm);
+    00000003 A2s00            [ 2]  116 	ldx	#>_font_ibm
+    00000005 A9r00            [ 2]  117 	lda	#_font_ibm
+    00000007 20r00r00         [ 6]  118 	jsr	_font_load
+                                    119 ;	src/libc_string.c: 19: font_set(ibm_font);
+    0000000A 20r00r00         [ 6]  120 	jsr	_font_set
+                                    121 ;	src/libc_string.c: 22: printf("strlen(gbdk) -> %d\n", strlen("gbdk"));
+    0000000D A2s01            [ 2]  122 	ldx	#>___str_6
+    0000000F A9rF5            [ 2]  123 	lda	#___str_6
+    00000011 20r00r00         [ 6]  124 	jsr	_strlen
+    00000014 85*00            [ 3]  125 	sta	*(REGTEMP+0)
+    00000016 8A               [ 2]  126 	txa
+    00000017 48               [ 3]  127 	pha
+    00000018 A5*00            [ 3]  128 	lda	*(REGTEMP+0)
+    0000001A 48               [ 3]  129 	pha
+    0000001B A9s01            [ 2]  130 	lda	#>___str_5
+    0000001D 48               [ 3]  131 	pha
+    0000001E A9rE1            [ 2]  132 	lda	#___str_5
+    00000020 48               [ 3]  133 	pha
+    00000021 20r00r00         [ 6]  134 	jsr	_printf
+    00000024 68               [ 4]  135 	pla
+    00000025 68               [ 4]  136 	pla
+    00000026 68               [ 4]  137 	pla
+    00000027 68               [ 4]  138 	pla
+                                    139 ;	src/libc_string.c: 24: printf("strcmp(gbdk,gbdk)\n-> %d\n", strcmp("gbdk", "gbdk"));
+    00000028 A9s01            [ 2]  140 	lda	#>___str_6
+    0000002A 8Dr01r00         [ 4]  141 	sta	(_strcmp_PARM_2 + 1)
+    0000002D A9rF5            [ 2]  142 	lda	#___str_6
+    0000002F 8Dr00r00         [ 4]  143 	sta	_strcmp_PARM_2
+    00000032 A2s01            [ 2]  144 	ldx	#>___str_6
+    00000034 A9rF5            [ 2]  145 	lda	#___str_6
+    00000036 20r00r00         [ 6]  146 	jsr	_strcmp
+    00000039 85*00            [ 3]  147 	sta	*(REGTEMP+0)
+    0000003B 8A               [ 2]  148 	txa
+    0000003C 48               [ 3]  149 	pha
+    0000003D A5*00            [ 3]  150 	lda	*(REGTEMP+0)
+    0000003F 48               [ 3]  151 	pha
+    00000040 A9s01            [ 2]  152 	lda	#>___str_7
+    00000042 48               [ 3]  153 	pha
+    00000043 A9rFA            [ 2]  154 	lda	#___str_7
+    00000045 48               [ 3]  155 	pha
+    00000046 20r00r00         [ 6]  156 	jsr	_printf
+    00000049 68               [ 4]  157 	pla
+    0000004A 68               [ 4]  158 	pla
+    0000004B 68               [ 4]  159 	pla
+    0000004C 68               [ 4]  160 	pla
+                                    161 ;	src/libc_string.c: 25: printf("strcmp(gbdk,ggdk)\n-> %d\n", strcmp("gbdk", "ggdk"));
+    0000004D A9s02            [ 2]  162 	lda	#>___str_9
+    0000004F 8Dr01r00         [ 4]  163 	sta	(_strcmp_PARM_2 + 1)
+    00000052 A9r2C            [ 2]  164 	lda	#___str_9
+    00000054 8Dr00r00         [ 4]  165 	sta	_strcmp_PARM_2
+    00000057 A2s01            [ 2]  166 	ldx	#>___str_6
+    00000059 A9rF5            [ 2]  167 	lda	#___str_6
+    0000005B 20r00r00         [ 6]  168 	jsr	_strcmp
+    0000005E 85*00            [ 3]  169 	sta	*(REGTEMP+0)
+    00000060 8A               [ 2]  170 	txa
+    00000061 48               [ 3]  171 	pha
+    00000062 A5*00            [ 3]  172 	lda	*(REGTEMP+0)
+    00000064 48               [ 3]  173 	pha
+    00000065 A9s02            [ 2]  174 	lda	#>___str_8
+    00000067 48               [ 3]  175 	pha
+    00000068 A9r13            [ 2]  176 	lda	#___str_8
+    0000006A 48               [ 3]  177 	pha
+    0000006B 20r00r00         [ 6]  178 	jsr	_printf
+    0000006E 68               [ 4]  179 	pla
+    0000006F 68               [ 4]  180 	pla
+    00000070 68               [ 4]  181 	pla
+    00000071 68               [ 4]  182 	pla
+                                    183 ;	src/libc_string.c: 26: printf("strcmp(ggdk,gbdk)\n-> %d\n", strcmp("ggdk", "gbdk"));
+    00000072 A9s01            [ 2]  184 	lda	#>___str_6
+    00000074 8Dr01r00         [ 4]  185 	sta	(_strcmp_PARM_2 + 1)
+    00000077 A9rF5            [ 2]  186 	lda	#___str_6
+    00000079 8Dr00r00         [ 4]  187 	sta	_strcmp_PARM_2
+    0000007C A2s02            [ 2]  188 	ldx	#>___str_9
+    0000007E A9r2C            [ 2]  189 	lda	#___str_9
+    00000080 20r00r00         [ 6]  190 	jsr	_strcmp
+    00000083 85*00            [ 3]  191 	sta	*(REGTEMP+0)
+    00000085 8A               [ 2]  192 	txa
+    00000086 48               [ 3]  193 	pha
+    00000087 A5*00            [ 3]  194 	lda	*(REGTEMP+0)
+    00000089 48               [ 3]  195 	pha
+    0000008A A9s02            [ 2]  196 	lda	#>___str_10
+    0000008C 48               [ 3]  197 	pha
+    0000008D A9r31            [ 2]  198 	lda	#___str_10
+    0000008F 48               [ 3]  199 	pha
+    00000090 20r00r00         [ 6]  200 	jsr	_printf
+    00000093 68               [ 4]  201 	pla
+    00000094 68               [ 4]  202 	pla
+    00000095 68               [ 4]  203 	pla
+    00000096 68               [ 4]  204 	pla
+                                    205 ;	src/libc_string.c: 27: printf("strncmp(gbdk,gbc,2)\n-> %d\n", strncmp("gbdk", "gbc", 2));
+    00000097 A9s02            [ 2]  206 	lda	#>___str_12
+    00000099 8Dr01r00         [ 4]  207 	sta	(_strncmp_PARM_2 + 1)
+    0000009C A9r65            [ 2]  208 	lda	#___str_12
+    0000009E 8Dr00r00         [ 4]  209 	sta	_strncmp_PARM_2
+    000000A1 A2 02            [ 2]  210 	ldx	#0x02
+    000000A3 8Er00r00         [ 4]  211 	stx	_strncmp_PARM_3
+    000000A6 A2 00            [ 2]  212 	ldx	#0x00
+    000000A8 8Er01r00         [ 4]  213 	stx	(_strncmp_PARM_3 + 1)
+    000000AB A2s01            [ 2]  214 	ldx	#>___str_6
+    000000AD A9rF5            [ 2]  215 	lda	#___str_6
+    000000AF 20r00r00         [ 6]  216 	jsr	_strncmp
+    000000B2 85*00            [ 3]  217 	sta	*(REGTEMP+0)
+    000000B4 8A               [ 2]  218 	txa
+    000000B5 48               [ 3]  219 	pha
+    000000B6 A5*00            [ 3]  220 	lda	*(REGTEMP+0)
+    000000B8 48               [ 3]  221 	pha
+    000000B9 A9s02            [ 2]  222 	lda	#>___str_11
+    000000BB 48               [ 3]  223 	pha
+    000000BC A9r4A            [ 2]  224 	lda	#___str_11
+    000000BE 48               [ 3]  225 	pha
+    000000BF 20r00r00         [ 6]  226 	jsr	_printf
+    000000C2 68               [ 4]  227 	pla
+    000000C3 68               [ 4]  228 	pla
+    000000C4 68               [ 4]  229 	pla
+    000000C5 68               [ 4]  230 	pla
+                                    231 ;	src/libc_string.c: 30: char dst[4] = "dst";
+    000000C6 A2 64            [ 2]  232 	ldx	#0x64
+    000000C8 8Er00r00         [ 4]  233 	stx	_main_dst_20000_117
+    000000CB A2 73            [ 2]  234 	ldx	#0x73
+    000000CD 8Er01r00         [ 4]  235 	stx	(_main_dst_20000_117 + 0x0001)
+    000000D0 E8               [ 2]  236 	inx
+    000000D1 8Er02r00         [ 4]  237 	stx	(_main_dst_20000_117 + 0x0002)
+    000000D4 A2 00            [ 2]  238 	ldx	#0x00
+    000000D6 8Er03r00         [ 4]  239 	stx	(_main_dst_20000_117 + 0x0003)
+                                    240 ;	src/libc_string.c: 31: const char* src = "src";
+    000000D9 A9s01            [ 2]  241 	lda	#>___str_1
+    000000DB 8Dr01r00         [ 4]  242 	sta	(_strcpy_PARM_2 + 1)
+    000000DE A9rDD            [ 2]  243 	lda	#___str_1
+    000000E0 8Dr00r00         [ 4]  244 	sta	_strcpy_PARM_2
+                                    245 ;	src/libc_string.c: 32: strcpy(dst, src);
+    000000E3 A2s00            [ 2]  246 	ldx	#>_main_dst_20000_117
+    000000E5 A9r00            [ 2]  247 	lda	#_main_dst_20000_117
+    000000E7 20r00r00         [ 6]  248 	jsr	_strcpy
+                                    249 ;	src/libc_string.c: 33: printf("strcpy(dst,src)\n-> %s\n", dst);
+    000000EA A9s00            [ 2]  250 	lda	#>_main_dst_20000_117
+    000000EC 48               [ 3]  251 	pha
+    000000ED A9r00            [ 2]  252 	lda	#_main_dst_20000_117
+    000000EF 48               [ 3]  253 	pha
+    000000F0 A9s02            [ 2]  254 	lda	#>___str_13
+    000000F2 48               [ 3]  255 	pha
+    000000F3 A9r69            [ 2]  256 	lda	#___str_13
+    000000F5 48               [ 3]  257 	pha
+    000000F6 20r00r00         [ 6]  258 	jsr	_printf
+    000000F9 68               [ 4]  259 	pla
+    000000FA 68               [ 4]  260 	pla
+    000000FB 68               [ 4]  261 	pla
+    000000FC 68               [ 4]  262 	pla
+                                    263 ;	src/libc_string.c: 37: char dst[4] = "dst";
+    000000FD A2 64            [ 2]  264 	ldx	#0x64
+    000000FF 8Er04r00         [ 4]  265 	stx	_main_dst_20000_118
+    00000102 A2 73            [ 2]  266 	ldx	#0x73
+    00000104 8Er05r00         [ 4]  267 	stx	(_main_dst_20000_118 + 0x0001)
+    00000107 E8               [ 2]  268 	inx
+    00000108 8Er06r00         [ 4]  269 	stx	(_main_dst_20000_118 + 0x0002)
+    0000010B A2 00            [ 2]  270 	ldx	#0x00
+    0000010D 8Er07r00         [ 4]  271 	stx	(_main_dst_20000_118 + 0x0003)
+                                    272 ;	src/libc_string.c: 38: const char* src = "src";
+    00000110 A9s01            [ 2]  273 	lda	#>___str_1
+    00000112 8Dr01r00         [ 4]  274 	sta	(_strncpy_PARM_2 + 1)
+    00000115 A9rDD            [ 2]  275 	lda	#___str_1
+    00000117 8Dr00r00         [ 4]  276 	sta	_strncpy_PARM_2
+                                    277 ;	src/libc_string.c: 39: strncpy(dst, src, 2);
+    0000011A A2 02            [ 2]  278 	ldx	#0x02
+    0000011C 8Er00r00         [ 4]  279 	stx	_strncpy_PARM_3
+    0000011F A2 00            [ 2]  280 	ldx	#0x00
+    00000121 8Er01r00         [ 4]  281 	stx	(_strncpy_PARM_3 + 1)
+    00000124 A2s00            [ 2]  282 	ldx	#>_main_dst_20000_118
+    00000126 A9r04            [ 2]  283 	lda	#_main_dst_20000_118
+    00000128 20r00r00         [ 6]  284 	jsr	_strncpy
+                                    285 ;	src/libc_string.c: 40: printf("strncpy(dst,src,2)\n-> %s\n", dst);
+    0000012B A9s00            [ 2]  286 	lda	#>_main_dst_20000_118
+    0000012D 48               [ 3]  287 	pha
+    0000012E A9r04            [ 2]  288 	lda	#_main_dst_20000_118
+    00000130 48               [ 3]  289 	pha
+    00000131 A9s02            [ 2]  290 	lda	#>___str_14
+    00000133 48               [ 3]  291 	pha
+    00000134 A9r80            [ 2]  292 	lda	#___str_14
+    00000136 48               [ 3]  293 	pha
+    00000137 20r00r00         [ 6]  294 	jsr	_printf
+    0000013A 68               [ 4]  295 	pla
+    0000013B 68               [ 4]  296 	pla
+    0000013C 68               [ 4]  297 	pla
+    0000013D 68               [ 4]  298 	pla
+                                    299 ;	src/libc_string.c: 44: char dst[9] = "gbdk";
+    0000013E A2 67            [ 2]  300 	ldx	#0x67
+    00000140 8Er08r00         [ 4]  301 	stx	_main_dst_20000_119
+    00000143 A2 62            [ 2]  302 	ldx	#0x62
+    00000145 8Er09r00         [ 4]  303 	stx	(_main_dst_20000_119 + 0x0001)
+    00000148 A2 64            [ 2]  304 	ldx	#0x64
+    0000014A 8Er0Ar00         [ 4]  305 	stx	(_main_dst_20000_119 + 0x0002)
+    0000014D A2 6B            [ 2]  306 	ldx	#0x6b
+    0000014F 8Er0Br00         [ 4]  307 	stx	(_main_dst_20000_119 + 0x0003)
+    00000152 A2 00            [ 2]  308 	ldx	#0x00
+    00000154 8Er0Cr00         [ 4]  309 	stx	(_main_dst_20000_119 + 0x0004)
+    00000157 8Er0Dr00         [ 4]  310 	stx	(_main_dst_20000_119 + 0x0005)
+    0000015A 8Er0Er00         [ 4]  311 	stx	(_main_dst_20000_119 + 0x0006)
+    0000015D 8Er0Fr00         [ 4]  312 	stx	(_main_dst_20000_119 + 0x0007)
+    00000160 8Er10r00         [ 4]  313 	stx	(_main_dst_20000_119 + 0x0008)
+                                    314 ;	src/libc_string.c: 45: char dst2[9] = "gbdk";
+    00000163 A2 67            [ 2]  315 	ldx	#0x67
+    00000165 8Er11r00         [ 4]  316 	stx	_main_dst2_20000_119
+    00000168 A2 62            [ 2]  317 	ldx	#0x62
+    0000016A 8Er12r00         [ 4]  318 	stx	(_main_dst2_20000_119 + 0x0001)
+    0000016D A2 64            [ 2]  319 	ldx	#0x64
+    0000016F 8Er13r00         [ 4]  320 	stx	(_main_dst2_20000_119 + 0x0002)
+    00000172 A2 6B            [ 2]  321 	ldx	#0x6b
+    00000174 8Er14r00         [ 4]  322 	stx	(_main_dst2_20000_119 + 0x0003)
+    00000177 A2 00            [ 2]  323 	ldx	#0x00
+    00000179 8Er15r00         [ 4]  324 	stx	(_main_dst2_20000_119 + 0x0004)
+    0000017C 8Er16r00         [ 4]  325 	stx	(_main_dst2_20000_119 + 0x0005)
+    0000017F 8Er17r00         [ 4]  326 	stx	(_main_dst2_20000_119 + 0x0006)
+    00000182 8Er18r00         [ 4]  327 	stx	(_main_dst2_20000_119 + 0x0007)
+    00000185 8Er19r00         [ 4]  328 	stx	(_main_dst2_20000_119 + 0x0008)
+                                    329 ;	src/libc_string.c: 46: printf("strcat(gbdk,2020)\n-> %s\n", strcat(dst, "2020"));
+    00000188 A9s02            [ 2]  330 	lda	#>___str_16
+    0000018A 8Dr01r00         [ 4]  331 	sta	(_strcat_PARM_2 + 1)
+    0000018D A9rB3            [ 2]  332 	lda	#___str_16
+    0000018F 8Dr00r00         [ 4]  333 	sta	_strcat_PARM_2
+    00000192 A2s00            [ 2]  334 	ldx	#>_main_dst_20000_119
+    00000194 A9r08            [ 2]  335 	lda	#_main_dst_20000_119
+    00000196 20r00r00         [ 6]  336 	jsr	_strcat
+    00000199 85*00            [ 3]  337 	sta	*(REGTEMP+0)
+    0000019B 8A               [ 2]  338 	txa
+    0000019C 48               [ 3]  339 	pha
+    0000019D A5*00            [ 3]  340 	lda	*(REGTEMP+0)
+    0000019F 48               [ 3]  341 	pha
+    000001A0 A9s02            [ 2]  342 	lda	#>___str_15
+    000001A2 48               [ 3]  343 	pha
+    000001A3 A9r9A            [ 2]  344 	lda	#___str_15
+    000001A5 48               [ 3]  345 	pha
+    000001A6 20r00r00         [ 6]  346 	jsr	_printf
+    000001A9 68               [ 4]  347 	pla
+    000001AA 68               [ 4]  348 	pla
+    000001AB 68               [ 4]  349 	pla
+    000001AC 68               [ 4]  350 	pla
+                                    351 ;	src/libc_string.c: 47: printf("strncat(gbdk,lib,2)\n-> %s\n", strncat(dst2, "lib",2));
+    000001AD A9s02            [ 2]  352 	lda	#>___str_18
+    000001AF 8Dr01r00         [ 4]  353 	sta	(_strncat_PARM_2 + 1)
+    000001B2 A9rD3            [ 2]  354 	lda	#___str_18
+    000001B4 8Dr00r00         [ 4]  355 	sta	_strncat_PARM_2
+    000001B7 A2 02            [ 2]  356 	ldx	#0x02
+    000001B9 8Er00r00         [ 4]  357 	stx	_strncat_PARM_3
+    000001BC A2 00            [ 2]  358 	ldx	#0x00
+    000001BE 8Er01r00         [ 4]  359 	stx	(_strncat_PARM_3 + 1)
+    000001C1 A2s00            [ 2]  360 	ldx	#>_main_dst2_20000_119
+    000001C3 A9r11            [ 2]  361 	lda	#_main_dst2_20000_119
+    000001C5 20r00r00         [ 6]  362 	jsr	_strncat
+    000001C8 85*00            [ 3]  363 	sta	*(REGTEMP+0)
+    000001CA 8A               [ 2]  364 	txa
+    000001CB 48               [ 3]  365 	pha
+    000001CC A5*00            [ 3]  366 	lda	*(REGTEMP+0)
+    000001CE 48               [ 3]  367 	pha
+    000001CF A9s02            [ 2]  368 	lda	#>___str_17
+    000001D1 48               [ 3]  369 	pha
+    000001D2 A9rB8            [ 2]  370 	lda	#___str_17
+    000001D4 48               [ 3]  371 	pha
+    000001D5 20r00r00         [ 6]  372 	jsr	_printf
+    000001D8 68               [ 4]  373 	pla
+    000001D9 68               [ 4]  374 	pla
+    000001DA 68               [ 4]  375 	pla
+    000001DB 68               [ 4]  376 	pla
+                                    377 ;	src/libc_string.c: 49: }
+    000001DC 60               [ 6]  378 	rts
+                                    379 	.area _CODE
+    000001DD                        380 ___str_1:
+    000001DD 73 72 63               381 	.ascii "src"
+    000001E0 00                     382 	.db 0x00
+    000001E1                        383 ___str_5:
+    000001E1 73 74 72 6C 65 6E 28   384 	.ascii "strlen(gbdk) -> %d"
+             67 62 64 6B 29 20 2D
+             3E 20 25 64
+    000001F3 0A                     385 	.db 0x0a
+    000001F4 00                     386 	.db 0x00
+    000001F5                        387 ___str_6:
+    000001F5 67 62 64 6B            388 	.ascii "gbdk"
+    000001F9 00                     389 	.db 0x00
+    000001FA                        390 ___str_7:
+    000001FA 73 74 72 63 6D 70 28   391 	.ascii "strcmp(gbdk,gbdk)"
+             67 62 64 6B 2C 67 62
+             64 6B 29
+    0000020B 0A                     392 	.db 0x0a
+    0000020C 2D 3E 20 25 64         393 	.ascii "-> %d"
+    00000211 0A                     394 	.db 0x0a
+    00000212 00                     395 	.db 0x00
+    00000213                        396 ___str_8:
+    00000213 73 74 72 63 6D 70 28   397 	.ascii "strcmp(gbdk,ggdk)"
+             67 62 64 6B 2C 67 67
+             64 6B 29
+    00000224 0A                     398 	.db 0x0a
+    00000225 2D 3E 20 25 64         399 	.ascii "-> %d"
+    0000022A 0A                     400 	.db 0x0a
+    0000022B 00                     401 	.db 0x00
+    0000022C                        402 ___str_9:
+    0000022C 67 67 64 6B            403 	.ascii "ggdk"
+    00000230 00                     404 	.db 0x00
+    00000231                        405 ___str_10:
+    00000231 73 74 72 63 6D 70 28   406 	.ascii "strcmp(ggdk,gbdk)"
+             67 67 64 6B 2C 67 62
+             64 6B 29
+    00000242 0A                     407 	.db 0x0a
+    00000243 2D 3E 20 25 64         408 	.ascii "-> %d"
+    00000248 0A                     409 	.db 0x0a
+    00000249 00                     410 	.db 0x00
+    0000024A                        411 ___str_11:
+    0000024A 73 74 72 6E 63 6D 70   412 	.ascii "strncmp(gbdk,gbc,2)"
+             28 67 62 64 6B 2C 67
+             62 63 2C 32 29
+    0000025D 0A                     413 	.db 0x0a
+    0000025E 2D 3E 20 25 64         414 	.ascii "-> %d"
+    00000263 0A                     415 	.db 0x0a
+    00000264 00                     416 	.db 0x00
+    00000265                        417 ___str_12:
+    00000265 67 62 63               418 	.ascii "gbc"
+    00000268 00                     419 	.db 0x00
+    00000269                        420 ___str_13:
+    00000269 73 74 72 63 70 79 28   421 	.ascii "strcpy(dst,src)"
+             64 73 74 2C 73 72 63
+             29
+    00000278 0A                     422 	.db 0x0a
+    00000279 2D 3E 20 25 73         423 	.ascii "-> %s"
+    0000027E 0A                     424 	.db 0x0a
+    0000027F 00                     425 	.db 0x00
+    00000280                        426 ___str_14:
+    00000280 73 74 72 6E 63 70 79   427 	.ascii "strncpy(dst,src,2)"
+             28 64 73 74 2C 73 72
+             63 2C 32 29
+    00000292 0A                     428 	.db 0x0a
+    00000293 2D 3E 20 25 73         429 	.ascii "-> %s"
+    00000298 0A                     430 	.db 0x0a
+    00000299 00                     431 	.db 0x00
+    0000029A                        432 ___str_15:
+    0000029A 73 74 72 63 61 74 28   433 	.ascii "strcat(gbdk,2020)"
+             67 62 64 6B 2C 32 30
+             32 30 29
+    000002AB 0A                     434 	.db 0x0a
+    000002AC 2D 3E 20 25 73         435 	.ascii "-> %s"
+    000002B1 0A                     436 	.db 0x0a
+    000002B2 00                     437 	.db 0x00
+    000002B3                        438 ___str_16:
+    000002B3 32 30 32 30            439 	.ascii "2020"
+    000002B7 00                     440 	.db 0x00
+    000002B8                        441 ___str_17:
+    000002B8 73 74 72 6E 63 61 74   442 	.ascii "strncat(gbdk,lib,2)"
+             28 67 62 64 6B 2C 6C
+             69 62 2C 32 29
+    000002CB 0A                     443 	.db 0x0a
+    000002CC 2D 3E 20 25 73         444 	.ascii "-> %s"
+    000002D1 0A                     445 	.db 0x0a
+    000002D2 00                     446 	.db 0x00
+    000002D3                        447 ___str_18:
+    000002D3 6C 69 62               448 	.ascii "lib"
+    000002D6 00                     449 	.db 0x00
+                                    450 	.area _XINIT
+                                    451 	.area _CABS    (ABS)

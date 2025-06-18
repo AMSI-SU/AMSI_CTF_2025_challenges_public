@@ -1,0 +1,1117 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module joytest
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _main
+                                     23 	.globl _reset_object_pos
+                                     24 	.globl _draw_disabled
+                                     25 	.globl _draw_buttons
+                                     26 	.globl _fill_bkg_rect
+                                     27 	.globl _scroll_sprite
+                                     28 	.globl _move_sprite
+                                     29 	.globl _set_sprite_tile
+                                     30 	.globl _set_sprite_data
+                                     31 	.globl _set_bkg_tiles
+                                     32 	.globl _set_bkg_data
+                                     33 	.globl _vsync
+                                     34 	.globl _joypad_ex
+                                     35 	.globl _joypad_init
+                                     36 	.globl _joypad
+                                     37 	.globl _joy
+                                     38 	.globl _old_joy
+                                     39 	.globl _isSGB
+                                     40 	.globl _toggle
+                                     41 	.globl _joypads
+                                     42 	.globl _old_joypads
+                                     43 	.globl _draw_buttons_PARM_3
+                                     44 	.globl _OAMDMA
+                                     45 	.globl _PPUDATA
+                                     46 	.globl _PPUADDR
+                                     47 	.globl _PPUSCROLL
+                                     48 	.globl _OAMDATA
+                                     49 	.globl _OAMADDR
+                                     50 	.globl _PPUSTATUS
+                                     51 	.globl _PPUMASK
+                                     52 	.globl _PPUCTRL
+                                     53 ;--------------------------------------------------------
+                                     54 ; ZP ram data
+                                     55 ;--------------------------------------------------------
+                                     56 	.area _ZP      (PAG)
+    00000000                         57 _main_sloc0_1_0:
+    00000000                         58 	.ds 1
+    00000001                         59 _main_sloc1_1_0:
+    00000001                         60 	.ds 2
+                                     61 ;--------------------------------------------------------
+                                     62 ; overlayable items in ram
+                                     63 ;--------------------------------------------------------
+                                     64 	.area	OSEG    (PAG, OVR)
+    00000000                         65 _draw_buttons_sloc0_1_0:
+    00000000                         66 	.ds 1
+                                     67 	.area	OSEG    (PAG, OVR)
+    00000000                         68 _draw_disabled_sloc0_1_0:
+    00000000                         69 	.ds 1
+                                     70 	.area	OSEG    (PAG, OVR)
+    00000000                         71 _reset_object_pos_sloc0_1_0:
+    00000000                         72 	.ds 1
+                                     73 ;--------------------------------------------------------
+                                     74 ; uninitialized external ram data
+                                     75 ;--------------------------------------------------------
+                                     76 	.area _BSS
+                         00002000    77 _PPUCTRL	=	0x2000
+                         00002001    78 _PPUMASK	=	0x2001
+                         00002002    79 _PPUSTATUS	=	0x2002
+                         00002003    80 _OAMADDR	=	0x2003
+                         00002004    81 _OAMDATA	=	0x2004
+                         00002005    82 _PPUSCROLL	=	0x2005
+                         00002006    83 _PPUADDR	=	0x2006
+                         00002007    84 _PPUDATA	=	0x2007
+                         00004014    85 _OAMDMA	=	0x4014
+    00000000                         86 _draw_buttons_PARM_3:
+    00000000                         87 	.ds 1
+    00000001                         88 _draw_buttons_x_10000_88:
+    00000001                         89 	.ds 1
+    00000002                         90 _draw_buttons_state_10000_88:
+    00000002                         91 	.ds 1
+    00000003                         92 _draw_buttons___200000007_20000_90:
+    00000003                         93 	.ds 1
+    00000004                         94 _draw_disabled_y_10000_114:
+    00000004                         95 	.ds 1
+    00000005                         96 _old_joypads::
+    00000005                         97 	.ds 5
+    0000000A                         98 _joypads::
+    0000000A                         99 	.ds 5
+    0000000F                        100 _main_j_50000_156:
+    0000000F                        101 	.ds 1
+                                    102 ;--------------------------------------------------------
+                                    103 ; absolute external ram data
+                                    104 ;--------------------------------------------------------
+                                    105 	.area _DABS    (ABS)
+                                    106 ;--------------------------------------------------------
+                                    107 ; initialized external ram data
+                                    108 ;--------------------------------------------------------
+                                    109 	.area _DATA
+    00000000                        110 _toggle::
+    00000000                        111 	.ds 1
+    00000001                        112 _isSGB::
+    00000001                        113 	.ds 1
+    00000002                        114 _old_joy::
+    00000002                        115 	.ds 1
+    00000003                        116 _joy::
+    00000003                        117 	.ds 1
+                                    118 ;--------------------------------------------------------
+                                    119 ; global & static initialisations
+                                    120 ;--------------------------------------------------------
+                                    121 	.area _HOME
+                                    122 	.area _GSINIT
+                                    123 	.area _GSFINAL
+                                    124 	.area _GSINIT
+                                    125 ;--------------------------------------------------------
+                                    126 ; Home
+                                    127 ;--------------------------------------------------------
+                                    128 	.area _HOME
+                                    129 	.area _HOME
+                                    130 ;--------------------------------------------------------
+                                    131 ; code
+                                    132 ;--------------------------------------------------------
+                                    133 	.area _CODE
+                                    134 ;------------------------------------------------------------
+                                    135 ;Allocation info for local variables in function 'draw_buttons'
+                                    136 ;------------------------------------------------------------
+                                    137 ;y                         Allocated with name '_draw_buttons_PARM_3'
+                                    138 ;x                         Allocated with name '_draw_buttons_x_10000_88'
+                                    139 ;state                     Allocated with name '_draw_buttons_state_10000_88'
+                                    140 ;__200000006               Allocated to registers 
+                                    141 ;__200000007               Allocated with name '_draw_buttons___200000007_20000_90'
+                                    142 ;__200000008               Allocated to registers 
+                                    143 ;__200000009               Allocated to registers 
+                                    144 ;__200000010               Allocated to registers 
+                                    145 ;__200000011               Allocated to registers 
+                                    146 ;x                         Allocated to registers 
+                                    147 ;y                         Allocated to registers 
+                                    148 ;w                         Allocated to registers 
+                                    149 ;h                         Allocated to registers 
+                                    150 ;tiles                     Allocated to registers 
+                                    151 ;base_tile                 Allocated to registers 
+                                    152 ;__200000013               Allocated to registers a 
+                                    153 ;__200000014               Allocated to registers 
+                                    154 ;__200000015               Allocated to registers 
+                                    155 ;__200000016               Allocated to registers 
+                                    156 ;__200000017               Allocated to registers 
+                                    157 ;__200000018               Allocated to registers 
+                                    158 ;x                         Allocated to registers 
+                                    159 ;y                         Allocated to registers 
+                                    160 ;w                         Allocated to registers 
+                                    161 ;h                         Allocated to registers 
+                                    162 ;tiles                     Allocated to registers 
+                                    163 ;base_tile                 Allocated to registers 
+                                    164 ;__200000020               Allocated to registers a 
+                                    165 ;__200000021               Allocated to registers 
+                                    166 ;__200000022               Allocated to registers 
+                                    167 ;__200000023               Allocated to registers 
+                                    168 ;__200000024               Allocated to registers 
+                                    169 ;__200000025               Allocated to registers 
+                                    170 ;x                         Allocated to registers 
+                                    171 ;y                         Allocated to registers 
+                                    172 ;w                         Allocated to registers 
+                                    173 ;h                         Allocated to registers 
+                                    174 ;tiles                     Allocated to registers 
+                                    175 ;base_tile                 Allocated to registers 
+                                    176 ;__200000027               Allocated to registers a 
+                                    177 ;__200000028               Allocated to registers 
+                                    178 ;__200000029               Allocated to registers 
+                                    179 ;__200000030               Allocated to registers 
+                                    180 ;__200000031               Allocated to registers 
+                                    181 ;__200000032               Allocated to registers 
+                                    182 ;x                         Allocated to registers 
+                                    183 ;y                         Allocated to registers 
+                                    184 ;w                         Allocated to registers 
+                                    185 ;h                         Allocated to registers 
+                                    186 ;tiles                     Allocated to registers 
+                                    187 ;base_tile                 Allocated to registers 
+                                    188 ;__200000034               Allocated to registers a 
+                                    189 ;__200000035               Allocated to registers 
+                                    190 ;__200000036               Allocated to registers 
+                                    191 ;__200000037               Allocated to registers 
+                                    192 ;__200000038               Allocated to registers 
+                                    193 ;__200000039               Allocated to registers 
+                                    194 ;x                         Allocated to registers 
+                                    195 ;y                         Allocated to registers 
+                                    196 ;w                         Allocated to registers 
+                                    197 ;h                         Allocated to registers 
+                                    198 ;tiles                     Allocated to registers 
+                                    199 ;base_tile                 Allocated to registers 
+                                    200 ;__200000041               Allocated to registers a 
+                                    201 ;__200000042               Allocated to registers 
+                                    202 ;__200000043               Allocated to registers 
+                                    203 ;__200000044               Allocated to registers 
+                                    204 ;__200000045               Allocated to registers 
+                                    205 ;__200000046               Allocated to registers 
+                                    206 ;x                         Allocated to registers 
+                                    207 ;y                         Allocated to registers 
+                                    208 ;w                         Allocated to registers 
+                                    209 ;h                         Allocated to registers 
+                                    210 ;tiles                     Allocated to registers 
+                                    211 ;base_tile                 Allocated to registers 
+                                    212 ;__200000048               Allocated to registers a 
+                                    213 ;__200000049               Allocated to registers 
+                                    214 ;__200000050               Allocated to registers 
+                                    215 ;__200000051               Allocated to registers 
+                                    216 ;__200000052               Allocated to registers 
+                                    217 ;__200000053               Allocated to registers 
+                                    218 ;x                         Allocated to registers 
+                                    219 ;y                         Allocated to registers 
+                                    220 ;w                         Allocated to registers 
+                                    221 ;h                         Allocated to registers 
+                                    222 ;tiles                     Allocated to registers 
+                                    223 ;base_tile                 Allocated to registers 
+                                    224 ;__200000055               Allocated to registers a 
+                                    225 ;__200000056               Allocated to registers 
+                                    226 ;__200000057               Allocated to registers 
+                                    227 ;__200000058               Allocated to registers 
+                                    228 ;__200000059               Allocated to registers 
+                                    229 ;__200000060               Allocated to registers 
+                                    230 ;x                         Allocated to registers 
+                                    231 ;y                         Allocated to registers 
+                                    232 ;w                         Allocated to registers 
+                                    233 ;h                         Allocated to registers 
+                                    234 ;tiles                     Allocated to registers 
+                                    235 ;base_tile                 Allocated to registers 
+                                    236 ;sloc0                     Allocated with name '_draw_buttons_sloc0_1_0'
+                                    237 ;------------------------------------------------------------
+                                    238 ;	src/joytest.c: 13: void draw_buttons(uint8_t state, uint8_t x, uint8_t y) {
+                                    239 ;	-----------------------------------------
+                                    240 ;	 function draw_buttons
+                                    241 ;	-----------------------------------------
+                                    242 ;	Register assignment is optimal.
+                                    243 ;	Stack space usage: 0 bytes.
+    00000000                        244 _draw_buttons:
+    00000000 8Dr02r00         [ 4]  245 	sta	_draw_buttons_state_10000_88
+    00000003 8Er01r00         [ 4]  246 	stx	_draw_buttons_x_10000_88
+                                    247 ;	src/joytest.c: 14: set_bkg_based_tiles(x,      y, 2, 2, (state & J_UP)     ? pressed_buttons[0] : normal_buttons[0], 1);
+    00000006 A9 08            [ 2]  248 	lda	#0x08
+    00000008 2Dr02r00         [ 4]  249 	and	_draw_buttons_state_10000_88
+    0000000B F0 07            [ 4]  250 	beq	00111$
+    0000000D A9r00            [ 2]  251 	lda	#_pressed_buttons
+    0000000F A2s00            [ 2]  252 	ldx	#>_pressed_buttons
+    00000011 4Cr18r00         [ 3]  253 	jmp	00112$
+    00000014                        254 00111$:
+    00000014 A9r00            [ 2]  255 	lda	#_normal_buttons
+    00000016 A2s00            [ 2]  256 	ldx	#>_normal_buttons
+    00000018                        257 00112$:
+    00000018 8Dr00r00         [ 4]  258 	sta	_set_bkg_tiles_PARM_5
+    0000001B 8Er01r00         [ 4]  259 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    0000001E ADr00r00         [ 4]  260 	lda	_draw_buttons_PARM_3
+    00000021 8Dr03r00         [ 4]  261 	sta	_draw_buttons___200000007_20000_90
+                                    262 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    00000024 A2 01            [ 2]  263 	ldx	#0x01
+    00000026 8Er00r00         [ 4]  264 	stx	__map_tile_offset
+                                    265 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    00000029 E8               [ 2]  266 	inx
+    0000002A 8Er00r00         [ 4]  267 	stx	_set_bkg_tiles_PARM_3
+    0000002D 8Er00r00         [ 4]  268 	stx	_set_bkg_tiles_PARM_4
+    00000030 ADr01r00         [ 4]  269 	lda	_draw_buttons_x_10000_88
+    00000033 AEr03r00         [ 4]  270 	ldx	_draw_buttons___200000007_20000_90
+    00000036 20r00r00         [ 6]  271 	jsr	_set_bkg_tiles
+                                    272 ;	../../../include/nes/nes.h: 780: _map_tile_offset = 0;
+    00000039 A2 00            [ 2]  273 	ldx	#0x00
+    0000003B 8Er00r00         [ 4]  274 	stx	__map_tile_offset
+                                    275 ;	src/joytest.c: 15: set_bkg_based_tiles(x + 2,  y, 2, 2, (state & J_DOWN)   ? pressed_buttons[1] : normal_buttons[1], 1);
+    0000003E A9 04            [ 2]  276 	lda	#0x04
+    00000040 2Dr02r00         [ 4]  277 	and	_draw_buttons_state_10000_88
+    00000043 F0 0D            [ 4]  278 	beq	00113$
+    00000045 A2s00            [ 2]  279 	ldx	#>_pressed_buttons
+    00000047 A9r00            [ 2]  280 	lda	#_pressed_buttons
+    00000049 18               [ 2]  281 	clc
+    0000004A 69 04            [ 2]  282 	adc	#0x04
+    0000004C 90 0E            [ 4]  283 	bcc	00114$
+    0000004E E8               [ 2]  284 	inx
+    0000004F 4Cr5Cr00         [ 3]  285 	jmp	00114$
+    00000052                        286 00113$:
+    00000052 A2s00            [ 2]  287 	ldx	#>_normal_buttons
+    00000054 A9r00            [ 2]  288 	lda	#_normal_buttons
+    00000056 18               [ 2]  289 	clc
+    00000057 69 04            [ 2]  290 	adc	#0x04
+    00000059 90 01            [ 4]  291 	bcc	00180$
+    0000005B E8               [ 2]  292 	inx
+    0000005C                        293 00180$:
+    0000005C                        294 00114$:
+    0000005C 8Dr00r00         [ 4]  295 	sta	_set_bkg_tiles_PARM_5
+    0000005F 8Er01r00         [ 4]  296 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    00000062 ADr01r00         [ 4]  297 	lda	_draw_buttons_x_10000_88
+    00000065 85*00            [ 3]  298 	sta	*_draw_buttons_sloc0_1_0
+    00000067 18               [ 2]  299 	clc
+    00000068 69 02            [ 2]  300 	adc	#0x02
+                                    301 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    0000006A A2 01            [ 2]  302 	ldx	#0x01
+    0000006C 8Er00r00         [ 4]  303 	stx	__map_tile_offset
+                                    304 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    0000006F E8               [ 2]  305 	inx
+    00000070 8Er00r00         [ 4]  306 	stx	_set_bkg_tiles_PARM_3
+    00000073 8Er00r00         [ 4]  307 	stx	_set_bkg_tiles_PARM_4
+    00000076 AEr03r00         [ 4]  308 	ldx	_draw_buttons___200000007_20000_90
+    00000079 20r00r00         [ 6]  309 	jsr	_set_bkg_tiles
+                                    310 ;	../../../include/nes/nes.h: 780: _map_tile_offset = 0;
+    0000007C A2 00            [ 2]  311 	ldx	#0x00
+    0000007E 8Er00r00         [ 4]  312 	stx	__map_tile_offset
+                                    313 ;	src/joytest.c: 16: set_bkg_based_tiles(x + 4,  y, 2, 2, (state & J_LEFT)   ? pressed_buttons[2] : normal_buttons[2], 1);
+    00000081 A9 02            [ 2]  314 	lda	#0x02
+    00000083 2Dr02r00         [ 4]  315 	and	_draw_buttons_state_10000_88
+    00000086 F0 0D            [ 4]  316 	beq	00115$
+    00000088 A2s00            [ 2]  317 	ldx	#>_pressed_buttons
+    0000008A A9r00            [ 2]  318 	lda	#_pressed_buttons
+    0000008C 18               [ 2]  319 	clc
+    0000008D 69 08            [ 2]  320 	adc	#0x08
+    0000008F 90 0E            [ 4]  321 	bcc	00116$
+    00000091 E8               [ 2]  322 	inx
+    00000092 4Cr9Fr00         [ 3]  323 	jmp	00116$
+    00000095                        324 00115$:
+    00000095 A2s00            [ 2]  325 	ldx	#>_normal_buttons
+    00000097 A9r00            [ 2]  326 	lda	#_normal_buttons
+    00000099 18               [ 2]  327 	clc
+    0000009A 69 08            [ 2]  328 	adc	#0x08
+    0000009C 90 01            [ 4]  329 	bcc	00184$
+    0000009E E8               [ 2]  330 	inx
+    0000009F                        331 00184$:
+    0000009F                        332 00116$:
+    0000009F 8Dr00r00         [ 4]  333 	sta	_set_bkg_tiles_PARM_5
+    000000A2 8Er01r00         [ 4]  334 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    000000A5 A5*00            [ 3]  335 	lda	*_draw_buttons_sloc0_1_0
+    000000A7 18               [ 2]  336 	clc
+    000000A8 69 04            [ 2]  337 	adc	#0x04
+                                    338 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    000000AA A2 01            [ 2]  339 	ldx	#0x01
+    000000AC 8Er00r00         [ 4]  340 	stx	__map_tile_offset
+                                    341 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    000000AF E8               [ 2]  342 	inx
+    000000B0 8Er00r00         [ 4]  343 	stx	_set_bkg_tiles_PARM_3
+    000000B3 8Er00r00         [ 4]  344 	stx	_set_bkg_tiles_PARM_4
+    000000B6 AEr03r00         [ 4]  345 	ldx	_draw_buttons___200000007_20000_90
+    000000B9 20r00r00         [ 6]  346 	jsr	_set_bkg_tiles
+                                    347 ;	../../../include/nes/nes.h: 780: _map_tile_offset = 0;
+    000000BC A2 00            [ 2]  348 	ldx	#0x00
+    000000BE 8Er00r00         [ 4]  349 	stx	__map_tile_offset
+                                    350 ;	src/joytest.c: 17: set_bkg_based_tiles(x + 6,  y, 2, 2, (state & J_RIGHT)  ? pressed_buttons[3] : normal_buttons[3], 1);
+    000000C1 A9 01            [ 2]  351 	lda	#0x01
+    000000C3 2Dr02r00         [ 4]  352 	and	_draw_buttons_state_10000_88
+    000000C6 F0 0D            [ 4]  353 	beq	00117$
+    000000C8 A2s00            [ 2]  354 	ldx	#>_pressed_buttons
+    000000CA A9r00            [ 2]  355 	lda	#_pressed_buttons
+    000000CC 18               [ 2]  356 	clc
+    000000CD 69 0C            [ 2]  357 	adc	#0x0c
+    000000CF 90 0E            [ 4]  358 	bcc	00118$
+    000000D1 E8               [ 2]  359 	inx
+    000000D2 4CrDFr00         [ 3]  360 	jmp	00118$
+    000000D5                        361 00117$:
+    000000D5 A2s00            [ 2]  362 	ldx	#>_normal_buttons
+    000000D7 A9r00            [ 2]  363 	lda	#_normal_buttons
+    000000D9 18               [ 2]  364 	clc
+    000000DA 69 0C            [ 2]  365 	adc	#0x0c
+    000000DC 90 01            [ 4]  366 	bcc	00188$
+    000000DE E8               [ 2]  367 	inx
+    000000DF                        368 00188$:
+    000000DF                        369 00118$:
+    000000DF 8Dr00r00         [ 4]  370 	sta	_set_bkg_tiles_PARM_5
+    000000E2 8Er01r00         [ 4]  371 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    000000E5 A5*00            [ 3]  372 	lda	*_draw_buttons_sloc0_1_0
+    000000E7 18               [ 2]  373 	clc
+    000000E8 69 06            [ 2]  374 	adc	#0x06
+                                    375 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    000000EA A2 01            [ 2]  376 	ldx	#0x01
+    000000EC 8Er00r00         [ 4]  377 	stx	__map_tile_offset
+                                    378 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    000000EF E8               [ 2]  379 	inx
+    000000F0 8Er00r00         [ 4]  380 	stx	_set_bkg_tiles_PARM_3
+    000000F3 8Er00r00         [ 4]  381 	stx	_set_bkg_tiles_PARM_4
+    000000F6 AEr03r00         [ 4]  382 	ldx	_draw_buttons___200000007_20000_90
+    000000F9 20r00r00         [ 6]  383 	jsr	_set_bkg_tiles
+                                    384 ;	../../../include/nes/nes.h: 780: _map_tile_offset = 0;
+    000000FC A2 00            [ 2]  385 	ldx	#0x00
+    000000FE 8Er00r00         [ 4]  386 	stx	__map_tile_offset
+                                    387 ;	src/joytest.c: 18: set_bkg_based_tiles(x + 8,  y, 2, 2, (state & J_A)      ? pressed_buttons[4] : normal_buttons[4], 1);
+    00000101 2Cr02r00         [ 4]  388 	bit	_draw_buttons_state_10000_88
+    00000104 10 0D            [ 4]  389 	bpl	00119$
+    00000106 A2s00            [ 2]  390 	ldx	#>_pressed_buttons
+    00000108 A9r00            [ 2]  391 	lda	#_pressed_buttons
+    0000010A 18               [ 2]  392 	clc
+    0000010B 69 10            [ 2]  393 	adc	#0x10
+    0000010D 90 0E            [ 4]  394 	bcc	00120$
+    0000010F E8               [ 2]  395 	inx
+    00000110 4Cr1Dr01         [ 3]  396 	jmp	00120$
+    00000113                        397 00119$:
+    00000113 A2s00            [ 2]  398 	ldx	#>_normal_buttons
+    00000115 A9r00            [ 2]  399 	lda	#_normal_buttons
+    00000117 18               [ 2]  400 	clc
+    00000118 69 10            [ 2]  401 	adc	#0x10
+    0000011A 90 01            [ 4]  402 	bcc	00191$
+    0000011C E8               [ 2]  403 	inx
+    0000011D                        404 00191$:
+    0000011D                        405 00120$:
+    0000011D 8Dr00r00         [ 4]  406 	sta	_set_bkg_tiles_PARM_5
+    00000120 8Er01r00         [ 4]  407 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    00000123 A5*00            [ 3]  408 	lda	*_draw_buttons_sloc0_1_0
+    00000125 18               [ 2]  409 	clc
+    00000126 69 08            [ 2]  410 	adc	#0x08
+                                    411 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    00000128 A2 01            [ 2]  412 	ldx	#0x01
+    0000012A 8Er00r00         [ 4]  413 	stx	__map_tile_offset
+                                    414 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    0000012D E8               [ 2]  415 	inx
+    0000012E 8Er00r00         [ 4]  416 	stx	_set_bkg_tiles_PARM_3
+    00000131 8Er00r00         [ 4]  417 	stx	_set_bkg_tiles_PARM_4
+    00000134 AEr03r00         [ 4]  418 	ldx	_draw_buttons___200000007_20000_90
+    00000137 20r00r00         [ 6]  419 	jsr	_set_bkg_tiles
+                                    420 ;	../../../include/nes/nes.h: 780: _map_tile_offset = 0;
+    0000013A A2 00            [ 2]  421 	ldx	#0x00
+    0000013C 8Er00r00         [ 4]  422 	stx	__map_tile_offset
+                                    423 ;	src/joytest.c: 19: set_bkg_based_tiles(x + 10, y, 2, 2, (state & J_B)      ? pressed_buttons[5] : normal_buttons[5], 1);
+    0000013F 2Cr02r00         [ 4]  424 	bit	_draw_buttons_state_10000_88
+    00000142 50 0D            [ 4]  425 	bvc	00121$
+    00000144 A2s00            [ 2]  426 	ldx	#>_pressed_buttons
+    00000146 A9r00            [ 2]  427 	lda	#_pressed_buttons
+    00000148 18               [ 2]  428 	clc
+    00000149 69 14            [ 2]  429 	adc	#0x14
+    0000014B 90 0E            [ 4]  430 	bcc	00122$
+    0000014D E8               [ 2]  431 	inx
+    0000014E 4Cr5Br01         [ 3]  432 	jmp	00122$
+    00000151                        433 00121$:
+    00000151 A2s00            [ 2]  434 	ldx	#>_normal_buttons
+    00000153 A9r00            [ 2]  435 	lda	#_normal_buttons
+    00000155 18               [ 2]  436 	clc
+    00000156 69 14            [ 2]  437 	adc	#0x14
+    00000158 90 01            [ 4]  438 	bcc	00194$
+    0000015A E8               [ 2]  439 	inx
+    0000015B                        440 00194$:
+    0000015B                        441 00122$:
+    0000015B 8Dr00r00         [ 4]  442 	sta	_set_bkg_tiles_PARM_5
+    0000015E 8Er01r00         [ 4]  443 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    00000161 A5*00            [ 3]  444 	lda	*_draw_buttons_sloc0_1_0
+    00000163 18               [ 2]  445 	clc
+    00000164 69 0A            [ 2]  446 	adc	#0x0a
+                                    447 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    00000166 A2 01            [ 2]  448 	ldx	#0x01
+    00000168 8Er00r00         [ 4]  449 	stx	__map_tile_offset
+                                    450 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    0000016B E8               [ 2]  451 	inx
+    0000016C 8Er00r00         [ 4]  452 	stx	_set_bkg_tiles_PARM_3
+    0000016F 8Er00r00         [ 4]  453 	stx	_set_bkg_tiles_PARM_4
+    00000172 AEr03r00         [ 4]  454 	ldx	_draw_buttons___200000007_20000_90
+    00000175 20r00r00         [ 6]  455 	jsr	_set_bkg_tiles
+                                    456 ;	../../../include/nes/nes.h: 780: _map_tile_offset = 0;
+    00000178 A2 00            [ 2]  457 	ldx	#0x00
+    0000017A 8Er00r00         [ 4]  458 	stx	__map_tile_offset
+                                    459 ;	src/joytest.c: 20: set_bkg_based_tiles(x + 12, y, 2, 2, (state & J_START)  ? pressed_buttons[6] : normal_buttons[6], 1);
+    0000017D A9 10            [ 2]  460 	lda	#0x10
+    0000017F 2Dr02r00         [ 4]  461 	and	_draw_buttons_state_10000_88
+    00000182 F0 0D            [ 4]  462 	beq	00123$
+    00000184 A2s00            [ 2]  463 	ldx	#>_pressed_buttons
+    00000186 A9r00            [ 2]  464 	lda	#_pressed_buttons
+    00000188 18               [ 2]  465 	clc
+    00000189 69 18            [ 2]  466 	adc	#0x18
+    0000018B 90 0E            [ 4]  467 	bcc	00124$
+    0000018D E8               [ 2]  468 	inx
+    0000018E 4Cr9Br01         [ 3]  469 	jmp	00124$
+    00000191                        470 00123$:
+    00000191 A2s00            [ 2]  471 	ldx	#>_normal_buttons
+    00000193 A9r00            [ 2]  472 	lda	#_normal_buttons
+    00000195 18               [ 2]  473 	clc
+    00000196 69 18            [ 2]  474 	adc	#0x18
+    00000198 90 01            [ 4]  475 	bcc	00198$
+    0000019A E8               [ 2]  476 	inx
+    0000019B                        477 00198$:
+    0000019B                        478 00124$:
+    0000019B 8Dr00r00         [ 4]  479 	sta	_set_bkg_tiles_PARM_5
+    0000019E 8Er01r00         [ 4]  480 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    000001A1 A5*00            [ 3]  481 	lda	*_draw_buttons_sloc0_1_0
+    000001A3 18               [ 2]  482 	clc
+    000001A4 69 0C            [ 2]  483 	adc	#0x0c
+                                    484 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    000001A6 A2 01            [ 2]  485 	ldx	#0x01
+    000001A8 8Er00r00         [ 4]  486 	stx	__map_tile_offset
+                                    487 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    000001AB E8               [ 2]  488 	inx
+    000001AC 8Er00r00         [ 4]  489 	stx	_set_bkg_tiles_PARM_3
+    000001AF 8Er00r00         [ 4]  490 	stx	_set_bkg_tiles_PARM_4
+    000001B2 AEr03r00         [ 4]  491 	ldx	_draw_buttons___200000007_20000_90
+    000001B5 20r00r00         [ 6]  492 	jsr	_set_bkg_tiles
+                                    493 ;	../../../include/nes/nes.h: 780: _map_tile_offset = 0;
+    000001B8 A2 00            [ 2]  494 	ldx	#0x00
+    000001BA 8Er00r00         [ 4]  495 	stx	__map_tile_offset
+                                    496 ;	src/joytest.c: 21: set_bkg_based_tiles(x + 14, y, 2, 2, (state & J_SELECT) ? pressed_buttons[7] : normal_buttons[7], 1);
+    000001BD A9 20            [ 2]  497 	lda	#0x20
+    000001BF 2Dr02r00         [ 4]  498 	and	_draw_buttons_state_10000_88
+    000001C2 F0 0D            [ 4]  499 	beq	00125$
+    000001C4 A2s00            [ 2]  500 	ldx	#>_pressed_buttons
+    000001C6 A9r00            [ 2]  501 	lda	#_pressed_buttons
+    000001C8 18               [ 2]  502 	clc
+    000001C9 69 1C            [ 2]  503 	adc	#0x1c
+    000001CB 90 0E            [ 4]  504 	bcc	00126$
+    000001CD E8               [ 2]  505 	inx
+    000001CE 4CrDBr01         [ 3]  506 	jmp	00126$
+    000001D1                        507 00125$:
+    000001D1 A2s00            [ 2]  508 	ldx	#>_normal_buttons
+    000001D3 A9r00            [ 2]  509 	lda	#_normal_buttons
+    000001D5 18               [ 2]  510 	clc
+    000001D6 69 1C            [ 2]  511 	adc	#0x1c
+    000001D8 90 01            [ 4]  512 	bcc	00202$
+    000001DA E8               [ 2]  513 	inx
+    000001DB                        514 00202$:
+    000001DB                        515 00126$:
+    000001DB 8Dr00r00         [ 4]  516 	sta	_set_bkg_tiles_PARM_5
+    000001DE 8Er01r00         [ 4]  517 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    000001E1 A5*00            [ 3]  518 	lda	*_draw_buttons_sloc0_1_0
+    000001E3 18               [ 2]  519 	clc
+    000001E4 69 0E            [ 2]  520 	adc	#0x0e
+                                    521 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    000001E6 A2 01            [ 2]  522 	ldx	#0x01
+    000001E8 8Er00r00         [ 4]  523 	stx	__map_tile_offset
+                                    524 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    000001EB E8               [ 2]  525 	inx
+    000001EC 8Er00r00         [ 4]  526 	stx	_set_bkg_tiles_PARM_3
+    000001EF 8Er00r00         [ 4]  527 	stx	_set_bkg_tiles_PARM_4
+    000001F2 AEr03r00         [ 4]  528 	ldx	_draw_buttons___200000007_20000_90
+    000001F5 20r00r00         [ 6]  529 	jsr	_set_bkg_tiles
+                                    530 ;	../../../include/nes/nes.h: 780: _map_tile_offset = 0;
+    000001F8 A2 00            [ 2]  531 	ldx	#0x00
+    000001FA 8Er00r00         [ 4]  532 	stx	__map_tile_offset
+                                    533 ;	src/joytest.c: 21: set_bkg_based_tiles(x + 14, y, 2, 2, (state & J_SELECT) ? pressed_buttons[7] : normal_buttons[7], 1);
+                                    534 ;	src/joytest.c: 22: }
+    000001FD 60               [ 6]  535 	rts
+                                    536 ;------------------------------------------------------------
+                                    537 ;Allocation info for local variables in function 'draw_disabled'
+                                    538 ;------------------------------------------------------------
+                                    539 ;y                         Allocated with name '_draw_disabled_y_10000_114'
+                                    540 ;x                         Allocated to registers a 
+                                    541 ;__200000062               Allocated to registers 
+                                    542 ;__200000063               Allocated to registers 
+                                    543 ;__200000064               Allocated to registers 
+                                    544 ;__200000065               Allocated to registers 
+                                    545 ;__200000066               Allocated to registers 
+                                    546 ;__200000067               Allocated to registers 
+                                    547 ;x                         Allocated to registers 
+                                    548 ;y                         Allocated to registers 
+                                    549 ;w                         Allocated to registers 
+                                    550 ;h                         Allocated to registers 
+                                    551 ;tiles                     Allocated to registers 
+                                    552 ;base_tile                 Allocated to registers 
+                                    553 ;__200000069               Allocated to registers a 
+                                    554 ;__200000070               Allocated to registers 
+                                    555 ;__200000071               Allocated to registers 
+                                    556 ;__200000072               Allocated to registers 
+                                    557 ;__200000073               Allocated to registers 
+                                    558 ;__200000074               Allocated to registers 
+                                    559 ;x                         Allocated to registers 
+                                    560 ;y                         Allocated to registers 
+                                    561 ;w                         Allocated to registers 
+                                    562 ;h                         Allocated to registers 
+                                    563 ;tiles                     Allocated to registers 
+                                    564 ;base_tile                 Allocated to registers 
+                                    565 ;__200000076               Allocated to registers a 
+                                    566 ;__200000077               Allocated to registers 
+                                    567 ;__200000078               Allocated to registers 
+                                    568 ;__200000079               Allocated to registers 
+                                    569 ;__200000080               Allocated to registers 
+                                    570 ;__200000081               Allocated to registers 
+                                    571 ;x                         Allocated to registers 
+                                    572 ;y                         Allocated to registers 
+                                    573 ;w                         Allocated to registers 
+                                    574 ;h                         Allocated to registers 
+                                    575 ;tiles                     Allocated to registers 
+                                    576 ;base_tile                 Allocated to registers 
+                                    577 ;__200000083               Allocated to registers a 
+                                    578 ;__200000084               Allocated to registers 
+                                    579 ;__200000085               Allocated to registers 
+                                    580 ;__200000086               Allocated to registers 
+                                    581 ;__200000087               Allocated to registers 
+                                    582 ;__200000088               Allocated to registers 
+                                    583 ;x                         Allocated to registers 
+                                    584 ;y                         Allocated to registers 
+                                    585 ;w                         Allocated to registers 
+                                    586 ;h                         Allocated to registers 
+                                    587 ;tiles                     Allocated to registers 
+                                    588 ;base_tile                 Allocated to registers 
+                                    589 ;__200000090               Allocated to registers a 
+                                    590 ;__200000091               Allocated to registers 
+                                    591 ;__200000092               Allocated to registers 
+                                    592 ;__200000093               Allocated to registers 
+                                    593 ;__200000094               Allocated to registers 
+                                    594 ;__200000095               Allocated to registers 
+                                    595 ;x                         Allocated to registers 
+                                    596 ;y                         Allocated to registers 
+                                    597 ;w                         Allocated to registers 
+                                    598 ;h                         Allocated to registers 
+                                    599 ;tiles                     Allocated to registers 
+                                    600 ;base_tile                 Allocated to registers 
+                                    601 ;__200000097               Allocated to registers a 
+                                    602 ;__200000098               Allocated to registers 
+                                    603 ;__200000099               Allocated to registers 
+                                    604 ;__200000100               Allocated to registers 
+                                    605 ;__200000101               Allocated to registers 
+                                    606 ;__200000102               Allocated to registers 
+                                    607 ;x                         Allocated to registers 
+                                    608 ;y                         Allocated to registers 
+                                    609 ;w                         Allocated to registers 
+                                    610 ;h                         Allocated to registers 
+                                    611 ;tiles                     Allocated to registers 
+                                    612 ;base_tile                 Allocated to registers 
+                                    613 ;__200000104               Allocated to registers a 
+                                    614 ;__200000105               Allocated to registers 
+                                    615 ;__200000106               Allocated to registers 
+                                    616 ;__200000107               Allocated to registers 
+                                    617 ;__200000108               Allocated to registers 
+                                    618 ;__200000109               Allocated to registers 
+                                    619 ;x                         Allocated to registers 
+                                    620 ;y                         Allocated to registers 
+                                    621 ;w                         Allocated to registers 
+                                    622 ;h                         Allocated to registers 
+                                    623 ;tiles                     Allocated to registers 
+                                    624 ;base_tile                 Allocated to registers 
+                                    625 ;__200000111               Allocated to registers a 
+                                    626 ;__200000112               Allocated to registers 
+                                    627 ;__200000113               Allocated to registers 
+                                    628 ;__200000114               Allocated to registers 
+                                    629 ;__200000115               Allocated to registers 
+                                    630 ;__200000116               Allocated to registers 
+                                    631 ;x                         Allocated to registers 
+                                    632 ;y                         Allocated to registers 
+                                    633 ;w                         Allocated to registers 
+                                    634 ;h                         Allocated to registers 
+                                    635 ;tiles                     Allocated to registers 
+                                    636 ;base_tile                 Allocated to registers 
+                                    637 ;sloc0                     Allocated with name '_draw_disabled_sloc0_1_0'
+                                    638 ;------------------------------------------------------------
+                                    639 ;	src/joytest.c: 24: void draw_disabled(uint8_t x, uint8_t y) {
+                                    640 ;	-----------------------------------------
+                                    641 ;	 function draw_disabled
+                                    642 ;	-----------------------------------------
+                                    643 ;	Register assignment is optimal.
+                                    644 ;	Stack space usage: 0 bytes.
+    000001FE                        645 _draw_disabled:
+    000001FE 8Er04r00         [ 4]  646 	stx	_draw_disabled_y_10000_114
+                                    647 ;	src/joytest.c: 25: set_bkg_based_tiles(x,      y, 2, 2, disabled_buttons[0], 1);
+    00000201 A2s00            [ 2]  648 	ldx	#>_disabled_buttons
+    00000203 8Er01r00         [ 4]  649 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    00000206 A2r00            [ 2]  650 	ldx	#_disabled_buttons
+    00000208 8Er00r00         [ 4]  651 	stx	_set_bkg_tiles_PARM_5
+                                    652 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    0000020B A2 01            [ 2]  653 	ldx	#0x01
+    0000020D 8Er00r00         [ 4]  654 	stx	__map_tile_offset
+                                    655 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    00000210 E8               [ 2]  656 	inx
+    00000211 8Er00r00         [ 4]  657 	stx	_set_bkg_tiles_PARM_3
+    00000214 8Er00r00         [ 4]  658 	stx	_set_bkg_tiles_PARM_4
+    00000217 48               [ 3]  659 	pha
+    00000218 AEr04r00         [ 4]  660 	ldx	_draw_disabled_y_10000_114
+    0000021B 20r00r00         [ 6]  661 	jsr	_set_bkg_tiles
+    0000021E 68               [ 4]  662 	pla
+                                    663 ;	src/joytest.c: 26: set_bkg_based_tiles(x + 2,  y, 2, 2, disabled_buttons[1], 1);
+    0000021F A2s00            [ 2]  664 	ldx	#>(_disabled_buttons + 0x0004)
+    00000221 8Er01r00         [ 4]  665 	stx	(_set_bkg_tiles_PARM_5 + 1)
+    00000224 A2r04            [ 2]  666 	ldx	#(_disabled_buttons + 0x0004)
+    00000226 8Er00r00         [ 4]  667 	stx	_set_bkg_tiles_PARM_5
+    00000229 85*00            [ 3]  668 	sta	*_draw_disabled_sloc0_1_0
+    0000022B 18               [ 2]  669 	clc
+    0000022C 69 02            [ 2]  670 	adc	#0x02
+                                    671 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    0000022E A2 01            [ 2]  672 	ldx	#0x01
+    00000230 8Er00r00         [ 4]  673 	stx	__map_tile_offset
+                                    674 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    00000233 E8               [ 2]  675 	inx
+    00000234 8Er00r00         [ 4]  676 	stx	_set_bkg_tiles_PARM_3
+    00000237 8Er00r00         [ 4]  677 	stx	_set_bkg_tiles_PARM_4
+    0000023A AEr04r00         [ 4]  678 	ldx	_draw_disabled_y_10000_114
+    0000023D 20r00r00         [ 6]  679 	jsr	_set_bkg_tiles
+                                    680 ;	src/joytest.c: 27: set_bkg_based_tiles(x + 4,  y, 2, 2, disabled_buttons[2], 1);
+    00000240 A9s00            [ 2]  681 	lda	#>(_disabled_buttons + 0x0008)
+    00000242 8Dr01r00         [ 4]  682 	sta	(_set_bkg_tiles_PARM_5 + 1)
+    00000245 A9r08            [ 2]  683 	lda	#(_disabled_buttons + 0x0008)
+    00000247 8Dr00r00         [ 4]  684 	sta	_set_bkg_tiles_PARM_5
+    0000024A A5*00            [ 3]  685 	lda	*_draw_disabled_sloc0_1_0
+    0000024C 18               [ 2]  686 	clc
+    0000024D 69 04            [ 2]  687 	adc	#0x04
+                                    688 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    0000024F A2 01            [ 2]  689 	ldx	#0x01
+    00000251 8Er00r00         [ 4]  690 	stx	__map_tile_offset
+                                    691 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    00000254 E8               [ 2]  692 	inx
+    00000255 8Er00r00         [ 4]  693 	stx	_set_bkg_tiles_PARM_3
+    00000258 8Er00r00         [ 4]  694 	stx	_set_bkg_tiles_PARM_4
+    0000025B AEr04r00         [ 4]  695 	ldx	_draw_disabled_y_10000_114
+    0000025E 20r00r00         [ 6]  696 	jsr	_set_bkg_tiles
+                                    697 ;	src/joytest.c: 28: set_bkg_based_tiles(x + 6,  y, 2, 2, disabled_buttons[3], 1);
+    00000261 A9s00            [ 2]  698 	lda	#>(_disabled_buttons + 0x000c)
+    00000263 8Dr01r00         [ 4]  699 	sta	(_set_bkg_tiles_PARM_5 + 1)
+    00000266 A9r0C            [ 2]  700 	lda	#(_disabled_buttons + 0x000c)
+    00000268 8Dr00r00         [ 4]  701 	sta	_set_bkg_tiles_PARM_5
+    0000026B A5*00            [ 3]  702 	lda	*_draw_disabled_sloc0_1_0
+    0000026D 18               [ 2]  703 	clc
+    0000026E 69 06            [ 2]  704 	adc	#0x06
+                                    705 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    00000270 A2 01            [ 2]  706 	ldx	#0x01
+    00000272 8Er00r00         [ 4]  707 	stx	__map_tile_offset
+                                    708 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    00000275 E8               [ 2]  709 	inx
+    00000276 8Er00r00         [ 4]  710 	stx	_set_bkg_tiles_PARM_3
+    00000279 8Er00r00         [ 4]  711 	stx	_set_bkg_tiles_PARM_4
+    0000027C AEr04r00         [ 4]  712 	ldx	_draw_disabled_y_10000_114
+    0000027F 20r00r00         [ 6]  713 	jsr	_set_bkg_tiles
+                                    714 ;	src/joytest.c: 29: set_bkg_based_tiles(x + 8,  y, 2, 2, disabled_buttons[4], 1);
+    00000282 A9s00            [ 2]  715 	lda	#>(_disabled_buttons + 0x0010)
+    00000284 8Dr01r00         [ 4]  716 	sta	(_set_bkg_tiles_PARM_5 + 1)
+    00000287 A9r10            [ 2]  717 	lda	#(_disabled_buttons + 0x0010)
+    00000289 8Dr00r00         [ 4]  718 	sta	_set_bkg_tiles_PARM_5
+    0000028C A5*00            [ 3]  719 	lda	*_draw_disabled_sloc0_1_0
+    0000028E 18               [ 2]  720 	clc
+    0000028F 69 08            [ 2]  721 	adc	#0x08
+                                    722 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    00000291 A2 01            [ 2]  723 	ldx	#0x01
+    00000293 8Er00r00         [ 4]  724 	stx	__map_tile_offset
+                                    725 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    00000296 E8               [ 2]  726 	inx
+    00000297 8Er00r00         [ 4]  727 	stx	_set_bkg_tiles_PARM_3
+    0000029A 8Er00r00         [ 4]  728 	stx	_set_bkg_tiles_PARM_4
+    0000029D AEr04r00         [ 4]  729 	ldx	_draw_disabled_y_10000_114
+    000002A0 20r00r00         [ 6]  730 	jsr	_set_bkg_tiles
+                                    731 ;	src/joytest.c: 30: set_bkg_based_tiles(x + 10, y, 2, 2, disabled_buttons[5], 1);
+    000002A3 A9s00            [ 2]  732 	lda	#>(_disabled_buttons + 0x0014)
+    000002A5 8Dr01r00         [ 4]  733 	sta	(_set_bkg_tiles_PARM_5 + 1)
+    000002A8 A9r14            [ 2]  734 	lda	#(_disabled_buttons + 0x0014)
+    000002AA 8Dr00r00         [ 4]  735 	sta	_set_bkg_tiles_PARM_5
+    000002AD A5*00            [ 3]  736 	lda	*_draw_disabled_sloc0_1_0
+    000002AF 18               [ 2]  737 	clc
+    000002B0 69 0A            [ 2]  738 	adc	#0x0a
+                                    739 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    000002B2 A2 01            [ 2]  740 	ldx	#0x01
+    000002B4 8Er00r00         [ 4]  741 	stx	__map_tile_offset
+                                    742 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    000002B7 E8               [ 2]  743 	inx
+    000002B8 8Er00r00         [ 4]  744 	stx	_set_bkg_tiles_PARM_3
+    000002BB 8Er00r00         [ 4]  745 	stx	_set_bkg_tiles_PARM_4
+    000002BE AEr04r00         [ 4]  746 	ldx	_draw_disabled_y_10000_114
+    000002C1 20r00r00         [ 6]  747 	jsr	_set_bkg_tiles
+                                    748 ;	src/joytest.c: 31: set_bkg_based_tiles(x + 12, y, 2, 2, disabled_buttons[6], 1);
+    000002C4 A9s00            [ 2]  749 	lda	#>(_disabled_buttons + 0x0018)
+    000002C6 8Dr01r00         [ 4]  750 	sta	(_set_bkg_tiles_PARM_5 + 1)
+    000002C9 A9r18            [ 2]  751 	lda	#(_disabled_buttons + 0x0018)
+    000002CB 8Dr00r00         [ 4]  752 	sta	_set_bkg_tiles_PARM_5
+    000002CE A5*00            [ 3]  753 	lda	*_draw_disabled_sloc0_1_0
+    000002D0 18               [ 2]  754 	clc
+    000002D1 69 0C            [ 2]  755 	adc	#0x0c
+                                    756 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    000002D3 A2 01            [ 2]  757 	ldx	#0x01
+    000002D5 8Er00r00         [ 4]  758 	stx	__map_tile_offset
+                                    759 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    000002D8 E8               [ 2]  760 	inx
+    000002D9 8Er00r00         [ 4]  761 	stx	_set_bkg_tiles_PARM_3
+    000002DC 8Er00r00         [ 4]  762 	stx	_set_bkg_tiles_PARM_4
+    000002DF AEr04r00         [ 4]  763 	ldx	_draw_disabled_y_10000_114
+    000002E2 20r00r00         [ 6]  764 	jsr	_set_bkg_tiles
+                                    765 ;	src/joytest.c: 32: set_bkg_based_tiles(x + 14, y, 2, 2, disabled_buttons[7], 1);
+    000002E5 A9s00            [ 2]  766 	lda	#>(_disabled_buttons + 0x001c)
+    000002E7 8Dr01r00         [ 4]  767 	sta	(_set_bkg_tiles_PARM_5 + 1)
+    000002EA A9r1C            [ 2]  768 	lda	#(_disabled_buttons + 0x001c)
+    000002EC 8Dr00r00         [ 4]  769 	sta	_set_bkg_tiles_PARM_5
+    000002EF A5*00            [ 3]  770 	lda	*_draw_disabled_sloc0_1_0
+    000002F1 18               [ 2]  771 	clc
+    000002F2 69 0E            [ 2]  772 	adc	#0x0e
+                                    773 ;	../../../include/nes/nes.h: 778: _map_tile_offset = base_tile;
+    000002F4 A2 01            [ 2]  774 	ldx	#0x01
+    000002F6 8Er00r00         [ 4]  775 	stx	__map_tile_offset
+                                    776 ;	../../../include/nes/nes.h: 779: set_bkg_tiles(x, y, w, h, tiles);
+    000002F9 E8               [ 2]  777 	inx
+    000002FA 8Er00r00         [ 4]  778 	stx	_set_bkg_tiles_PARM_3
+    000002FD 8Er00r00         [ 4]  779 	stx	_set_bkg_tiles_PARM_4
+    00000300 AEr04r00         [ 4]  780 	ldx	_draw_disabled_y_10000_114
+    00000303 20r00r00         [ 6]  781 	jsr	_set_bkg_tiles
+                                    782 ;	../../../include/nes/nes.h: 780: _map_tile_offset = 0;
+    00000306 A2 00            [ 2]  783 	ldx	#0x00
+    00000308 8Er00r00         [ 4]  784 	stx	__map_tile_offset
+                                    785 ;	src/joytest.c: 32: set_bkg_based_tiles(x + 14, y, 2, 2, disabled_buttons[7], 1);
+                                    786 ;	src/joytest.c: 33: }
+    0000030B 60               [ 6]  787 	rts
+                                    788 ;------------------------------------------------------------
+                                    789 ;Allocation info for local variables in function 'reset_object_pos'
+                                    790 ;------------------------------------------------------------
+                                    791 ;i                         Allocated to registers 
+                                    792 ;sloc0                     Allocated with name '_reset_object_pos_sloc0_1_0'
+                                    793 ;------------------------------------------------------------
+                                    794 ;	src/joytest.c: 35: void reset_object_pos(void) {
+                                    795 ;	-----------------------------------------
+                                    796 ;	 function reset_object_pos
+                                    797 ;	-----------------------------------------
+                                    798 ;	Register assignment is optimal.
+                                    799 ;	Stack space usage: 0 bytes.
+    0000030C                        800 _reset_object_pos:
+                                    801 ;	src/joytest.c: 36: for (uint8_t i = 0; i < 4; i++) {
+    0000030C A2 00            [ 2]  802 	ldx	#0x00
+    0000030E 86*00            [ 3]  803 	stx	*_reset_object_pos_sloc0_1_0
+    00000310                        804 00103$:
+    00000310 A5*00            [ 3]  805 	lda	*_reset_object_pos_sloc0_1_0
+    00000312 C9 04            [ 2]  806 	cmp	#0x04
+    00000314 B0 1F            [ 4]  807 	bcs	00105$
+                                    808 ;	src/joytest.c: 37: set_sprite_tile(i, i);
+    00000316 A5*00            [ 3]  809 	lda	*_reset_object_pos_sloc0_1_0
+    00000318 A6*00            [ 3]  810 	ldx	*_reset_object_pos_sloc0_1_0
+    0000031A 20r00r00         [ 6]  811 	jsr	_set_sprite_tile
+                                    812 ;	src/joytest.c: 39: DEVICE_SPRITE_PX_OFFSET_X + (i << 3) + ((DEVICE_SCREEN_PX_WIDTH - (4 * 8)) >> 1), 
+    0000031D A5*00            [ 3]  813 	lda	*_reset_object_pos_sloc0_1_0
+    0000031F 0A               [ 2]  814 	asl	a
+    00000320 0A               [ 2]  815 	asl	a
+    00000321 0A               [ 2]  816 	asl	a
+    00000322 18               [ 2]  817 	clc
+    00000323 69 70            [ 2]  818 	adc	#0x70
+                                    819 ;	src/joytest.c: 41: );
+    00000325 A2 A3            [ 2]  820 	ldx	#0xa3
+    00000327 8Er00r00         [ 4]  821 	stx	_move_sprite_PARM_3
+    0000032A AA               [ 2]  822 	tax
+    0000032B A5*00            [ 3]  823 	lda	*_reset_object_pos_sloc0_1_0
+    0000032D 20r00r00         [ 6]  824 	jsr	_move_sprite
+                                    825 ;	src/joytest.c: 36: for (uint8_t i = 0; i < 4; i++) {
+    00000330 E6*00            [ 5]  826 	inc	*_reset_object_pos_sloc0_1_0
+    00000332 4Cr10r03         [ 3]  827 	jmp	00103$
+    00000335                        828 00105$:
+                                    829 ;	src/joytest.c: 43: }
+    00000335 60               [ 6]  830 	rts
+                                    831 ;------------------------------------------------------------
+                                    832 ;Allocation info for local variables in function 'main'
+                                    833 ;------------------------------------------------------------
+                                    834 ;sloc0                     Allocated with name '_main_sloc0_1_0'
+                                    835 ;sloc1                     Allocated with name '_main_sloc1_1_0'
+                                    836 ;i                         Allocated to registers 
+                                    837 ;i                         Allocated to registers 
+                                    838 ;i                         Allocated to registers 
+                                    839 ;j                         Allocated with name '_main_j_50000_156'
+                                    840 ;------------------------------------------------------------
+                                    841 ;	src/joytest.c: 51: void main(void) {
+                                    842 ;	-----------------------------------------
+                                    843 ;	 function main
+                                    844 ;	-----------------------------------------
+                                    845 ;	Register assignment is optimal.
+                                    846 ;	Stack space usage: 0 bytes.
+    00000336                        847 _main:
+                                    848 ;	src/joytest.c: 54: for (uint8_t i = 4; i != 0; i--) vsync();
+    00000336 A9 04            [ 2]  849 	lda	#0x04
+    00000338                        850 00135$:
+    00000338 C9 00            [ 2]  851 	cmp	#0x00
+    0000033A F0 0B            [ 4]  852 	beq	00101$
+    0000033C 48               [ 3]  853 	pha
+    0000033D 20r00r00         [ 6]  854 	jsr	_vsync
+    00000340 68               [ 4]  855 	pla
+    00000341 38               [ 2]  856 	sec
+    00000342 E9 01            [ 2]  857 	sbc	#0x01
+    00000344 4Cr38r03         [ 3]  858 	jmp	00135$
+    00000347                        859 00101$:
+                                    860 ;	src/joytest.c: 60: joypad_init(4, &joypads);
+    00000347 A9s00            [ 2]  861 	lda	#>_joypads
+    00000349 8Dr01r00         [ 4]  862 	sta	(_joypad_init_PARM_2 + 1)
+    0000034C A9r0A            [ 2]  863 	lda	#_joypads
+    0000034E 8Dr00r00         [ 4]  864 	sta	_joypad_init_PARM_2
+    00000351 A9 04            [ 2]  865 	lda	#0x04
+    00000353 20r00r00         [ 6]  866 	jsr	_joypad_init
+                                    867 ;	src/joytest.c: 62: set_sprite_data(0, sizeof(sprite_data) >> 4, sprite_data);
+    00000356 A9s00            [ 2]  868 	lda	#>_sprite_data
+    00000358 8Dr01r00         [ 4]  869 	sta	(_set_sprite_data_PARM_3 + 1)
+    0000035B A9r00            [ 2]  870 	lda	#_sprite_data
+    0000035D 8Dr00r00         [ 4]  871 	sta	_set_sprite_data_PARM_3
+    00000360 A9 00            [ 2]  872 	lda	#0x00
+    00000362 A2 04            [ 2]  873 	ldx	#0x04
+    00000364 20r00r00         [ 6]  874 	jsr	_set_sprite_data
+                                    875 ;	src/joytest.c: 63: set_bkg_data(1, sizeof(tiles_data) >> 4, tiles_data);
+    00000367 A9s00            [ 2]  876 	lda	#>_tiles_data
+    00000369 8Dr01r00         [ 4]  877 	sta	(_set_bkg_data_PARM_3 + 1)
+    0000036C A9r00            [ 2]  878 	lda	#_tiles_data
+    0000036E 8Dr00r00         [ 4]  879 	sta	_set_bkg_data_PARM_3
+    00000371 A9 01            [ 2]  880 	lda	#0x01
+    00000373 A2 5D            [ 2]  881 	ldx	#0x5d
+    00000375 20r00r00         [ 6]  882 	jsr	_set_bkg_data
+                                    883 ;	src/joytest.c: 64: fill_bkg_rect(0, 0, DEVICE_SCREEN_WIDTH, DEVICE_SCREEN_HEIGHT, 0);
+    00000378 A2 20            [ 2]  884 	ldx	#0x20
+    0000037A 8Er00r00         [ 4]  885 	stx	_fill_bkg_rect_PARM_3
+    0000037D A2 1E            [ 2]  886 	ldx	#0x1e
+    0000037F 8Er00r00         [ 4]  887 	stx	_fill_bkg_rect_PARM_4
+    00000382 A2 00            [ 2]  888 	ldx	#0x00
+    00000384 8Er00r00         [ 4]  889 	stx	_fill_bkg_rect_PARM_5
+    00000387 8A               [ 2]  890 	txa
+    00000388 20r00r00         [ 6]  891 	jsr	_fill_bkg_rect
+                                    892 ;	src/joytest.c: 66: if (isSGB) draw_disabled(0, 0); else draw_buttons(joy, 0, 0);
+    0000038B ADr01r00         [ 4]  893 	lda	_isSGB
+    0000038E F0 09            [ 4]  894 	beq	00103$
+    00000390 A9 00            [ 2]  895 	lda	#0x00
+    00000392 AA               [ 2]  896 	tax
+    00000393 20rFEr01         [ 6]  897 	jsr	_draw_disabled
+    00000396 4CrA4r03         [ 3]  898 	jmp	00150$
+    00000399                        899 00103$:
+    00000399 A2 00            [ 2]  900 	ldx	#0x00
+    0000039B 8Er00r00         [ 4]  901 	stx	_draw_buttons_PARM_3
+    0000039E ADr03r00         [ 4]  902 	lda	_joy
+    000003A1 20r00r00         [ 6]  903 	jsr	_draw_buttons
+                                    904 ;	src/joytest.c: 68: for (uint8_t i = 0; i != 4; i++) {
+    000003A4                        905 00150$:
+    000003A4 A2 00            [ 2]  906 	ldx	#0x00
+    000003A6 86*00            [ 3]  907 	stx	*_main_sloc0_1_0
+    000003A8                        908 00138$:
+    000003A8 A5*00            [ 3]  909 	lda	*_main_sloc0_1_0
+    000003AA C9 04            [ 2]  910 	cmp	#0x04
+    000003AC F0 4C            [ 4]  911 	beq	00108$
+                                    912 ;	src/joytest.c: 69: if (i <= (joypads.npads - 1)) {
+    000003AE ADr0Ar00         [ 4]  913 	lda	_joypads
+    000003B1 A2 00            [ 2]  914 	ldx	#0x00
+    000003B3 38               [ 2]  915 	sec
+    000003B4 E9 01            [ 2]  916 	sbc	#0x01
+    000003B6 B0 01            [ 4]  917 	bcs	00267$
+    000003B8 CA               [ 2]  918 	dex
+    000003B9                        919 00267$:
+    000003B9 A4*00            [ 3]  920 	ldy	*_main_sloc0_1_0
+    000003BB 84*01            [ 3]  921 	sty	*_main_sloc1_1_0
+    000003BD A0 00            [ 2]  922 	ldy	#0x00
+    000003BF 84*02            [ 3]  923 	sty	*(_main_sloc1_1_0 + 1)
+    000003C1 38               [ 2]  924 	sec
+    000003C2 E5*01            [ 3]  925 	sbc	*_main_sloc1_1_0
+    000003C4 8A               [ 2]  926 	txa
+    000003C5 E5*02            [ 3]  927 	sbc	*(_main_sloc1_1_0 + 1)
+    000003C7 70 04            [ 4]  928 	bvs	00269$
+    000003C9 10 04            [ 4]  929 	bpl	00268$
+    000003CB 30 1C            [ 4]  930 	bmi	00106$
+    000003CD                        931 00269$:
+    000003CD 10 1A            [ 4]  932 	bpl	00106$
+    000003CF                        933 00268$:
+                                    934 ;	src/joytest.c: 70: draw_buttons(joypads.joypads[i], 0, 4 + (i << 1)); 
+    000003CF A2 00            [ 2]  935 	ldx	#0x00
+    000003D1 A5*00            [ 3]  936 	lda	*_main_sloc0_1_0
+    000003D3 AA               [ 2]  937 	tax
+    000003D4 BCr0Br00         [ 5]  938 	ldy	((_joypads + 0x0001)+0+0x0000),x
+    000003D7 A5*00            [ 3]  939 	lda	*_main_sloc0_1_0
+    000003D9 0A               [ 2]  940 	asl	a
+    000003DA 18               [ 2]  941 	clc
+    000003DB 69 04            [ 2]  942 	adc	#0x04
+    000003DD 8Dr00r00         [ 4]  943 	sta	_draw_buttons_PARM_3
+    000003E0 98               [ 2]  944 	tya
+    000003E1 A2 00            [ 2]  945 	ldx	#0x00
+    000003E3 20r00r00         [ 6]  946 	jsr	_draw_buttons
+    000003E6 4CrF5r03         [ 3]  947 	jmp	00139$
+    000003E9                        948 00106$:
+                                    949 ;	src/joytest.c: 72: draw_disabled(0, 4 + (i << 1));
+    000003E9 A5*00            [ 3]  950 	lda	*_main_sloc0_1_0
+    000003EB 0A               [ 2]  951 	asl	a
+    000003EC 18               [ 2]  952 	clc
+    000003ED 69 04            [ 2]  953 	adc	#0x04
+    000003EF AA               [ 2]  954 	tax
+    000003F0 A9 00            [ 2]  955 	lda	#0x00
+    000003F2 20rFEr01         [ 6]  956 	jsr	_draw_disabled
+    000003F5                        957 00139$:
+                                    958 ;	src/joytest.c: 68: for (uint8_t i = 0; i != 4; i++) {
+    000003F5 E6*00            [ 5]  959 	inc	*_main_sloc0_1_0
+    000003F7 4CrA8r03         [ 3]  960 	jmp	00138$
+    000003FA                        961 00108$:
+                                    962 ;	src/joytest.c: 76: reset_object_pos();
+    000003FA 20r0Cr03         [ 6]  963 	jsr	_reset_object_pos
+                                    964 ;	src/joytest.c: 77: SHOW_SPRITES; SHOW_BKG;
+    000003FD ADr00r00         [ 4]  965 	lda	_shadow_PPUMASK
+    00000400 09 10            [ 2]  966 	ora	#0x10
+    00000402 8Dr00r00         [ 4]  967 	sta	_shadow_PPUMASK
+    00000405 ADr00r00         [ 4]  968 	lda	_shadow_PPUMASK
+    00000408 09 08            [ 2]  969 	ora	#0x08
+    0000040A 8Dr00r00         [ 4]  970 	sta	_shadow_PPUMASK
+                                    971 ;	src/joytest.c: 79: while(TRUE) {
+    0000040D                        972 00132$:
+                                    973 ;	src/joytest.c: 81: if (toggle = !toggle) {
+    0000040D ADr00r00         [ 4]  974 	lda	_toggle
+    00000410 49 01            [ 2]  975 	eor	#0x01
+    00000412 AA               [ 2]  976 	tax
+    00000413 8Dr00r00         [ 4]  977 	sta	_toggle
+    00000416 F0 31            [ 4]  978 	beq	00129$
+                                    979 ;	src/joytest.c: 83: if (!isSGB) {
+    00000418 ADr01r00         [ 4]  980 	lda	_isSGB
+    0000041B F0 03            [ 4]  981 	beq	00275$
+    0000041D 4CrF7r04         [ 3]  982 	jmp	00130$
+    00000420                        983 00275$:
+                                    984 ;	src/joytest.c: 84: old_joy = joy, joy = joypad();
+    00000420 ADr03r00         [ 4]  985 	lda	_joy
+    00000423 8Dr02r00         [ 4]  986 	sta	_old_joy
+    00000426 20r00r00         [ 6]  987 	jsr	_joypad
+    00000429 8Dr03r00         [ 4]  988 	sta	_joy
+                                    989 ;	src/joytest.c: 87: if (joy != old_joy) draw_buttons(joy, 0, 0);
+    0000042C CDr02r00         [ 4]  990 	cmp	_old_joy
+    0000042F F0 08            [ 4]  991 	beq	00110$
+    00000431 A2 00            [ 2]  992 	ldx	#0x00
+    00000433 8Er00r00         [ 4]  993 	stx	_draw_buttons_PARM_3
+    00000436 20r00r00         [ 6]  994 	jsr	_draw_buttons
+    00000439                        995 00110$:
+                                    996 ;	src/joytest.c: 90: if (joy & J_START) reset_object_pos();
+    00000439 ADr03r00         [ 4]  997 	lda	_joy
+    0000043C 29 10            [ 2]  998 	and	#0x10
+    0000043E D0 03            [ 4]  999 	bne	00277$
+    00000440 4CrF7r04         [ 3] 1000 	jmp	00130$
+    00000443                       1001 00277$:
+    00000443 20r0Cr03         [ 6] 1002 	jsr	_reset_object_pos
+    00000446 4CrF7r04         [ 3] 1003 	jmp	00130$
+    00000449                       1004 00129$:
+                                   1005 ;	src/joytest.c: 93: old_joypads = joypads;
+    00000449 A9s00            [ 2] 1006 	lda	#>_joypads
+    0000044B 8Dr01r00         [ 4] 1007 	sta	(___memcpy_PARM_2 + 1)
+    0000044E A9r0A            [ 2] 1008 	lda	#_joypads
+    00000450 8Dr00r00         [ 4] 1009 	sta	___memcpy_PARM_2
+    00000453 A2 05            [ 2] 1010 	ldx	#0x05
+    00000455 8Er00r00         [ 4] 1011 	stx	___memcpy_PARM_3
+    00000458 A2 00            [ 2] 1012 	ldx	#0x00
+    0000045A 8Er01r00         [ 4] 1013 	stx	(___memcpy_PARM_3 + 1)
+    0000045D A2s00            [ 2] 1014 	ldx	#>_old_joypads
+    0000045F A9r05            [ 2] 1015 	lda	#_old_joypads
+    00000461 20r00r00         [ 6] 1016 	jsr	___memcpy
+                                   1017 ;	src/joytest.c: 94: joypad_ex(&joypads);
+    00000464 A2s00            [ 2] 1018 	ldx	#>_joypads
+    00000466 A9r0A            [ 2] 1019 	lda	#_joypads
+    00000468 20r00r00         [ 6] 1020 	jsr	_joypad_ex
+                                   1021 ;	src/joytest.c: 96: for (uint8_t i = 0; i < joypads.npads; i++) {
+    0000046B A2 00            [ 2] 1022 	ldx	#0x00
+    0000046D 86*01            [ 3] 1023 	stx	*_main_sloc1_1_0
+    0000046F                       1024 00141$:
+    0000046F ADr0Ar00         [ 4] 1025 	lda	_joypads
+    00000472 C5*01            [ 3] 1026 	cmp	*_main_sloc1_1_0
+    00000474 F0 02            [ 4] 1027 	beq	00279$
+    00000476 B0 03            [ 4] 1028 	bcs	00278$
+    00000478                       1029 00279$:
+    00000478 4CrF7r04         [ 3] 1030 	jmp	00130$
+    0000047B                       1031 00278$:
+                                   1032 ;	src/joytest.c: 97: uint8_t j = joypads.joypads[i];
+    0000047B A2 00            [ 2] 1033 	ldx	#0x00
+    0000047D A5*01            [ 3] 1034 	lda	*_main_sloc1_1_0
+    0000047F A8               [ 2] 1035 	tay
+    00000480 B9r0Br00         [ 5] 1036 	lda	((_joypads + 0x0001)+0+0x0000),y
+    00000483 8Dr0Fr00         [ 4] 1037 	sta	_main_j_50000_156
+                                   1038 ;	src/joytest.c: 100: if (old_joypads.joypads[i] != j) draw_buttons(j, 0, 4 + (i << 1));
+    00000486 A5*01            [ 3] 1039 	lda	*_main_sloc1_1_0
+    00000488 A8               [ 2] 1040 	tay
+    00000489 B9r06r00         [ 5] 1041 	lda	((_old_joypads + 0x0001)+0+0x0000),y
+    0000048C CDr0Fr00         [ 4] 1042 	cmp	_main_j_50000_156
+    0000048F F0 0F            [ 4] 1043 	beq	00116$
+    00000491 A5*01            [ 3] 1044 	lda	*_main_sloc1_1_0
+    00000493 0A               [ 2] 1045 	asl	a
+    00000494 18               [ 2] 1046 	clc
+    00000495 69 04            [ 2] 1047 	adc	#0x04
+    00000497 8Dr00r00         [ 4] 1048 	sta	_draw_buttons_PARM_3
+    0000049A ADr0Fr00         [ 4] 1049 	lda	_main_j_50000_156
+    0000049D 20r00r00         [ 6] 1050 	jsr	_draw_buttons
+    000004A0                       1051 00116$:
+                                   1052 ;	src/joytest.c: 103: if (j & J_LEFT)  scroll_sprite(i, -1, 0);
+    000004A0 A9 02            [ 2] 1053 	lda	#0x02
+    000004A2 2Dr0Fr00         [ 4] 1054 	and	_main_j_50000_156
+    000004A5 F0 0B            [ 4] 1055 	beq	00118$
+    000004A7 A2 00            [ 2] 1056 	ldx	#0x00
+    000004A9 8Er00r00         [ 4] 1057 	stx	_scroll_sprite_PARM_3
+    000004AC A5*01            [ 3] 1058 	lda	*_main_sloc1_1_0
+    000004AE CA               [ 2] 1059 	dex
+    000004AF 20r00r00         [ 6] 1060 	jsr	_scroll_sprite
+    000004B2                       1061 00118$:
+                                   1062 ;	src/joytest.c: 104: if (j & J_RIGHT) scroll_sprite(i, 1, 0);
+    000004B2 A9 01            [ 2] 1063 	lda	#0x01
+    000004B4 2Dr0Fr00         [ 4] 1064 	and	_main_j_50000_156
+    000004B7 F0 0B            [ 4] 1065 	beq	00120$
+    000004B9 A2 00            [ 2] 1066 	ldx	#0x00
+    000004BB 8Er00r00         [ 4] 1067 	stx	_scroll_sprite_PARM_3
+    000004BE A5*01            [ 3] 1068 	lda	*_main_sloc1_1_0
+    000004C0 E8               [ 2] 1069 	inx
+    000004C1 20r00r00         [ 6] 1070 	jsr	_scroll_sprite
+    000004C4                       1071 00120$:
+                                   1072 ;	src/joytest.c: 105: if (j & J_UP)    scroll_sprite(i, 0, -1);
+    000004C4 A9 08            [ 2] 1073 	lda	#0x08
+    000004C6 2Dr0Fr00         [ 4] 1074 	and	_main_j_50000_156
+    000004C9 F0 0B            [ 4] 1075 	beq	00122$
+    000004CB A2 FF            [ 2] 1076 	ldx	#0xff
+    000004CD 8Er00r00         [ 4] 1077 	stx	_scroll_sprite_PARM_3
+    000004D0 A5*01            [ 3] 1078 	lda	*_main_sloc1_1_0
+    000004D2 E8               [ 2] 1079 	inx
+    000004D3 20r00r00         [ 6] 1080 	jsr	_scroll_sprite
+    000004D6                       1081 00122$:
+                                   1082 ;	src/joytest.c: 106: if (j & J_DOWN)  scroll_sprite(i, 0, 1);
+    000004D6 A9 04            [ 2] 1083 	lda	#0x04
+    000004D8 2Dr0Fr00         [ 4] 1084 	and	_main_j_50000_156
+    000004DB F0 0B            [ 4] 1085 	beq	00124$
+    000004DD A2 01            [ 2] 1086 	ldx	#0x01
+    000004DF 8Er00r00         [ 4] 1087 	stx	_scroll_sprite_PARM_3
+    000004E2 A5*01            [ 3] 1088 	lda	*_main_sloc1_1_0
+    000004E4 CA               [ 2] 1089 	dex
+    000004E5 20r00r00         [ 6] 1090 	jsr	_scroll_sprite
+    000004E8                       1091 00124$:
+                                   1092 ;	src/joytest.c: 109: if (j & J_START) reset_object_pos();
+    000004E8 A9 10            [ 2] 1093 	lda	#0x10
+    000004EA 2Dr0Fr00         [ 4] 1094 	and	_main_j_50000_156
+    000004ED F0 03            [ 4] 1095 	beq	00142$
+    000004EF 20r0Cr03         [ 6] 1096 	jsr	_reset_object_pos
+    000004F2                       1097 00142$:
+                                   1098 ;	src/joytest.c: 96: for (uint8_t i = 0; i < joypads.npads; i++) {
+    000004F2 E6*01            [ 5] 1099 	inc	*_main_sloc1_1_0
+    000004F4 4Cr6Fr04         [ 3] 1100 	jmp	00141$
+    000004F7                       1101 00130$:
+                                   1102 ;	src/joytest.c: 113: vsync();
+    000004F7 20r00r00         [ 6] 1103 	jsr	_vsync
+    000004FA 4Cr0Dr04         [ 3] 1104 	jmp	00132$
+                                   1105 ;	src/joytest.c: 115: }
+    000004FD 60               [ 6] 1106 	rts
+                                   1107 	.area _CODE
+                                   1108 	.area _XINIT
+    00000000                       1109 __xinit__toggle:
+    00000000 00                    1110 	.db #0x00	;  0
+    00000001                       1111 __xinit__isSGB:
+    00000001 00                    1112 	.db #0x00	;  0
+    00000002                       1113 __xinit__old_joy:
+    00000002 FF                    1114 	.db #0xff	; 255
+    00000003                       1115 __xinit__joy:
+    00000003 00                    1116 	.db #0x00	; 0
+                                   1117 	.area _CABS    (ABS)

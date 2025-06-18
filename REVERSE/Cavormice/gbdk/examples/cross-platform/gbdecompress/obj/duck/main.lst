@@ -1,0 +1,97 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module main
+                                      6 	.optsdcc -msm83
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _main
+                                     12 	.globl _gb_decompress
+                                     13 	.globl _set_bkg_tiles
+                                     14 	.globl _set_bkg_data
+                                     15 	.globl _vsync
+                                     16 	.globl _buffer
+                                     17 ;--------------------------------------------------------
+                                     18 ; special function registers
+                                     19 ;--------------------------------------------------------
+                                     20 ;--------------------------------------------------------
+                                     21 ; ram data
+                                     22 ;--------------------------------------------------------
+                                     23 	.area _DATA
+    00000000                         24 _buffer::
+    00000000                         25 	.ds 4096
+                                     26 ;--------------------------------------------------------
+                                     27 ; ram data
+                                     28 ;--------------------------------------------------------
+                                     29 	.area _INITIALIZED
+                                     30 ;--------------------------------------------------------
+                                     31 ; absolute external ram data
+                                     32 ;--------------------------------------------------------
+                                     33 	.area _DABS (ABS)
+                                     34 ;--------------------------------------------------------
+                                     35 ; global & static initialisations
+                                     36 ;--------------------------------------------------------
+                                     37 	.area _HOME
+                                     38 	.area _GSINIT
+                                     39 	.area _GSFINAL
+                                     40 	.area _GSINIT
+                                     41 ;--------------------------------------------------------
+                                     42 ; Home
+                                     43 ;--------------------------------------------------------
+                                     44 	.area _HOME
+                                     45 	.area _HOME
+                                     46 ;--------------------------------------------------------
+                                     47 ; code
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _CODE
+                                     50 ;src/main.c:16: void main(void)
+                                     51 ;	---------------------------------
+                                     52 ; Function main
+                                     53 ; ---------------------------------
+    00000000                         54 _main::
+                                     55 ;src/main.c:29: set_bkg_data(0, gb_decompress(monalisa_tiles_comp, buffer) >> 4, buffer);
+    00000000 01r00r00         [12]   56 	ld	bc, #_buffer
+    00000003 11r00r00         [12]   57 	ld	de, #_monalisa_tiles_comp
+    00000006 CDr00r00         [24]   58 	call	_gb_decompress
+    00000009 CB 38            [ 8]   59 	srl	b
+    0000000B CB 19            [ 8]   60 	rr	c
+    0000000D CB 38            [ 8]   61 	srl	b
+    0000000F CB 19            [ 8]   62 	rr	c
+    00000011 CB 38            [ 8]   63 	srl	b
+    00000013 CB 19            [ 8]   64 	rr	c
+    00000015 CB 38            [ 8]   65 	srl	b
+    00000017 CB 19            [ 8]   66 	rr	c
+    00000019 79               [ 4]   67 	ld	a, c
+    0000001A 11r00r00         [12]   68 	ld	de, #_buffer
+    0000001D D5               [16]   69 	push	de
+    0000001E 67               [ 4]   70 	ld	h, a
+    0000001F 2E 00            [ 8]   71 	ld	l, #0x00
+    00000021 E5               [16]   72 	push	hl
+    00000022 CDr00r00         [24]   73 	call	_set_bkg_data
+    00000025 E8 04            [16]   74 	add	sp, #4
+                                     75 ;src/main.c:32: set_bkg_tiles(0,0, monalisa_mapWidth, monalisa_mapHeight, monalisa_mapPLN0);
+    00000027 11r00r00         [12]   76 	ld	de, #_monalisa_mapPLN0
+    0000002A D5               [16]   77 	push	de
+    0000002B 21 14 12         [12]   78 	ld	hl, #0x1214
+    0000002E E5               [16]   79 	push	hl
+    0000002F AF               [ 4]   80 	xor	a, a
+    00000030 0F               [ 4]   81 	rrca
+    00000031 F5               [16]   82 	push	af
+    00000032 CDr00r00         [24]   83 	call	_set_bkg_tiles
+    00000035 E8 06            [16]   84 	add	sp, #6
+                                     85 ;src/main.c:33: SHOW_BKG;
+    00000037 F0r00            [12]   86 	ldh	a, (_LCDC_REG + 0)
+    00000039 F6 40            [ 8]   87 	or	a, #0x40
+    0000003B E0r00            [12]   88 	ldh	(_LCDC_REG + 0), a
+                                     89 ;src/main.c:36: while(1) {
+    0000003D                         90 00102$:
+                                     91 ;src/main.c:41: vsync();
+    0000003D CDr00r00         [24]   92 	call	_vsync
+                                     93 ;src/main.c:43: }
+    00000040 18 FB            [12]   94 	jr	00102$
+                                     95 	.area _CODE
+                                     96 	.area _INITIALIZER
+                                     97 	.area _CABS (ABS)

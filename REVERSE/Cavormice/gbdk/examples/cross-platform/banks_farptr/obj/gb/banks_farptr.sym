@@ -1,0 +1,54 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    ___bank_some_bank2_proc0                                        ******** GX
+    ___bank_some_bank2_proc1                                        ******** GX
+    ___call__banked                                                 ******** GX
+    ___call_banked_ptr                                              ******** GX
+    ___sdcc_bcall_ehl                                               ******** GX
+  0 ___str_0                                                        00000116 R
+  0 ___str_1                                                        00000127 R
+  0 ___str_2                                                        00000138 R
+  0 ___str_3                                                        00000146 R
+  0 ___str_4                                                        00000159 R
+  0 ___str_5                                                        0000018E R
+  0 ___str_6                                                        0000019F R
+    __current_bank                                                  ******** GX
+  1 _farptr_var0                                                    00000000 GR
+  1 _farptr_var1                                                    00000004 GR
+  1 _farptr_var2                                                    00000008 GR
+  1 _farptr_var3                                                    0000000C GR
+  0 _main                                                           00000167 GR
+    _printf                                                         ******** GX
+    _rRAMG                                                          ******** GX
+  1 _res                                                            00000010 GR
+  0 _run                                                            00000000 GR
+    _some_bank2_proc0                                               ******** GX
+    _some_bank2_proc1                                               ******** GX
+    _some_bank2_proc2                                               ******** GX
+    _to_far_ptr                                                     ******** GX
+    b_some_bank2_proc0                                              ******** GX
+    b_some_bank2_proc1                                              ******** GX
+    b_some_bank2_proc2                                              ******** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      1B0   flags    0
+   1 _DATA                                      size       12   flags    0
+   2 _INITIALIZED                               size        0   flags    0
+   3 _DABS                                      size        0   flags    8
+   4 _HOME                                      size        0   flags    0
+   5 _GSINIT                                    size        0   flags    0
+   6 _GSFINAL                                   size        0   flags    0
+   7 _INITIALIZER                               size        0   flags    0
+   8 _CABS                                      size        0   flags    8
+

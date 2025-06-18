@@ -1,0 +1,84 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    REGTEMP                                                         ******** GX
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+  0 ___str_1                                                        000001DD R
+  0 ___str_10                                                       00000231 R
+  0 ___str_11                                                       0000024A R
+  0 ___str_12                                                       00000265 R
+  0 ___str_13                                                       00000269 R
+  0 ___str_14                                                       00000280 R
+  0 ___str_15                                                       0000029A R
+  0 ___str_16                                                       000002B3 R
+  0 ___str_17                                                       000002B8 R
+  0 ___str_18                                                       000002D3 R
+  0 ___str_5                                                        000001E1 R
+  0 ___str_6                                                        000001F5 R
+  0 ___str_7                                                        000001FA R
+  0 ___str_8                                                        00000213 R
+  0 ___str_9                                                        0000022C R
+    _font_ibm                                                       ******** GX
+    _font_init                                                      ******** GX
+    _font_load                                                      ******** GX
+    _font_set                                                       ******** GX
+  0 _main                                                           00000000 GR
+  8 _main_dst2_20000_119                                            00000011 R
+  8 _main_dst_20000_117                                             00000000 R
+  8 _main_dst_20000_118                                             00000004 R
+  8 _main_dst_20000_119                                             00000008 R
+    _printf                                                         ******** GX
+    _strcat                                                         ******** GX
+    _strcat_PARM_2                                                  ******** GX
+    _strcmp                                                         ******** GX
+    _strcmp_PARM_2                                                  ******** GX
+    _strcpy                                                         ******** GX
+    _strcpy_PARM_2                                                  ******** GX
+    _strlen                                                         ******** GX
+    _strncat                                                        ******** GX
+    _strncat_PARM_2                                                 ******** GX
+    _strncat_PARM_3                                                 ******** GX
+    _strncmp                                                        ******** GX
+    _strncmp_PARM_2                                                 ******** GX
+    _strncmp_PARM_3                                                 ******** GX
+    _strncpy                                                        ******** GX
+    _strncpy_PARM_2                                                 ******** GX
+    _strncpy_PARM_3                                                 ******** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 3
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      2D7   flags    0
+   1 _ZP                                        size        0   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size        0   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size        0   flags    0
+   7 _DATA                                      size        0   flags    0
+   8 _BSS                                       size       1A   flags    0
+   9 _DABS                                      size        0   flags    8
+   A _CABS                                      size        0   flags    8
+

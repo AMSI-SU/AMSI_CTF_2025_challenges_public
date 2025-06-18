@@ -1,0 +1,100 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+    ___memcpy                                                       ******** GX
+    ___memcpy_PARM_2                                                ******** GX
+    ___memcpy_PARM_3                                                ******** GX
+    __map_tile_offset                                               ******** GX
+  6 __xinit__isSGB                                                  00000001 R
+  6 __xinit__joy                                                    00000003 R
+  6 __xinit__old_joy                                                00000002 R
+  6 __xinit__toggle                                                 00000000 R
+    _disabled_buttons                                               ******** GX
+  0 _draw_buttons                                                   00000000 GR
+  8 _draw_buttons_PARM_3                                            00000000 GR
+  8 _draw_buttons___200000007_20000_90                              00000003 R
+  9 _draw_buttons_sloc0_1_0                                         00000000 R
+  8 _draw_buttons_state_10000_88                                    00000002 R
+  8 _draw_buttons_x_10000_88                                        00000001 R
+  0 _draw_disabled                                                  000001FE GR
+  9 _draw_disabled_sloc0_1_0                                        00000000 R
+  8 _draw_disabled_y_10000_114                                      00000004 R
+    _fill_bkg_rect                                                  ******** GX
+    _fill_bkg_rect_PARM_3                                           ******** GX
+    _fill_bkg_rect_PARM_4                                           ******** GX
+    _fill_bkg_rect_PARM_5                                           ******** GX
+  7 _isSGB                                                          00000001 GR
+  7 _joy                                                            00000003 GR
+    _joypad                                                         ******** GX
+    _joypad_ex                                                      ******** GX
+    _joypad_init                                                    ******** GX
+    _joypad_init_PARM_2                                             ******** GX
+  8 _joypads                                                        0000000A GR
+  0 _main                                                           00000336 GR
+  8 _main_j_50000_156                                               0000000F R
+  1 _main_sloc0_1_0                                                 00000000 R
+  1 _main_sloc1_1_0                                                 00000001 R
+    _move_sprite                                                    ******** GX
+    _move_sprite_PARM_3                                             ******** GX
+    _normal_buttons                                                 ******** GX
+  7 _old_joy                                                        00000002 GR
+  8 _old_joypads                                                    00000005 GR
+    _pressed_buttons                                                ******** GX
+  0 _reset_object_pos                                               0000030C GR
+  9 _reset_object_pos_sloc0_1_0                                     00000000 R
+    _scroll_sprite                                                  ******** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    _scroll_sprite_PARM_3                                           ******** GX
+    _set_bkg_data                                                   ******** GX
+    _set_bkg_data_PARM_3                                            ******** GX
+    _set_bkg_tiles                                                  ******** GX
+    _set_bkg_tiles_PARM_3                                           ******** GX
+    _set_bkg_tiles_PARM_4                                           ******** GX
+    _set_bkg_tiles_PARM_5                                           ******** GX
+    _set_sprite_data                                                ******** GX
+    _set_sprite_data_PARM_3                                         ******** GX
+    _set_sprite_tile                                                ******** GX
+    _shadow_PPUMASK                                                 ******** GX
+    _sprite_data                                                    ******** GX
+    _tiles_data                                                     ******** GX
+  7 _toggle                                                         00000000 GR
+    _vsync                                                          ******** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 3
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      4FE   flags    0
+   1 _ZP                                        size        3   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size        0   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size        4   flags    0
+   7 _DATA                                      size        4   flags    0
+   8 _BSS                                       size       10   flags    0
+   9 OSEG                                       size        1   flags   14
+   A _DABS                                      size        0   flags    8
+   B _CABS                                      size        0   flags    8
+

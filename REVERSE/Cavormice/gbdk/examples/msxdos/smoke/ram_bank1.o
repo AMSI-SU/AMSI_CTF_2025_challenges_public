@@ -1,0 +1,15 @@
+XL4
+H 2 areas 3 global symbols
+S .__.ABS. Def00000000
+A _CODE size 0 flags 0 addr 0
+A _DATA_1 size A flags 0 addr 0
+S _array2 Def00000000
+S _array3 Def00000004
+T 00 00 00 00
+R 00 00 01 00
+T 00 00 00 00
+R 00 00 01 00
+T 04 00 00 00
+R 00 00 01 00
+T 04 00 00 00
+R 00 00 01 00

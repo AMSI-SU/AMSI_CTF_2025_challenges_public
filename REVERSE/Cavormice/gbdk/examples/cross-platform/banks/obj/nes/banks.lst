@@ -1,0 +1,272 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module banks
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _main
+                                     23 	.globl _bank_fixed
+                                     24 	.globl b_bank_3
+                                     25 	.globl _bank_3
+                                     26 	.globl b_bank_2
+                                     27 	.globl _bank_2
+                                     28 	.globl b_bank_1
+                                     29 	.globl _bank_1
+                                     30 	.globl _puts
+                                     31 	.globl _printf
+                                     32 	.globl _var_internal
+                                     33 	.globl _OAMDMA
+                                     34 	.globl _PPUDATA
+                                     35 	.globl _PPUADDR
+                                     36 	.globl _PPUSCROLL
+                                     37 	.globl _OAMDATA
+                                     38 	.globl _OAMADDR
+                                     39 	.globl _PPUSTATUS
+                                     40 	.globl _PPUMASK
+                                     41 	.globl _PPUCTRL
+                                     42 ;--------------------------------------------------------
+                                     43 ; ZP ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area _ZP      (PAG)
+                                     46 ;--------------------------------------------------------
+                                     47 ; overlayable items in ram
+                                     48 ;--------------------------------------------------------
+                                     49 ;--------------------------------------------------------
+                                     50 ; uninitialized external ram data
+                                     51 ;--------------------------------------------------------
+                                     52 	.area _BSS
+                         00002000    53 _PPUCTRL	=	0x2000
+                         00002001    54 _PPUMASK	=	0x2001
+                         00002002    55 _PPUSTATUS	=	0x2002
+                         00002003    56 _OAMADDR	=	0x2003
+                         00002004    57 _OAMDATA	=	0x2004
+                         00002005    58 _PPUSCROLL	=	0x2005
+                         00002006    59 _PPUADDR	=	0x2006
+                         00002007    60 _PPUDATA	=	0x2007
+                         00004014    61 _OAMDMA	=	0x4014
+    00000000                         62 _var_internal::
+    00000000                         63 	.ds 2
+                                     64 ;--------------------------------------------------------
+                                     65 ; absolute external ram data
+                                     66 ;--------------------------------------------------------
+                                     67 	.area _DABS    (ABS)
+                                     68 ;--------------------------------------------------------
+                                     69 ; initialized external ram data
+                                     70 ;--------------------------------------------------------
+                                     71 	.area _DATA
+                                     72 ;--------------------------------------------------------
+                                     73 ; global & static initialisations
+                                     74 ;--------------------------------------------------------
+                                     75 	.area _HOME
+                                     76 	.area _GSINIT
+                                     77 	.area _GSFINAL
+                                     78 	.area _GSINIT
+                                     79 ;--------------------------------------------------------
+                                     80 ; Home
+                                     81 ;--------------------------------------------------------
+                                     82 	.area _HOME
+                                     83 ;	src/banks.c: 18: void bank_fixed(void) NONBANKED
+                                     84 ;	-----------------------------------------
+                                     85 ;	 function bank_fixed
+                                     86 ;	-----------------------------------------
+                                     87 ;	Register assignment is optimal.
+                                     88 ;	Stack space usage: 0 bytes.
+    00000000                         89 _bank_fixed:
+                                     90 ;	src/banks.c: 20: puts("I'm in fixed ROM");
+    00000000 A2s00            [ 2]   91 	ldx	#>___str_0
+    00000002 A9rBD            [ 2]   92 	lda	#___str_0
+                                     93 ;	src/banks.c: 21: }
+    00000004 4Cr00r00         [ 3]   94 	jmp	_puts
+                                     95 	.area _HOME
+                                     96 ;--------------------------------------------------------
+                                     97 ; code
+                                     98 ;--------------------------------------------------------
+                                     99 	.area _CODE
+                                    100 ;------------------------------------------------------------
+                                    101 ;Allocation info for local variables in function 'bank_fixed'
+                                    102 ;------------------------------------------------------------
+                                    103 ;------------------------------------------------------------
+                                    104 ;Allocation info for local variables in function 'main'
+                                    105 ;------------------------------------------------------------
+                                    106 ;	src/banks.c: 23: void main(void)
+                                    107 ;	-----------------------------------------
+                                    108 ;	 function main
+                                    109 ;	-----------------------------------------
+                                    110 ;	Register assignment is optimal.
+                                    111 ;	Stack space usage: 0 bytes.
+    00000000                        112 _main:
+                                    113 ;	src/banks.c: 25: puts("Program Start...");
+    00000000 A2s00            [ 2]  114 	ldx	#>___str_1
+    00000002 A9rCE            [ 2]  115 	lda	#___str_1
+    00000004 20r00r00         [ 6]  116 	jsr	_puts
+                                    117 ;	src/banks.c: 29: var_internal = 1;
+    00000007 A2 01            [ 2]  118 	ldx	#0x01
+    00000009 8Er00r00         [ 4]  119 	stx	_var_internal
+    0000000C CA               [ 2]  120 	dex
+    0000000D 8Er01r00         [ 4]  121 	stx	(_var_internal + 1)
+                                    122 ;	src/banks.c: 31: var_0 = 2;
+    00000010 A2 02            [ 2]  123 	ldx	#0x02
+    00000012 8Er00r00         [ 4]  124 	stx	_var_0
+    00000015 A2 00            [ 2]  125 	ldx	#0x00
+    00000017 8Er01r00         [ 4]  126 	stx	(_var_0 + 1)
+                                    127 ;	src/banks.c: 33: var_1 = 3;
+    0000001A A2 03            [ 2]  128 	ldx	#0x03
+    0000001C 8Er00r00         [ 4]  129 	stx	_var_1
+    0000001F A2 00            [ 2]  130 	ldx	#0x00
+    00000021 8Er01r00         [ 4]  131 	stx	(_var_1 + 1)
+                                    132 ;	src/banks.c: 35: var_2 = 4;
+    00000024 A2 04            [ 2]  133 	ldx	#0x04
+    00000026 8Er00r00         [ 4]  134 	stx	_var_2
+    00000029 A2 00            [ 2]  135 	ldx	#0x00
+    0000002B 8Er01r00         [ 4]  136 	stx	(_var_2 + 1)
+                                    137 ;	src/banks.c: 37: var_3 = 5;
+    0000002E A2 05            [ 2]  138 	ldx	#0x05
+    00000030 8Er00r00         [ 4]  139 	stx	_var_3
+    00000033 A2 00            [ 2]  140 	ldx	#0x00
+    00000035 8Er01r00         [ 4]  141 	stx	(_var_3 + 1)
+                                    142 ;	src/banks.c: 39: bank_fixed();
+    00000038 20r00r00         [ 6]  143 	jsr	_bank_fixed
+                                    144 ;	src/banks.c: 40: bank_1();
+    0000003B 20r00r00         [ 6]  145 	jsr	___sdcc_bcall
+    0000003Er00                     146 	.db	b_bank_1
+    0000003FrFFrFF                  147 	.dw 	_bank_1-1
+                                    148 ;	src/banks.c: 41: bank_2();
+    00000041 20r00r00         [ 6]  149 	jsr	___sdcc_bcall
+    00000044r00                     150 	.db	b_bank_2
+    00000045rFFrFF                  151 	.dw 	_bank_2-1
+                                    152 ;	src/banks.c: 42: bank_3();
+    00000047 20r00r00         [ 6]  153 	jsr	___sdcc_bcall
+    0000004Ar00                     154 	.db	b_bank_3
+    0000004BrFFrFF                  155 	.dw 	_bank_3-1
+                                    156 ;	src/banks.c: 44: printf("Var is %u\n", var_internal);
+    0000004D ADr01r00         [ 4]  157 	lda	(_var_internal + 1)
+    00000050 48               [ 3]  158 	pha
+    00000051 ADr00r00         [ 4]  159 	lda	_var_internal
+    00000054 48               [ 3]  160 	pha
+    00000055 A9s00            [ 2]  161 	lda	#>___str_2
+    00000057 48               [ 3]  162 	pha
+    00000058 A9rDF            [ 2]  163 	lda	#___str_2
+    0000005A 48               [ 3]  164 	pha
+    0000005B 20r00r00         [ 6]  165 	jsr	_printf
+    0000005E 68               [ 4]  166 	pla
+    0000005F 68               [ 4]  167 	pla
+    00000060 68               [ 4]  168 	pla
+    00000061 68               [ 4]  169 	pla
+                                    170 ;	src/banks.c: 46: printf("Var_0 is %u\n", var_0);
+    00000062 ADr01r00         [ 4]  171 	lda	(_var_0 + 1)
+    00000065 48               [ 3]  172 	pha
+    00000066 ADr00r00         [ 4]  173 	lda	_var_0
+    00000069 48               [ 3]  174 	pha
+    0000006A A9s00            [ 2]  175 	lda	#>___str_3
+    0000006C 48               [ 3]  176 	pha
+    0000006D A9rEA            [ 2]  177 	lda	#___str_3
+    0000006F 48               [ 3]  178 	pha
+    00000070 20r00r00         [ 6]  179 	jsr	_printf
+    00000073 68               [ 4]  180 	pla
+    00000074 68               [ 4]  181 	pla
+    00000075 68               [ 4]  182 	pla
+    00000076 68               [ 4]  183 	pla
+                                    184 ;	src/banks.c: 48: printf("Var_1 is %u\n", var_1);
+    00000077 ADr01r00         [ 4]  185 	lda	(_var_1 + 1)
+    0000007A 48               [ 3]  186 	pha
+    0000007B ADr00r00         [ 4]  187 	lda	_var_1
+    0000007E 48               [ 3]  188 	pha
+    0000007F A9s00            [ 2]  189 	lda	#>___str_4
+    00000081 48               [ 3]  190 	pha
+    00000082 A9rF7            [ 2]  191 	lda	#___str_4
+    00000084 48               [ 3]  192 	pha
+    00000085 20r00r00         [ 6]  193 	jsr	_printf
+    00000088 68               [ 4]  194 	pla
+    00000089 68               [ 4]  195 	pla
+    0000008A 68               [ 4]  196 	pla
+    0000008B 68               [ 4]  197 	pla
+                                    198 ;	src/banks.c: 50: printf("Var_2 is %u\n", var_2);
+    0000008C ADr01r00         [ 4]  199 	lda	(_var_2 + 1)
+    0000008F 48               [ 3]  200 	pha
+    00000090 ADr00r00         [ 4]  201 	lda	_var_2
+    00000093 48               [ 3]  202 	pha
+    00000094 A9s01            [ 2]  203 	lda	#>___str_5
+    00000096 48               [ 3]  204 	pha
+    00000097 A9r04            [ 2]  205 	lda	#___str_5
+    00000099 48               [ 3]  206 	pha
+    0000009A 20r00r00         [ 6]  207 	jsr	_printf
+    0000009D 68               [ 4]  208 	pla
+    0000009E 68               [ 4]  209 	pla
+    0000009F 68               [ 4]  210 	pla
+    000000A0 68               [ 4]  211 	pla
+                                    212 ;	src/banks.c: 52: printf("Var_3 is %u\n", var_3);
+    000000A1 ADr01r00         [ 4]  213 	lda	(_var_3 + 1)
+    000000A4 48               [ 3]  214 	pha
+    000000A5 ADr00r00         [ 4]  215 	lda	_var_3
+    000000A8 48               [ 3]  216 	pha
+    000000A9 A9s01            [ 2]  217 	lda	#>___str_6
+    000000AB 48               [ 3]  218 	pha
+    000000AC A9r11            [ 2]  219 	lda	#___str_6
+    000000AE 48               [ 3]  220 	pha
+    000000AF 20r00r00         [ 6]  221 	jsr	_printf
+    000000B2 68               [ 4]  222 	pla
+    000000B3 68               [ 4]  223 	pla
+    000000B4 68               [ 4]  224 	pla
+    000000B5 68               [ 4]  225 	pla
+                                    226 ;	src/banks.c: 54: puts("The End...");
+    000000B6 A2s01            [ 2]  227 	ldx	#>___str_7
+    000000B8 A9r1E            [ 2]  228 	lda	#___str_7
+                                    229 ;	src/banks.c: 55: }
+    000000BA 4Cr00r00         [ 3]  230 	jmp	_puts
+                                    231 	.area _CODE
+    000000BD                        232 ___str_0:
+    000000BD 49 27 6D 20 69 6E 20   233 	.ascii "I'm in fixed ROM"
+             66 69 78 65 64 20 52
+             4F 4D
+    000000CD 00                     234 	.db 0x00
+    000000CE                        235 ___str_1:
+    000000CE 50 72 6F 67 72 61 6D   236 	.ascii "Program Start..."
+             20 53 74 61 72 74 2E
+             2E 2E
+    000000DE 00                     237 	.db 0x00
+    000000DF                        238 ___str_2:
+    000000DF 56 61 72 20 69 73 20   239 	.ascii "Var is %u"
+             25 75
+    000000E8 0A                     240 	.db 0x0a
+    000000E9 00                     241 	.db 0x00
+    000000EA                        242 ___str_3:
+    000000EA 56 61 72 5F 30 20 69   243 	.ascii "Var_0 is %u"
+             73 20 25 75
+    000000F5 0A                     244 	.db 0x0a
+    000000F6 00                     245 	.db 0x00
+    000000F7                        246 ___str_4:
+    000000F7 56 61 72 5F 31 20 69   247 	.ascii "Var_1 is %u"
+             73 20 25 75
+    00000102 0A                     248 	.db 0x0a
+    00000103 00                     249 	.db 0x00
+    00000104                        250 ___str_5:
+    00000104 56 61 72 5F 32 20 69   251 	.ascii "Var_2 is %u"
+             73 20 25 75
+    0000010F 0A                     252 	.db 0x0a
+    00000110 00                     253 	.db 0x00
+    00000111                        254 ___str_6:
+    00000111 56 61 72 5F 33 20 69   255 	.ascii "Var_3 is %u"
+             73 20 25 75
+    0000011C 0A                     256 	.db 0x0a
+    0000011D 00                     257 	.db 0x00
+    0000011E                        258 ___str_7:
+    0000011E 54 68 65 20 45 6E 64   259 	.ascii "The End..."
+             2E 2E 2E
+    00000128 00                     260 	.db 0x00
+                                    261 	.area _XINIT
+                                    262 	.area _CABS    (ABS)

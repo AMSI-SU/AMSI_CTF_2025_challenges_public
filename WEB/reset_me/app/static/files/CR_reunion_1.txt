@@ -1,0 +1,11 @@
+--- COMPTE-RENDU BDE CYBER - JANVIER 2019 ---
+
+Présents : Daniel, Tedi, Ela, Leopold, Matthias  
+Lieu : Sorbonne - Salle B-102
+
+- Daniel annonce officiellement la création du BDE Cyber Sorbonne.
+- Matthias propose d’organiser une LAN en février : "avec du jus de goyave"
+- Tedi parle de lancer un site pour les adhérents.
+- Ela : "OK mais pas de framework chelou, je gère ça propre."
+
+Décision : créer un intranet minimal d'ici avril.

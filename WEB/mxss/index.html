@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Arcade - High Score Board</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      font-family: 'Orbitron', monospace;
+      color: #00ffff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.7);
+      border: 3px solid #ff6b35;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .title {
+      font-size: 3em;
+      font-weight: 900;
+      background: linear-gradient(45deg, #ff6b35, #f7931e, #9b59b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #00ffff;
+      font-size: 1.2em;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    .navigation {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: rgba(155, 89, 182, 0.1);
+      border: 2px solid #9b59b6;
+      border-radius: 10px;
+    }
+
+    .nav-link {
+      color: #9b59b6;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 700;
+      font-size: 1.1em;
+      transition: all 0.3s ease;
+      display: inline-block;
+      padding: 10px 20px;
+      border: 2px solid transparent;
+      border-radius: 25px;
+    }
+
+    .nav-link:hover {
+      color: #ff6b35;
+      border-color: #ff6b35;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+    }
+
+    .input-section {
+      background: rgba(155, 89, 182, 0.1);
+      border: 2px solid #9b59b6;
+      border-radius: 10px;
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+
+    .input-section h2 {
+      color: #9b59b6;
+      margin-bottom: 15px;
+      font-size: 1.5em;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #00ffff;
+      font-weight: 700;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid #ff6b35;
+      border-radius: 5px;
+      color: #00ffff;
+      font-family: 'Orbitron', monospace;
+      font-size: 16px;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #f7931e;
+      box-shadow: 0 0 10px rgba(247, 147, 30, 0.5);
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      color: white;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-right: 10px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+    }
+
+    .scoreboard {
+      background: rgba(0, 255, 255, 0.05);
+      border: 2px solid #00ffff;
+      border-radius: 10px;
+      padding: 25px;
+    }
+
+    .scoreboard h2 {
+      color: #00ffff;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      text-align: center;
+    }
+
+    .welcome-message {
+      background: rgba(155, 89, 182, 0.2);
+      border-left: 4px solid #9b59b6;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      min-height: 50px;
+    }
+
+    .score-entry {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .score-entry:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .player-name {
+      color: #ff6b35;
+      font-weight: 700;
+    }
+
+    .score {
+      color: #f7931e;
+      font-weight: 700;
+    }
+
+    .neon-glow {
+      animation: neonGlow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes neonGlow {
+      from {
+        text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+      }
+
+      to {
+        text-shadow: 0 0 20px rgba(0, 255, 255, 0.8), 0 0 30px rgba(0, 255, 255, 0.6);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title neon-glow">RETRO ARCADE</h1>
+      <p class="subtitle">High Score Leaderboard</p>
+    </div>
+
+    <div class="navigation">
+      <a href="/forum.html" class="nav-link">🗨️ Community Forum</a>
+    </div>
+
+    <div class="input-section">
+      <h2>🎮 Submit Your Score</h2>
+      <div class="form-group">
+        <label for="playerName">Player Name:</label>
+        <input type="text" id="playerName" placeholder="Enter your arcade name...">
+      </div>
+      <div class="form-group">
+        <label for="gameScore">Score:</label>
+        <input type="text" id="gameScore" placeholder="Your high score...">
+      </div>
+      <button class="btn" onclick="submitScore()">Submit Score</button>
+    </div>
+
+    <div class="scoreboard">
+      <h2>🏆 Current Leaders</h2>
+      <div class="welcome-message" id="welcomeMsg">
+        Welcome to the arcade! Enter your name to get started.
+      </div>
+
+      <div class="score-entry">
+        <span class="player-name">PIXEL_MASTER</span>
+        <span class="score">999,999</span>
+      </div>
+      <div class="score-entry">
+        <span class="player-name">NEON_NINJA</span>
+        <span class="score">888,888</span>
+      </div>
+      <div class="score-entry">
+        <span class="player-name">BYTE_BUSTER</span>
+        <span class="score">777,777</span>
+      </div>
+      <div class="score-entry">
+        <span class="player-name">CODE_CRUSHER</span>
+        <span class="score">666,666</span>
+      </div>
+      <div class="score-entry">
+        <span class="player-name">RETRO_REBEL</span>
+        <span class="score">555,555</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function submitScore() {
+      const playerName = document.getElementById('playerName').value;
+      const gameScore = document.getElementById('gameScore').value;
+
+      if (!playerName || !gameScore) {
+        alert('Please enter both player name and score!');
+        return;
+      }
+
+      try {
+        const response = await fetch('/submit-score', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            playerName: playerName,
+            gameScore: gameScore
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          const welcomeMsg = document.getElementById('welcomeMsg');
+          welcomeMsg.innerHTML = result.message;
+        } else {
+          alert('Error submitting score: ' + result.error);
+        }
+      } catch (error) {
+        alert('Network error: ' + error.message);
+      }
+
+      // Clear the form
+      document.getElementById('playerName').value = '';
+      document.getElementById('gameScore').value = '';
+    }
+
+    // URL parameter processing
+    window.onload = async function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      const player = urlParams.get('player');
+
+      if (player) {
+        try {
+          const response = await fetch('/welcome', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({player: player})
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            const welcomeMsg = document.getElementById('welcomeMsg');
+            welcomeMsg.innerHTML = result.message;
+          }
+        } catch (error) {
+          console.log('Welcome message error:', error);
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

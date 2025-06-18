@@ -1,0 +1,482 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module phys
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _sprite_data
+                                     23 	.globl _main
+                                     24 	.globl _move_sprite
+                                     25 	.globl _set_sprite_tile
+                                     26 	.globl _set_sprite_data
+                                     27 	.globl _vsync
+                                     28 	.globl _joypad
+                                     29 	.globl _joy
+                                     30 	.globl _old_joy
+                                     31 	.globl _SpdY
+                                     32 	.globl _SpdX
+                                     33 	.globl _PosY
+                                     34 	.globl _PosX
+                                     35 	.globl _OAMDMA
+                                     36 	.globl _PPUDATA
+                                     37 	.globl _PPUADDR
+                                     38 	.globl _PPUSCROLL
+                                     39 	.globl _OAMDATA
+                                     40 	.globl _OAMADDR
+                                     41 	.globl _PPUSTATUS
+                                     42 	.globl _PPUMASK
+                                     43 	.globl _PPUCTRL
+                                     44 ;--------------------------------------------------------
+                                     45 ; ZP ram data
+                                     46 ;--------------------------------------------------------
+                                     47 	.area _ZP      (PAG)
+                                     48 ;--------------------------------------------------------
+                                     49 ; overlayable items in ram
+                                     50 ;--------------------------------------------------------
+                                     51 	.area	OSEG    (PAG, OVR)
+    00000000                         52 _main_sloc0_1_0:
+    00000000                         53 	.ds 2
+                                     54 ;--------------------------------------------------------
+                                     55 ; uninitialized external ram data
+                                     56 ;--------------------------------------------------------
+                                     57 	.area _BSS
+                         00002000    58 _PPUCTRL	=	0x2000
+                         00002001    59 _PPUMASK	=	0x2001
+                         00002002    60 _PPUSTATUS	=	0x2002
+                         00002003    61 _OAMADDR	=	0x2003
+                         00002004    62 _OAMDATA	=	0x2004
+                         00002005    63 _PPUSCROLL	=	0x2005
+                         00002006    64 _PPUADDR	=	0x2006
+                         00002007    65 _PPUDATA	=	0x2007
+                         00004014    66 _OAMDMA	=	0x4014
+    00000000                         67 _PosX::
+    00000000                         68 	.ds 2
+    00000002                         69 _PosY::
+    00000002                         70 	.ds 2
+    00000004                         71 _SpdX::
+    00000004                         72 	.ds 2
+    00000006                         73 _SpdY::
+    00000006                         74 	.ds 2
+    00000008                         75 _old_joy::
+    00000008                         76 	.ds 1
+                                     77 ;--------------------------------------------------------
+                                     78 ; absolute external ram data
+                                     79 ;--------------------------------------------------------
+                                     80 	.area _DABS    (ABS)
+                                     81 ;--------------------------------------------------------
+                                     82 ; initialized external ram data
+                                     83 ;--------------------------------------------------------
+                                     84 	.area _DATA
+    00000000                         85 _joy::
+    00000000                         86 	.ds 1
+                                     87 ;--------------------------------------------------------
+                                     88 ; global & static initialisations
+                                     89 ;--------------------------------------------------------
+                                     90 	.area _HOME
+                                     91 	.area _GSINIT
+                                     92 	.area _GSFINAL
+                                     93 	.area _GSINIT
+                                     94 ;--------------------------------------------------------
+                                     95 ; Home
+                                     96 ;--------------------------------------------------------
+                                     97 	.area _HOME
+                                     98 	.area _HOME
+                                     99 ;--------------------------------------------------------
+                                    100 ; code
+                                    101 ;--------------------------------------------------------
+                                    102 	.area _CODE
+                                    103 ;------------------------------------------------------------
+                                    104 ;Allocation info for local variables in function 'main'
+                                    105 ;------------------------------------------------------------
+                                    106 ;sloc0                     Allocated with name '_main_sloc0_1_0'
+                                    107 ;------------------------------------------------------------
+                                    108 ;	src/phys.c: 45: void main(void) {
+                                    109 ;	-----------------------------------------
+                                    110 ;	 function main
+                                    111 ;	-----------------------------------------
+                                    112 ;	Register assignment is optimal.
+                                    113 ;	Stack space usage: 0 bytes.
+    00000000                        114 _main:
+                                    115 ;	src/phys.c: 51: set_sprite_data(0, 4, sprite_data);
+    00000000 A9s02            [ 2]  116 	lda	#>_sprite_data
+    00000002 8Dr01r00         [ 4]  117 	sta	(_set_sprite_data_PARM_3 + 1)
+    00000005 A9r30            [ 2]  118 	lda	#_sprite_data
+    00000007 8Dr00r00         [ 4]  119 	sta	_set_sprite_data_PARM_3
+    0000000A A9 00            [ 2]  120 	lda	#0x00
+    0000000C A2 04            [ 2]  121 	ldx	#0x04
+    0000000E 20r00r00         [ 6]  122 	jsr	_set_sprite_data
+                                    123 ;	src/phys.c: 54: set_sprite_tile(0, 0);
+    00000011 A9 00            [ 2]  124 	lda	#0x00
+    00000013 AA               [ 2]  125 	tax
+    00000014 20r00r00         [ 6]  126 	jsr	_set_sprite_tile
+                                    127 ;	src/phys.c: 57: SHOW_BKG; SHOW_SPRITES;
+    00000017 ADr00r00         [ 4]  128 	lda	_shadow_PPUMASK
+    0000001A 09 08            [ 2]  129 	ora	#0x08
+    0000001C 8Dr00r00         [ 4]  130 	sta	_shadow_PPUMASK
+    0000001F ADr00r00         [ 4]  131 	lda	_shadow_PPUMASK
+    00000022 09 10            [ 2]  132 	ora	#0x10
+    00000024 8Dr00r00         [ 4]  133 	sta	_shadow_PPUMASK
+                                    134 ;	src/phys.c: 59: PosX = PosY = PIXELS_TO_SUBPIXELS(64);
+    00000027 A2 00            [ 2]  135 	ldx	#0x00
+    00000029 8Er02r00         [ 4]  136 	stx	_PosY
+    0000002C A2 04            [ 2]  137 	ldx	#0x04
+    0000002E 8Er03r00         [ 4]  138 	stx	(_PosY + 1)
+    00000031 A2 00            [ 2]  139 	ldx	#0x00
+    00000033 8Er00r00         [ 4]  140 	stx	_PosX
+    00000036 A2 04            [ 2]  141 	ldx	#0x04
+    00000038 8Er01r00         [ 4]  142 	stx	(_PosX + 1)
+                                    143 ;	src/phys.c: 60: SpdX = SpdY = PIXELS_TO_SUBPIXELS(0);
+    0000003B A2 00            [ 2]  144 	ldx	#0x00
+    0000003D 8Er06r00         [ 4]  145 	stx	_SpdY
+    00000040 8Er07r00         [ 4]  146 	stx	(_SpdY + 1)
+    00000043 8Er04r00         [ 4]  147 	stx	_SpdX
+    00000046 8Er05r00         [ 4]  148 	stx	(_SpdX + 1)
+                                    149 ;	src/phys.c: 62: while(TRUE) {
+    00000049                        150 00132$:
+                                    151 ;	src/phys.c: 64: INPUT_PROCESS;
+    00000049 ADr00r00         [ 4]  152 	lda	_joy
+    0000004C 8Dr08r00         [ 4]  153 	sta	_old_joy
+    0000004F 20r00r00         [ 6]  154 	jsr	_joypad
+    00000052 8Dr00r00         [ 4]  155 	sta	_joy
+                                    156 ;	src/phys.c: 67: if (INPUT_KEY(J_UP)) {
+    00000055 A2 08            [ 2]  157 	ldx	#0x08
+    00000057 86*00            [ 3]  158 	stx	*(REGTEMP+0)
+    00000059 24*00            [ 3]  159 	bit	*(REGTEMP+0)
+    0000005B F0 32            [ 4]  160 	beq	00108$
+                                    161 ;	src/phys.c: 68: SpdY -= Y_ACCELERATION_IN_SUBPIXELS;
+    0000005D AEr07r00         [ 4]  162 	ldx	(_SpdY + 1)
+    00000060 ADr06r00         [ 4]  163 	lda	_SpdY
+    00000063 38               [ 2]  164 	sec
+    00000064 E9 02            [ 2]  165 	sbc	#0x02
+    00000066 B0 01            [ 4]  166 	bcs	00221$
+    00000068 CA               [ 2]  167 	dex
+    00000069                        168 00221$:
+    00000069 8Dr06r00         [ 4]  169 	sta	_SpdY
+    0000006C 8Er07r00         [ 4]  170 	stx	(_SpdY + 1)
+                                    171 ;	src/phys.c: 69: if (SpdY < -MAX_Y_SPEED_IN_SUBPIXELS) SpdY = -MAX_Y_SPEED_IN_SUBPIXELS;
+    0000006F ADr06r00         [ 4]  172 	lda	_SpdY
+    00000072 38               [ 2]  173 	sec
+    00000073 E9 C0            [ 2]  174 	sbc	#0xc0
+    00000075 ADr07r00         [ 4]  175 	lda	(_SpdY + 1)
+    00000078 E9 FF            [ 2]  176 	sbc	#0xff
+    0000007A 50 04            [ 4]  177 	bvc	00223$
+    0000007C 10 04            [ 4]  178 	bpl	00222$
+    0000007E 30 44            [ 4]  179 	bmi	00109$
+    00000080                        180 00223$:
+    00000080 10 42            [ 4]  181 	bpl	00109$
+    00000082                        182 00222$:
+    00000082 A2 C0            [ 2]  183 	ldx	#0xc0
+    00000084 8Er06r00         [ 4]  184 	stx	_SpdY
+    00000087 A2 FF            [ 2]  185 	ldx	#0xff
+    00000089 8Er07r00         [ 4]  186 	stx	(_SpdY + 1)
+    0000008C 4CrC4r00         [ 3]  187 	jmp	00109$
+    0000008F                        188 00108$:
+                                    189 ;	src/phys.c: 70: } else if (INPUT_KEY(J_DOWN)) {
+    0000008F 29 04            [ 2]  190 	and	#0x04
+    00000091 F0 31            [ 4]  191 	beq	00109$
+                                    192 ;	src/phys.c: 71: SpdY += Y_ACCELERATION_IN_SUBPIXELS;
+    00000093 AEr07r00         [ 4]  193 	ldx	(_SpdY + 1)
+    00000096 ADr06r00         [ 4]  194 	lda	_SpdY
+    00000099 18               [ 2]  195 	clc
+    0000009A 69 02            [ 2]  196 	adc	#0x02
+    0000009C 90 01            [ 4]  197 	bcc	00226$
+    0000009E E8               [ 2]  198 	inx
+    0000009F                        199 00226$:
+                                    200 ;	src/phys.c: 72: if (SpdY > MAX_Y_SPEED_IN_SUBPIXELS) SpdY = MAX_Y_SPEED_IN_SUBPIXELS;
+    0000009F 8Dr06r00         [ 4]  201 	sta	_SpdY
+    000000A2 8Er07r00         [ 4]  202 	stx	(_SpdY + 1)
+    000000A5 85*00            [ 3]  203 	sta	*(REGTEMP+0)
+    000000A7 A9 40            [ 2]  204 	lda	#0x40
+    000000A9 38               [ 2]  205 	sec
+    000000AA E5*00            [ 3]  206 	sbc	*(REGTEMP+0)
+    000000AC A9 00            [ 2]  207 	lda	#0x00
+    000000AE 86*00            [ 3]  208 	stx	*(REGTEMP+0)
+    000000B0 E5*00            [ 3]  209 	sbc	*(REGTEMP+0)
+    000000B2 50 04            [ 4]  210 	bvc	00228$
+    000000B4 10 04            [ 4]  211 	bpl	00227$
+    000000B6 30 0C            [ 4]  212 	bmi	00109$
+    000000B8                        213 00228$:
+    000000B8 10 0A            [ 4]  214 	bpl	00109$
+    000000BA                        215 00227$:
+    000000BA A2 40            [ 2]  216 	ldx	#0x40
+    000000BC 8Er06r00         [ 4]  217 	stx	_SpdY
+    000000BF A2 00            [ 2]  218 	ldx	#0x00
+    000000C1 8Er07r00         [ 4]  219 	stx	(_SpdY + 1)
+    000000C4                        220 00109$:
+                                    221 ;	src/phys.c: 74: if (INPUT_KEY(J_LEFT)) {
+    000000C4 ADr00r00         [ 4]  222 	lda	_joy
+    000000C7 A2 02            [ 2]  223 	ldx	#0x02
+    000000C9 86*00            [ 3]  224 	stx	*(REGTEMP+0)
+    000000CB 24*00            [ 3]  225 	bit	*(REGTEMP+0)
+    000000CD F0 32            [ 4]  226 	beq	00117$
+                                    227 ;	src/phys.c: 75: SpdX -= X_ACCELERATION_IN_SUBPIXELS;
+    000000CF AEr05r00         [ 4]  228 	ldx	(_SpdX + 1)
+    000000D2 ADr04r00         [ 4]  229 	lda	_SpdX
+    000000D5 38               [ 2]  230 	sec
+    000000D6 E9 02            [ 2]  231 	sbc	#0x02
+    000000D8 B0 01            [ 4]  232 	bcs	00231$
+    000000DA CA               [ 2]  233 	dex
+    000000DB                        234 00231$:
+    000000DB 8Dr04r00         [ 4]  235 	sta	_SpdX
+    000000DE 8Er05r00         [ 4]  236 	stx	(_SpdX + 1)
+                                    237 ;	src/phys.c: 76: if (SpdX < -MAX_X_SPEED_IN_SUBPIXELS) SpdX = -MAX_X_SPEED_IN_SUBPIXELS;
+    000000E1 ADr04r00         [ 4]  238 	lda	_SpdX
+    000000E4 38               [ 2]  239 	sec
+    000000E5 E9 C0            [ 2]  240 	sbc	#0xc0
+    000000E7 ADr05r00         [ 4]  241 	lda	(_SpdX + 1)
+    000000EA E9 FF            [ 2]  242 	sbc	#0xff
+    000000EC 50 04            [ 4]  243 	bvc	00233$
+    000000EE 10 04            [ 4]  244 	bpl	00232$
+    000000F0 30 44            [ 4]  245 	bmi	00118$
+    000000F2                        246 00233$:
+    000000F2 10 42            [ 4]  247 	bpl	00118$
+    000000F4                        248 00232$:
+    000000F4 A2 C0            [ 2]  249 	ldx	#0xc0
+    000000F6 8Er04r00         [ 4]  250 	stx	_SpdX
+    000000F9 A2 FF            [ 2]  251 	ldx	#0xff
+    000000FB 8Er05r00         [ 4]  252 	stx	(_SpdX + 1)
+    000000FE 4Cr36r01         [ 3]  253 	jmp	00118$
+    00000101                        254 00117$:
+                                    255 ;	src/phys.c: 77: } else if (INPUT_KEY(J_RIGHT)) {
+    00000101 29 01            [ 2]  256 	and	#0x01
+    00000103 F0 31            [ 4]  257 	beq	00118$
+                                    258 ;	src/phys.c: 78: SpdX += X_ACCELERATION_IN_SUBPIXELS;
+    00000105 AEr05r00         [ 4]  259 	ldx	(_SpdX + 1)
+    00000108 ADr04r00         [ 4]  260 	lda	_SpdX
+    0000010B 18               [ 2]  261 	clc
+    0000010C 69 02            [ 2]  262 	adc	#0x02
+    0000010E 90 01            [ 4]  263 	bcc	00236$
+    00000110 E8               [ 2]  264 	inx
+    00000111                        265 00236$:
+                                    266 ;	src/phys.c: 79: if (SpdX > MAX_X_SPEED_IN_SUBPIXELS) SpdX = MAX_X_SPEED_IN_SUBPIXELS;
+    00000111 8Dr04r00         [ 4]  267 	sta	_SpdX
+    00000114 8Er05r00         [ 4]  268 	stx	(_SpdX + 1)
+    00000117 85*00            [ 3]  269 	sta	*(REGTEMP+0)
+    00000119 A9 40            [ 2]  270 	lda	#0x40
+    0000011B 38               [ 2]  271 	sec
+    0000011C E5*00            [ 3]  272 	sbc	*(REGTEMP+0)
+    0000011E A9 00            [ 2]  273 	lda	#0x00
+    00000120 86*00            [ 3]  274 	stx	*(REGTEMP+0)
+    00000122 E5*00            [ 3]  275 	sbc	*(REGTEMP+0)
+    00000124 50 04            [ 4]  276 	bvc	00238$
+    00000126 10 04            [ 4]  277 	bpl	00237$
+    00000128 30 0C            [ 4]  278 	bmi	00118$
+    0000012A                        279 00238$:
+    0000012A 10 0A            [ 4]  280 	bpl	00118$
+    0000012C                        281 00237$:
+    0000012C A2 40            [ 2]  282 	ldx	#0x40
+    0000012E 8Er04r00         [ 4]  283 	stx	_SpdX
+    00000131 A2 00            [ 2]  284 	ldx	#0x00
+    00000133 8Er05r00         [ 4]  285 	stx	(_SpdX + 1)
+    00000136                        286 00118$:
+                                    287 ;	src/phys.c: 82: if (INPUT_KEYPRESS(J_A)) {
+    00000136 A2 00            [ 2]  288 	ldx	#0x00
+    00000138 ADr08r00         [ 4]  289 	lda	_old_joy
+    0000013B 49 FF            [ 2]  290 	eor	#0xff
+    0000013D 85*00            [ 3]  291 	sta	*_main_sloc0_1_0
+    0000013F 8A               [ 2]  292 	txa
+    00000140 49 FF            [ 2]  293 	eor	#0xff
+    00000142 85*01            [ 3]  294 	sta	*(_main_sloc0_1_0 + 1)
+    00000144 ADr00r00         [ 4]  295 	lda	_joy
+    00000147 25*00            [ 3]  296 	and	*_main_sloc0_1_0
+    00000149 85*00            [ 3]  297 	sta	*_main_sloc0_1_0
+    0000014B 8A               [ 2]  298 	txa
+    0000014C 25*01            [ 3]  299 	and	*(_main_sloc0_1_0 + 1)
+    0000014E 85*01            [ 3]  300 	sta	*(_main_sloc0_1_0 + 1)
+    00000150 24*00            [ 3]  301 	bit	*_main_sloc0_1_0
+    00000152 10 0A            [ 4]  302 	bpl	00120$
+                                    303 ;	src/phys.c: 83: SpdY = -JUMP_ACCELERATION_IN_SUBPIXELS;
+    00000154 A2 E0            [ 2]  304 	ldx	#0xe0
+    00000156 8Er06r00         [ 4]  305 	stx	_SpdY
+    00000159 A2 FF            [ 2]  306 	ldx	#0xff
+    0000015B 8Er07r00         [ 4]  307 	stx	(_SpdY + 1)
+    0000015E                        308 00120$:
+                                    309 ;	src/phys.c: 87: PosX += SpdX, PosY += SpdY;
+    0000015E ADr00r00         [ 4]  310 	lda	_PosX
+    00000161 18               [ 2]  311 	clc
+    00000162 6Dr04r00         [ 4]  312 	adc	_SpdX
+    00000165 8Dr00r00         [ 4]  313 	sta	_PosX
+    00000168 ADr01r00         [ 4]  314 	lda	(_PosX + 1)
+    0000016B 6Dr05r00         [ 4]  315 	adc	(_SpdX + 1)
+    0000016E 8Dr01r00         [ 4]  316 	sta	(_PosX + 1)
+    00000171 ADr02r00         [ 4]  317 	lda	_PosY
+    00000174 18               [ 2]  318 	clc
+    00000175 6Dr06r00         [ 4]  319 	adc	_SpdY
+    00000178 8Dr02r00         [ 4]  320 	sta	_PosY
+    0000017B ADr03r00         [ 4]  321 	lda	(_PosY + 1)
+    0000017E 6Dr07r00         [ 4]  322 	adc	(_SpdY + 1)
+    00000181 8Dr03r00         [ 4]  323 	sta	(_PosY + 1)
+                                    324 ;	src/phys.c: 90: move_sprite(0, SUBPIXELS_TO_PIXELS(PosX), SUBPIXELS_TO_PIXELS(PosY));
+    00000184 AEr01r00         [ 4]  325 	ldx	(_PosX + 1)
+    00000187 ADr00r00         [ 4]  326 	lda	_PosX
+    0000018A 86*00            [ 3]  327 	stx	*(REGTEMP+0)
+    0000018C E0 80            [ 2]  328 	cpx	#0x80
+    0000018E 66*00            [ 5]  329 	ror	*(REGTEMP+0)
+    00000190 6A               [ 2]  330 	ror	a
+    00000191 E0 80            [ 2]  331 	cpx	#0x80
+    00000193 66*00            [ 5]  332 	ror	*(REGTEMP+0)
+    00000195 6A               [ 2]  333 	ror	a
+    00000196 E0 80            [ 2]  334 	cpx	#0x80
+    00000198 66*00            [ 5]  335 	ror	*(REGTEMP+0)
+    0000019A 6A               [ 2]  336 	ror	a
+    0000019B E0 80            [ 2]  337 	cpx	#0x80
+    0000019D 66*00            [ 5]  338 	ror	*(REGTEMP+0)
+    0000019F 6A               [ 2]  339 	ror	a
+    000001A0 A8               [ 2]  340 	tay 
+    000001A1 AEr03r00         [ 4]  341 	ldx	(_PosY + 1)
+    000001A4 ADr02r00         [ 4]  342 	lda	_PosY
+    000001A7 86*00            [ 3]  343 	stx	*(REGTEMP+0)
+    000001A9 E0 80            [ 2]  344 	cpx	#0x80
+    000001AB 66*00            [ 5]  345 	ror	*(REGTEMP+0)
+    000001AD 6A               [ 2]  346 	ror	a
+    000001AE E0 80            [ 2]  347 	cpx	#0x80
+    000001B0 66*00            [ 5]  348 	ror	*(REGTEMP+0)
+    000001B2 6A               [ 2]  349 	ror	a
+    000001B3 E0 80            [ 2]  350 	cpx	#0x80
+    000001B5 66*00            [ 5]  351 	ror	*(REGTEMP+0)
+    000001B7 6A               [ 2]  352 	ror	a
+    000001B8 E0 80            [ 2]  353 	cpx	#0x80
+    000001BA 66*00            [ 5]  354 	ror	*(REGTEMP+0)
+    000001BC 6A               [ 2]  355 	ror	a
+    000001BD A6*00            [ 3]  356 	ldx	*(REGTEMP+0)
+    000001BF 8Dr00r00         [ 4]  357 	sta	_move_sprite_PARM_3
+    000001C2 A9 00            [ 2]  358 	lda	#0x00
+    000001C4 84*00            [ 3]  359 	sty	*(REGTEMP+0)
+    000001C6 A6*00            [ 3]  360 	ldx	*(REGTEMP+0)
+    000001C8 20r00r00         [ 6]  361 	jsr	_move_sprite
+                                    362 ;	src/phys.c: 93: if (SpdY < 0) SpdY++; else if (SpdY) SpdY--;
+    000001CB ADr07r00         [ 4]  363 	lda	(_SpdY + 1)
+    000001CE 85*01            [ 3]  364 	sta	*(_main_sloc0_1_0 + 1)
+    000001D0 ADr06r00         [ 4]  365 	lda	_SpdY
+    000001D3 85*00            [ 3]  366 	sta	*_main_sloc0_1_0
+    000001D5 24*01            [ 3]  367 	bit	*(_main_sloc0_1_0 + 1)
+    000001D7 10 0B            [ 4]  368 	bpl	00124$
+    000001D9 EEr06r00         [ 6]  369 	inc	_SpdY
+    000001DC D0 1C            [ 4]  370 	bne	00125$
+    000001DE EEr07r00         [ 6]  371 	inc	(_SpdY + 1)
+    000001E1 4CrFAr01         [ 3]  372 	jmp	00125$
+    000001E4                        373 00124$:
+    000001E4 ADr07r00         [ 4]  374 	lda	(_SpdY + 1)
+    000001E7 0Dr06r00         [ 4]  375 	ora	_SpdY
+    000001EA F0 0E            [ 4]  376 	beq	00125$
+    000001EC 38               [ 2]  377 	sec
+    000001ED ADr06r00         [ 4]  378 	lda	_SpdY
+    000001F0 E9 01            [ 2]  379 	sbc	#0x01
+    000001F2 8Dr06r00         [ 4]  380 	sta	_SpdY
+    000001F5 B0 03            [ 4]  381 	bcs	00245$
+    000001F7 CEr07r00         [ 6]  382 	dec	(_SpdY + 1)
+    000001FA                        383 00245$:
+    000001FA                        384 00125$:
+                                    385 ;	src/phys.c: 94: if (SpdX < 0) SpdX++; else if (SpdX) SpdX--;
+    000001FA ADr05r00         [ 4]  386 	lda	(_SpdX + 1)
+    000001FD 85*01            [ 3]  387 	sta	*(_main_sloc0_1_0 + 1)
+    000001FF ADr04r00         [ 4]  388 	lda	_SpdX
+    00000202 85*00            [ 3]  389 	sta	*_main_sloc0_1_0
+    00000204 24*01            [ 3]  390 	bit	*(_main_sloc0_1_0 + 1)
+    00000206 10 0B            [ 4]  391 	bpl	00129$
+    00000208 EEr04r00         [ 6]  392 	inc	_SpdX
+    0000020B D0 1C            [ 4]  393 	bne	00130$
+    0000020D EEr05r00         [ 6]  394 	inc	(_SpdX + 1)
+    00000210 4Cr29r02         [ 3]  395 	jmp	00130$
+    00000213                        396 00129$:
+    00000213 ADr05r00         [ 4]  397 	lda	(_SpdX + 1)
+    00000216 0Dr04r00         [ 4]  398 	ora	_SpdX
+    00000219 F0 0E            [ 4]  399 	beq	00130$
+    0000021B 38               [ 2]  400 	sec
+    0000021C ADr04r00         [ 4]  401 	lda	_SpdX
+    0000021F E9 01            [ 2]  402 	sbc	#0x01
+    00000221 8Dr04r00         [ 4]  403 	sta	_SpdX
+    00000224 B0 03            [ 4]  404 	bcs	00250$
+    00000226 CEr05r00         [ 6]  405 	dec	(_SpdX + 1)
+    00000229                        406 00250$:
+    00000229                        407 00130$:
+                                    408 ;	src/phys.c: 97: vsync();
+    00000229 20r00r00         [ 6]  409 	jsr	_vsync
+    0000022C 4Cr49r00         [ 3]  410 	jmp	00132$
+                                    411 ;	src/phys.c: 99: }
+    0000022F 60               [ 6]  412 	rts
+                                    413 	.area _CODE
+    00000230                        414 _sprite_data:
+    00000230 3C                     415 	.db #0x3c	; 60
+    00000231 3C                     416 	.db #0x3c	; 60
+    00000232 42                     417 	.db #0x42	; 66	'B'
+    00000233 7E                     418 	.db #0x7e	; 126
+    00000234 99                     419 	.db #0x99	; 153
+    00000235 FF                     420 	.db #0xff	; 255
+    00000236 A9                     421 	.db #0xa9	; 169
+    00000237 FF                     422 	.db #0xff	; 255
+    00000238 89                     423 	.db #0x89	; 137
+    00000239 FF                     424 	.db #0xff	; 255
+    0000023A 89                     425 	.db #0x89	; 137
+    0000023B FF                     426 	.db #0xff	; 255
+    0000023C 42                     427 	.db #0x42	; 66	'B'
+    0000023D 7E                     428 	.db #0x7e	; 126
+    0000023E 3C                     429 	.db #0x3c	; 60
+    0000023F 3C                     430 	.db #0x3c	; 60
+    00000240 3C                     431 	.db #0x3c	; 60
+    00000241 3C                     432 	.db #0x3c	; 60
+    00000242 42                     433 	.db #0x42	; 66	'B'
+    00000243 7E                     434 	.db #0x7e	; 126
+    00000244 B9                     435 	.db #0xb9	; 185
+    00000245 FF                     436 	.db #0xff	; 255
+    00000246 89                     437 	.db #0x89	; 137
+    00000247 FF                     438 	.db #0xff	; 255
+    00000248 91                     439 	.db #0x91	; 145
+    00000249 FF                     440 	.db #0xff	; 255
+    0000024A B9                     441 	.db #0xb9	; 185
+    0000024B FF                     442 	.db #0xff	; 255
+    0000024C 42                     443 	.db #0x42	; 66	'B'
+    0000024D 7E                     444 	.db #0x7e	; 126
+    0000024E 3C                     445 	.db #0x3c	; 60
+    0000024F 3C                     446 	.db #0x3c	; 60
+    00000250 3C                     447 	.db #0x3c	; 60
+    00000251 3C                     448 	.db #0x3c	; 60
+    00000252 42                     449 	.db #0x42	; 66	'B'
+    00000253 7E                     450 	.db #0x7e	; 126
+    00000254 99                     451 	.db #0x99	; 153
+    00000255 FF                     452 	.db #0xff	; 255
+    00000256 89                     453 	.db #0x89	; 137
+    00000257 FF                     454 	.db #0xff	; 255
+    00000258 99                     455 	.db #0x99	; 153
+    00000259 FF                     456 	.db #0xff	; 255
+    0000025A 89                     457 	.db #0x89	; 137
+    0000025B FF                     458 	.db #0xff	; 255
+    0000025C 5A                     459 	.db #0x5a	; 90	'Z'
+    0000025D 7E                     460 	.db #0x7e	; 126
+    0000025E 3C                     461 	.db #0x3c	; 60
+    0000025F 3C                     462 	.db #0x3c	; 60
+    00000260 3C                     463 	.db #0x3c	; 60
+    00000261 3C                     464 	.db #0x3c	; 60
+    00000262 42                     465 	.db #0x42	; 66	'B'
+    00000263 7E                     466 	.db #0x7e	; 126
+    00000264 A9                     467 	.db #0xa9	; 169
+    00000265 FF                     468 	.db #0xff	; 255
+    00000266 A9                     469 	.db #0xa9	; 169
+    00000267 FF                     470 	.db #0xff	; 255
+    00000268 B9                     471 	.db #0xb9	; 185
+    00000269 FF                     472 	.db #0xff	; 255
+    0000026A 89                     473 	.db #0x89	; 137
+    0000026B FF                     474 	.db #0xff	; 255
+    0000026C 42                     475 	.db #0x42	; 66	'B'
+    0000026D 7E                     476 	.db #0x7e	; 126
+    0000026E 3C                     477 	.db #0x3c	; 60
+    0000026F 3C                     478 	.db #0x3c	; 60
+                                    479 	.area _XINIT
+    00000000                        480 __xinit__joy:
+    00000000 00                     481 	.db #0x00	; 0
+                                    482 	.area _CABS    (ABS)

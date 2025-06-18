@@ -1,0 +1,31 @@
+# Crypto : 04 -  la_pell_au_bois_dormant
+
+- **Auteur :** flav-sns
+- **Catégorie :** Crypto
+- **Diffculté :** Difficile
+- **Points :** -
+- **Points dynamiques :** oui
+- **Indice 1 :**
+```
+Pas d'indice 1.
+```
+
+- **Description :**
+```
+Flag Format : AMSI{recovery_key_hex}
+
+Exemple : AMSI{40eba7a6cdbd2a7f9ce4659634f9120e4488ca45}
+```
+
+- **Remarques :**
+```
+Pas de remarque.
+```
+
+- **Dialogues :**
+```
+Pas de dialogue.
+```
+
+
+

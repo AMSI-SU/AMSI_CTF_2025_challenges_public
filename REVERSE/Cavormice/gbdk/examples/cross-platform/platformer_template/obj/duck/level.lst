@@ -1,0 +1,444 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module level
+                                      6 	.optsdcc -msm83
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _SetupCurrentLevel
+                                     12 	.globl _IsTileSolid
+                                     13 	.globl _setBKGPalettes
+                                     14 	.globl _set_bkg_tile_xy
+                                     15 	.globl _set_bkg_data
+                                     16 	.globl _nextLevel
+                                     17 	.globl _currentLevel
+                                     18 	.globl _currentAreaBank
+                                     19 	.globl _currentLevelNonSolidTileCount
+                                     20 	.globl _currentLevelMap
+                                     21 	.globl _currentLevelHeightInTiles
+                                     22 	.globl _currentLevelHeight
+                                     23 	.globl _currentLevelWidthInTiles
+                                     24 	.globl _currentLevelWidth
+                                     25 ;--------------------------------------------------------
+                                     26 ; special function registers
+                                     27 ;--------------------------------------------------------
+                                     28 ;--------------------------------------------------------
+                                     29 ; ram data
+                                     30 ;--------------------------------------------------------
+                                     31 	.area _DATA
+    00000000                         32 _currentLevelWidth::
+    00000000                         33 	.ds 2
+    00000002                         34 _currentLevelWidthInTiles::
+    00000002                         35 	.ds 2
+    00000004                         36 _currentLevelHeight::
+    00000004                         37 	.ds 2
+    00000006                         38 _currentLevelHeightInTiles::
+    00000006                         39 	.ds 2
+    00000008                         40 _currentLevelMap::
+    00000008                         41 	.ds 2
+    0000000A                         42 _currentLevelNonSolidTileCount::
+    0000000A                         43 	.ds 1
+    0000000B                         44 _currentAreaBank::
+    0000000B                         45 	.ds 1
+                                     46 ;--------------------------------------------------------
+                                     47 ; ram data
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _INITIALIZED
+    00000000                         50 _currentLevel::
+    00000000                         51 	.ds 1
+    00000001                         52 _nextLevel::
+    00000001                         53 	.ds 1
+                                     54 ;--------------------------------------------------------
+                                     55 ; absolute external ram data
+                                     56 ;--------------------------------------------------------
+                                     57 	.area _DABS (ABS)
+                                     58 ;--------------------------------------------------------
+                                     59 ; global & static initialisations
+                                     60 ;--------------------------------------------------------
+                                     61 	.area _HOME
+                                     62 	.area _GSINIT
+                                     63 	.area _GSFINAL
+                                     64 	.area _GSINIT
+                                     65 ;--------------------------------------------------------
+                                     66 ; Home
+                                     67 ;--------------------------------------------------------
+                                     68 	.area _HOME
+                                     69 ;src/level.c:40: uint8_t IsTileSolid(uint16_t worldX,uint16_t worldY) NONBANKED{
+                                     70 ;	---------------------------------
+                                     71 ; Function IsTileSolid
+                                     72 ; ---------------------------------
+    00000000                         73 _IsTileSolid::
+    00000000 E8 FD            [16]   74 	add	sp, #-3
+                                     75 ;src/level.c:42: uint8_t _previous_bank = CURRENT_BANK;
+    00000002 F0r00            [12]   76 	ldh	a, (__current_bank + 0)
+    00000004 F8 00            [12]   77 	ldhl	sp,	#0
+    00000006 77               [ 8]   78 	ld	(hl), a
+                                     79 ;src/level.c:44: SWITCH_ROM(currentAreaBank);
+    00000007 FAr0Br00         [16]   80 	ld	a, (#_currentAreaBank)
+    0000000A E0r00            [12]   81 	ldh	(__current_bank + 0), a
+    0000000C EAr00r00         [16]   82 	ld	(#_rROMB0),a
+                                     83 ;src/level.c:47: uint16_t column = worldX>>3;
+    0000000F CB 3A            [ 8]   84 	srl	d
+    00000011 CB 1B            [ 8]   85 	rr	e
+    00000013 CB 3A            [ 8]   86 	srl	d
+    00000015 CB 1B            [ 8]   87 	rr	e
+    00000017 CB 3A            [ 8]   88 	srl	d
+    00000019 CB 1B            [ 8]   89 	rr	e
+                                     90 ;src/level.c:48: uint16_t row = worldY>>3;
+    0000001B F8 01            [12]   91 	ldhl	sp,	#1
+    0000001D 79               [ 4]   92 	ld	a, c
+    0000001E 22               [ 8]   93 	ld	(hl+), a
+    0000001F 70               [ 8]   94 	ld	(hl), b
+    00000020 CB 3E            [16]   95 	srl	(hl)
+    00000022 2B               [ 8]   96 	dec	hl
+    00000023 CB 1E            [16]   97 	rr	(hl)
+    00000025 23               [ 8]   98 	inc	hl
+    00000026 CB 3E            [16]   99 	srl	(hl)
+    00000028 2B               [ 8]  100 	dec	hl
+    00000029 CB 1E            [16]  101 	rr	(hl)
+    0000002B 23               [ 8]  102 	inc	hl
+    0000002C CB 3E            [16]  103 	srl	(hl)
+    0000002E 2B               [ 8]  104 	dec	hl
+    0000002F CB 1E            [16]  105 	rr	(hl)
+                                    106 ;src/level.c:50: uint16_t worldMaxRow = currentLevelHeight>>3;
+    00000031 21r04r00         [12]  107 	ld	hl, #_currentLevelHeight
+    00000034 2A               [ 8]  108 	ld	a, (hl+)
+    00000035 4F               [ 4]  109 	ld	c, a
+    00000036 46               [ 8]  110 	ld	b, (hl)
+    00000037 CB 38            [ 8]  111 	srl	b
+    00000039 CB 19            [ 8]  112 	rr	c
+    0000003B CB 38            [ 8]  113 	srl	b
+    0000003D CB 19            [ 8]  114 	rr	c
+    0000003F CB 38            [ 8]  115 	srl	b
+    00000041 CB 19            [ 8]  116 	rr	c
+                                    117 ;src/level.c:55: if(row>worldMaxRow||column>=currentLevelWidthInTiles){
+    00000043 F8 01            [12]  118 	ldhl	sp,	#1
+    00000045 79               [ 4]  119 	ld	a, c
+    00000046 96               [ 8]  120 	sub	a, (hl)
+    00000047 23               [ 8]  121 	inc	hl
+    00000048 78               [ 4]  122 	ld	a, b
+    00000049 9E               [ 8]  123 	sbc	a, (hl)
+    0000004A 38 0A            [12]  124 	jr	C, 00101$
+    0000004C 21r02r00         [12]  125 	ld	hl, #_currentLevelWidthInTiles
+    0000004F 7B               [ 4]  126 	ld	a, e
+    00000050 96               [ 8]  127 	sub	a, (hl)
+    00000051 23               [ 8]  128 	inc	hl
+    00000052 7A               [ 4]  129 	ld	a, d
+    00000053 9E               [ 8]  130 	sbc	a, (hl)
+    00000054 38 0D            [12]  131 	jr	C, 00102$
+    00000056                        132 00101$:
+                                    133 ;src/level.c:57: SWITCH_ROM(_previous_bank);
+    00000056 F8 00            [12]  134 	ldhl	sp,	#0
+    00000058 7E               [ 8]  135 	ld	a, (hl)
+    00000059 E0r00            [12]  136 	ldh	(__current_bank + 0), a
+    0000005B 7E               [ 8]  137 	ld	a, (hl)
+    0000005C EAr00r00         [16]  138 	ld	(#_rROMB0),a
+                                    139 ;src/level.c:58: return TRUE;
+    0000005F 3E 01            [ 8]  140 	ld	a, #0x01
+    00000061 18 32            [12]  141 	jr	00104$
+    00000063                        142 00102$:
+                                    143 ;src/level.c:61: uint16_t index = column + row* currentLevelWidthInTiles;
+    00000063 D5               [16]  144 	push	de
+    00000064 21r02r00         [12]  145 	ld	hl, #_currentLevelWidthInTiles
+    00000067 2A               [ 8]  146 	ld	a, (hl+)
+    00000068 4F               [ 4]  147 	ld	c, a
+    00000069 46               [ 8]  148 	ld	b, (hl)
+    0000006A F8 03            [12]  149 	ldhl	sp,	#3
+    0000006C 2A               [ 8]  150 	ld	a, (hl+)
+    0000006D 5F               [ 4]  151 	ld	e, a
+    0000006E 56               [ 8]  152 	ld	d, (hl)
+    0000006F CDr00r00         [24]  153 	call	__mulint
+    00000072 69               [ 4]  154 	ld	l, c
+                                    155 ;	spillPairReg hl
+                                    156 ;	spillPairReg hl
+    00000073 60               [ 4]  157 	ld	h, b
+                                    158 ;	spillPairReg hl
+                                    159 ;	spillPairReg hl
+    00000074 D1               [12]  160 	pop	de
+    00000075 19               [ 8]  161 	add	hl, de
+    00000076 4D               [ 4]  162 	ld	c, l
+    00000077 44               [ 4]  163 	ld	b, h
+                                    164 ;src/level.c:63: uint8_t tile = currentLevelMap[index];
+    00000078 79               [ 4]  165 	ld	a, c
+    00000079 21r08r00         [12]  166 	ld	hl, #_currentLevelMap
+    0000007C 86               [ 8]  167 	add	a, (hl)
+    0000007D 23               [ 8]  168 	inc	hl
+    0000007E 4F               [ 4]  169 	ld	c, a
+    0000007F 78               [ 4]  170 	ld	a, b
+    00000080 8E               [ 8]  171 	adc	a, (hl)
+    00000081 47               [ 4]  172 	ld	b, a
+    00000082 0A               [ 8]  173 	ld	a, (bc)
+    00000083 4F               [ 4]  174 	ld	c, a
+                                    175 ;src/level.c:65: SWITCH_ROM(_previous_bank);
+    00000084 F8 00            [12]  176 	ldhl	sp,	#0
+    00000086 7E               [ 8]  177 	ld	a, (hl)
+    00000087 E0r00            [12]  178 	ldh	(__current_bank + 0), a
+    00000089 7E               [ 8]  179 	ld	a, (hl)
+    0000008A EAr00r00         [16]  180 	ld	(#_rROMB0),a
+                                    181 ;src/level.c:67: return tile<currentLevelNonSolidTileCount;
+    0000008D 79               [ 4]  182 	ld	a, c
+    0000008E 21r0Ar00         [12]  183 	ld	hl, #_currentLevelNonSolidTileCount
+    00000091 96               [ 8]  184 	sub	a, (hl)
+    00000092 3E 00            [ 8]  185 	ld	a, #0x00
+    00000094 17               [ 4]  186 	rla
+    00000095                        187 00104$:
+                                    188 ;src/level.c:68: }
+    00000095 E8 03            [16]  189 	add	sp, #3
+    00000097 C9               [16]  190 	ret
+                                    191 ;src/level.c:72: void SetupCurrentLevel(void) NONBANKED{
+                                    192 ;	---------------------------------
+                                    193 ; Function SetupCurrentLevel
+                                    194 ; ---------------------------------
+    00000098                        195 _SetupCurrentLevel::
+    00000098 3B               [ 8]  196 	dec	sp
+                                    197 ;src/level.c:74: uint8_t _previous_bank = CURRENT_BANK;
+    00000099 F0r00            [12]  198 	ldh	a, (__current_bank + 0)
+    0000009B F8 00            [12]  199 	ldhl	sp,	#0
+    0000009D 77               [ 8]  200 	ld	(hl), a
+                                    201 ;src/level.c:76: for(uint8_t i=0;i<DEVICE_SCREEN_BUFFER_WIDTH;i++){
+    0000009E 0E 00            [ 8]  202 	ld	c, #0x00
+    000000A0                        203 00124$:
+    000000A0 79               [ 4]  204 	ld	a, c
+    000000A1 D6 20            [ 8]  205 	sub	a, #0x20
+    000000A3 30 1E            [12]  206 	jr	NC, 00102$
+                                    207 ;src/level.c:77: for(uint8_t j=0;j<DEVICE_SCREEN_BUFFER_HEIGHT;j++){
+    000000A5 06 00            [ 8]  208 	ld	b, #0x00
+    000000A7                        209 00121$:
+    000000A7 78               [ 4]  210 	ld	a, b
+    000000A8 D6 20            [ 8]  211 	sub	a, #0x20
+    000000AA 30 14            [12]  212 	jr	NC, 00125$
+                                    213 ;../../../include/gb/gb.h:1411: VBK_REG = VBK_ATTRIBUTES;
+    000000AC 3E 01            [ 8]  214 	ld	a, #0x01
+    000000AE E0r00            [12]  215 	ldh	(_VBK_REG + 0), a
+                                    216 ;../../../include/gb/gb.h:1412: addr = set_bkg_tile_xy(x, y, a);
+    000000B0 C5               [16]  217 	push	bc
+    000000B1 AF               [ 4]  218 	xor	a, a
+    000000B2 F5               [16]  219 	push	af
+    000000B3 33               [ 8]  220 	inc	sp
+    000000B4 58               [ 4]  221 	ld	e, b
+    000000B5 79               [ 4]  222 	ld	a, c
+    000000B6 CDr00r00         [24]  223 	call	_set_bkg_tile_xy
+    000000B9 C1               [12]  224 	pop	bc
+                                    225 ;../../../include/gb/gb.h:1413: VBK_REG = VBK_TILES;
+    000000BA AF               [ 4]  226 	xor	a, a
+    000000BB E0r00            [12]  227 	ldh	(_VBK_REG + 0), a
+                                    228 ;src/level.c:77: for(uint8_t j=0;j<DEVICE_SCREEN_BUFFER_HEIGHT;j++){
+    000000BD 04               [ 4]  229 	inc	b
+    000000BE 18 E7            [12]  230 	jr	00121$
+    000000C0                        231 00125$:
+                                    232 ;src/level.c:76: for(uint8_t i=0;i<DEVICE_SCREEN_BUFFER_WIDTH;i++){
+    000000C0 0C               [ 4]  233 	inc	c
+    000000C1 18 DD            [12]  234 	jr	00124$
+    000000C3                        235 00102$:
+                                    236 ;src/level.c:85: switch(currentLevel % 3){
+    000000C3 FAr00r00         [16]  237 	ld	a, (#_currentLevel)
+    000000C6 1E 03            [ 8]  238 	ld	e, #0x03
+    000000C8 CDr00r00         [24]  239 	call	__moduchar
+    000000CB 79               [ 4]  240 	ld	a, c
+    000000CC B7               [ 4]  241 	or	a, a
+    000000CD 28 0D            [12]  242 	jr	Z, 00103$
+    000000CF 79               [ 4]  243 	ld	a, c
+    000000D0 3D               [ 4]  244 	dec	a
+    000000D1 28 62            [12]  245 	jr	Z, 00104$
+    000000D3 79               [ 4]  246 	ld	a, c
+    000000D4 D6 02            [ 8]  247 	sub	a, #0x02
+    000000D6 CAr92r01         [16]  248 	jp	Z,00105$
+    000000D9 C3rE8r01         [16]  249 	jp	00106$
+                                    250 ;src/level.c:86: case 0:
+    000000DC                        251 00103$:
+                                    252 ;src/level.c:92: SWITCH_ROM(( BANK(World1Tileset)));
+    000000DC 3Er00            [ 8]  253 	ld	a, #<(___bank_World1Tileset)
+    000000DE E0r00            [12]  254 	ldh	(__current_bank + 0), a
+    000000E0 21r00r00         [12]  255 	ld	hl, #_rROMB0
+    000000E3 36r00            [12]  256 	ld	(hl), #<(___bank_World1Tileset)
+                                    257 ;src/level.c:94: set_native_tile_data(0,World1Tileset_TILE_COUNT,World1Tileset_tiles);
+    000000E5 01r00r00         [12]  258 	ld	bc, #_World1Tileset_tiles
+                                    259 ;../../../include/gb/gb.h:2134: set_bkg_data(first_tile, nb_tiles, data);
+    000000E8 C5               [16]  260 	push	bc
+    000000E9 21 00 20         [12]  261 	ld	hl, #0x2000
+    000000EC E5               [16]  262 	push	hl
+    000000ED CDr00r00         [24]  263 	call	_set_bkg_data
+    000000F0 E8 04            [16]  264 	add	sp, #4
+                                    265 ;src/level.c:95: setBKGPalettes(World1Tileset_PALETTE_COUNT,World1Tileset_palettes);
+    000000F2 11r00r00         [12]  266 	ld	de, #_World1Tileset_palettes
+    000000F5 3E 04            [ 8]  267 	ld	a, #0x04
+    000000F7 CDr00r00         [24]  268 	call	_setBKGPalettes
+                                    269 ;src/level.c:99: SWITCH_ROM((currentAreaBank = BANK(World1Area1)));
+    000000FA 3Er00            [ 8]  270 	ld	a, #<(___bank_World1Area1)
+    000000FC E0r00            [12]  271 	ldh	(__current_bank + 0), a
+    000000FE 3Er00            [ 8]  272 	ld	a, #<(___bank_World1Area1)
+    00000100 EAr0Br00         [16]  273 	ld	(#_currentAreaBank),a
+    00000103 EAr00r00         [16]  274 	ld	(#_rROMB0),a
+                                    275 ;src/level.c:101: currentLevelNonSolidTileCount=WORLD1_SOLID_TILE_COUNT;
+    00000106 21r0Ar00         [12]  276 	ld	hl, #_currentLevelNonSolidTileCount
+    00000109 36 11            [12]  277 	ld	(hl), #0x11
+                                    278 ;src/level.c:102: currentLevelWidth = World1Area1_WIDTH;
+    0000010B 21r00r00         [12]  279 	ld	hl, #_currentLevelWidth
+    0000010E 3E E0            [ 8]  280 	ld	a, #0xe0
+    00000110 22               [ 8]  281 	ld	(hl+), a
+    00000111 36 01            [12]  282 	ld	(hl), #0x01
+                                    283 ;src/level.c:103: currentLevelHeight = World1Area1_HEIGHT;
+    00000113 21r04r00         [12]  284 	ld	hl, #_currentLevelHeight
+    00000116 AF               [ 4]  285 	xor	a, a
+    00000117 22               [ 8]  286 	ld	(hl+), a
+    00000118 36 01            [12]  287 	ld	(hl), #0x01
+                                    288 ;src/level.c:104: currentLevelWidthInTiles = World1Area1_WIDTH>>3;
+    0000011A 21r02r00         [12]  289 	ld	hl, #_currentLevelWidthInTiles
+    0000011D 3E 3C            [ 8]  290 	ld	a, #0x3c
+    0000011F 22               [ 8]  291 	ld	(hl+), a
+    00000120 AF               [ 4]  292 	xor	a, a
+    00000121 77               [ 8]  293 	ld	(hl), a
+                                    294 ;src/level.c:105: currentLevelHeightInTiles = World1Area1_HEIGHT>>3;            
+    00000122 21r06r00         [12]  295 	ld	hl, #_currentLevelHeightInTiles
+    00000125 3E 20            [ 8]  296 	ld	a, #0x20
+    00000127 22               [ 8]  297 	ld	(hl+), a
+    00000128 AF               [ 4]  298 	xor	a, a
+    00000129 77               [ 8]  299 	ld	(hl), a
+                                    300 ;src/level.c:106: currentLevelMap= World1Area1_map;
+    0000012A 21r08r00         [12]  301 	ld	hl, #_currentLevelMap
+    0000012D 36r00            [12]  302 	ld	(hl), #<(_World1Area1_map)
+    0000012F 23               [ 8]  303 	inc	hl
+    00000130 36s00            [12]  304 	ld	(hl), #>(_World1Area1_map)
+                                    305 ;src/level.c:109: break;
+    00000132 C3rE8r01         [16]  306 	jp	00106$
+                                    307 ;src/level.c:110: case 1:
+    00000135                        308 00104$:
+                                    309 ;src/level.c:115: SWITCH_ROM((currentAreaBank = BANK(World1Tileset)));
+    00000135 01r00r00         [12]  310 	ld	bc, #___bank_World1Tileset+0
+    00000138 79               [ 4]  311 	ld	a, c
+    00000139 E0r00            [12]  312 	ldh	(__current_bank + 0), a
+    0000013B 21r0Br00         [12]  313 	ld	hl, #_currentAreaBank
+    0000013E 71               [ 8]  314 	ld	(hl), c
+    0000013F 21r00r00         [12]  315 	ld	hl, #_rROMB0
+    00000142 71               [ 8]  316 	ld	(hl), c
+                                    317 ;src/level.c:118: set_native_tile_data(0,World1Tileset_TILE_COUNT,World1Tileset_tiles);
+                                    318 ;../../../include/gb/gb.h:2134: set_bkg_data(first_tile, nb_tiles, data);
+    00000143 11r00r00         [12]  319 	ld	de, #_World1Tileset_tiles
+    00000146 D5               [16]  320 	push	de
+    00000147 21 00 20         [12]  321 	ld	hl, #0x2000
+    0000014A E5               [16]  322 	push	hl
+    0000014B CDr00r00         [24]  323 	call	_set_bkg_data
+    0000014E E8 04            [16]  324 	add	sp, #4
+                                    325 ;src/level.c:119: setBKGPalettes(World1Tileset_PALETTE_COUNT,World1Tileset_palettes);
+    00000150 11r00r00         [12]  326 	ld	de, #_World1Tileset_palettes
+    00000153 3E 04            [ 8]  327 	ld	a, #0x04
+    00000155 CDr00r00         [24]  328 	call	_setBKGPalettes
+                                    329 ;src/level.c:124: SWITCH_ROM((currentAreaBank = BANK(World1Area2)));
+    00000158 3Er00            [ 8]  330 	ld	a, #<(___bank_World1Area2)
+    0000015A E0r00            [12]  331 	ldh	(__current_bank + 0), a
+    0000015C 3Er00            [ 8]  332 	ld	a, #<(___bank_World1Area2)
+    0000015E EAr0Br00         [16]  333 	ld	(#_currentAreaBank),a
+    00000161 EAr00r00         [16]  334 	ld	(#_rROMB0),a
+                                    335 ;src/level.c:126: currentLevelNonSolidTileCount=WORLD1_SOLID_TILE_COUNT;
+    00000164 21r0Ar00         [12]  336 	ld	hl, #_currentLevelNonSolidTileCount
+    00000167 36 11            [12]  337 	ld	(hl), #0x11
+                                    338 ;src/level.c:127: currentLevelWidth = World1Area2_WIDTH;
+    00000169 21r00r00         [12]  339 	ld	hl, #_currentLevelWidth
+    0000016C 3E E0            [ 8]  340 	ld	a, #0xe0
+    0000016E 22               [ 8]  341 	ld	(hl+), a
+    0000016F 36 01            [12]  342 	ld	(hl), #0x01
+                                    343 ;src/level.c:128: currentLevelHeight = World1Area2_HEIGHT;
+    00000171 21r04r00         [12]  344 	ld	hl, #_currentLevelHeight
+    00000174 AF               [ 4]  345 	xor	a, a
+    00000175 22               [ 8]  346 	ld	(hl+), a
+    00000176 36 01            [12]  347 	ld	(hl), #0x01
+                                    348 ;src/level.c:129: currentLevelWidthInTiles = World1Area2_WIDTH>>3;
+    00000178 21r02r00         [12]  349 	ld	hl, #_currentLevelWidthInTiles
+    0000017B 3E 3C            [ 8]  350 	ld	a, #0x3c
+    0000017D 22               [ 8]  351 	ld	(hl+), a
+    0000017E AF               [ 4]  352 	xor	a, a
+    0000017F 77               [ 8]  353 	ld	(hl), a
+                                    354 ;src/level.c:130: currentLevelHeightInTiles = World1Area2_HEIGHT>>3;
+    00000180 21r06r00         [12]  355 	ld	hl, #_currentLevelHeightInTiles
+    00000183 3E 20            [ 8]  356 	ld	a, #0x20
+    00000185 22               [ 8]  357 	ld	(hl+), a
+    00000186 AF               [ 4]  358 	xor	a, a
+    00000187 77               [ 8]  359 	ld	(hl), a
+                                    360 ;src/level.c:131: currentLevelMap= World1Area2_map;
+    00000188 21r08r00         [12]  361 	ld	hl, #_currentLevelMap
+    0000018B 36r00            [12]  362 	ld	(hl), #<(_World1Area2_map)
+    0000018D 23               [ 8]  363 	inc	hl
+    0000018E 36s00            [12]  364 	ld	(hl), #>(_World1Area2_map)
+                                    365 ;src/level.c:133: break;
+    00000190 18 56            [12]  366 	jr	00106$
+                                    367 ;src/level.c:134: case 2:
+    00000192                        368 00105$:
+                                    369 ;src/level.c:139: SWITCH_ROM((BANK(World2Tileset)));
+    00000192 3Er00            [ 8]  370 	ld	a, #<(___bank_World2Tileset)
+    00000194 E0r00            [12]  371 	ldh	(__current_bank + 0), a
+    00000196 21r00r00         [12]  372 	ld	hl, #_rROMB0
+    00000199 36r00            [12]  373 	ld	(hl), #<(___bank_World2Tileset)
+                                    374 ;src/level.c:141: set_native_tile_data(0,World2Tileset_TILE_COUNT,World2Tileset_tiles);
+                                    375 ;../../../include/gb/gb.h:2134: set_bkg_data(first_tile, nb_tiles, data);
+    0000019B 11r00r00         [12]  376 	ld	de, #_World2Tileset_tiles
+    0000019E D5               [16]  377 	push	de
+    0000019F 21 00 46         [12]  378 	ld	hl, #0x4600
+    000001A2 E5               [16]  379 	push	hl
+    000001A3 CDr00r00         [24]  380 	call	_set_bkg_data
+    000001A6 E8 04            [16]  381 	add	sp, #4
+                                    382 ;src/level.c:142: setBKGPalettes(World2Tileset_PALETTE_COUNT,World2Tileset_palettes);
+    000001A8 11r00r00         [12]  383 	ld	de, #_World2Tileset_palettes
+    000001AB 3E 04            [ 8]  384 	ld	a, #0x04
+    000001AD CDr00r00         [24]  385 	call	_setBKGPalettes
+                                    386 ;src/level.c:147: SWITCH_ROM((currentAreaBank = BANK(World2Area1)));
+    000001B0 3Er00            [ 8]  387 	ld	a, #<(___bank_World2Area1)
+    000001B2 E0r00            [12]  388 	ldh	(__current_bank + 0), a
+    000001B4 3Er00            [ 8]  389 	ld	a, #<(___bank_World2Area1)
+    000001B6 EAr0Br00         [16]  390 	ld	(#_currentAreaBank),a
+    000001B9 EAr00r00         [16]  391 	ld	(#_rROMB0),a
+                                    392 ;src/level.c:149: currentLevelNonSolidTileCount=WORLD2_SOLID_TILE_COUNT;
+    000001BC 21r0Ar00         [12]  393 	ld	hl, #_currentLevelNonSolidTileCount
+    000001BF 36 44            [12]  394 	ld	(hl), #0x44
+                                    395 ;src/level.c:150: currentLevelWidth = World2Area1_WIDTH;
+    000001C1 21r00r00         [12]  396 	ld	hl, #_currentLevelWidth
+    000001C4 3E E0            [ 8]  397 	ld	a, #0xe0
+    000001C6 22               [ 8]  398 	ld	(hl+), a
+    000001C7 36 01            [12]  399 	ld	(hl), #0x01
+                                    400 ;src/level.c:151: currentLevelHeight = World2Area1_HEIGHT;
+    000001C9 21r04r00         [12]  401 	ld	hl, #_currentLevelHeight
+    000001CC AF               [ 4]  402 	xor	a, a
+    000001CD 22               [ 8]  403 	ld	(hl+), a
+    000001CE 36 01            [12]  404 	ld	(hl), #0x01
+                                    405 ;src/level.c:152: currentLevelWidthInTiles = World2Area1_WIDTH>>3;
+    000001D0 21r02r00         [12]  406 	ld	hl, #_currentLevelWidthInTiles
+    000001D3 3E 3C            [ 8]  407 	ld	a, #0x3c
+    000001D5 22               [ 8]  408 	ld	(hl+), a
+    000001D6 AF               [ 4]  409 	xor	a, a
+    000001D7 77               [ 8]  410 	ld	(hl), a
+                                    411 ;src/level.c:153: currentLevelHeightInTiles = World2Area1_HEIGHT>>3;
+    000001D8 21r06r00         [12]  412 	ld	hl, #_currentLevelHeightInTiles
+    000001DB 3E 20            [ 8]  413 	ld	a, #0x20
+    000001DD 22               [ 8]  414 	ld	(hl+), a
+    000001DE AF               [ 4]  415 	xor	a, a
+    000001DF 77               [ 8]  416 	ld	(hl), a
+                                    417 ;src/level.c:154: currentLevelMap= World2Area1_map;
+    000001E0 21r08r00         [12]  418 	ld	hl, #_currentLevelMap
+    000001E3 36r00            [12]  419 	ld	(hl), #<(_World2Area1_map)
+    000001E5 23               [ 8]  420 	inc	hl
+    000001E6 36s00            [12]  421 	ld	(hl), #>(_World2Area1_map)
+                                    422 ;src/level.c:157: }
+    000001E8                        423 00106$:
+                                    424 ;src/level.c:159: SWITCH_ROM(_previous_bank);
+    000001E8 F8 00            [12]  425 	ldhl	sp,	#0
+    000001EA 7E               [ 8]  426 	ld	a, (hl)
+    000001EB E0r00            [12]  427 	ldh	(__current_bank + 0), a
+    000001ED 7E               [ 8]  428 	ld	a, (hl)
+    000001EE EAr00r00         [16]  429 	ld	(#_rROMB0),a
+                                    430 ;src/level.c:160: }
+    000001F1 33               [ 8]  431 	inc	sp
+    000001F2 C9               [16]  432 	ret
+                                    433 	.area _HOME
+                                    434 ;--------------------------------------------------------
+                                    435 ; code
+                                    436 ;--------------------------------------------------------
+                                    437 	.area _CODE
+                                    438 	.area _CODE
+                                    439 	.area _INITIALIZER
+    00000000                        440 __xinit__currentLevel:
+    00000000 FF                     441 	.db #0xff	; 255
+    00000001                        442 __xinit__nextLevel:
+    00000001 00                     443 	.db #0x00	; 0
+                                    444 	.area _CABS (ABS)

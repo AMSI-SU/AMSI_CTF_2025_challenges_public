@@ -1,0 +1,168 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module main
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _main
+                                     23 	.globl _fill_bkg_rect
+                                     24 	.globl _set_bkg_native_data
+                                     25 	.globl _set_bkg_attributes_nes16x16
+                                     26 	.globl _set_bkg_tiles
+                                     27 	.globl _display_off
+                                     28 	.globl _display_on
+                                     29 	.globl _vsync
+                                     30 	.globl _set_bkg_palette
+                                     31 	.globl _OAMDMA
+                                     32 	.globl _PPUDATA
+                                     33 	.globl _PPUADDR
+                                     34 	.globl _PPUSCROLL
+                                     35 	.globl _OAMDATA
+                                     36 	.globl _OAMADDR
+                                     37 	.globl _PPUSTATUS
+                                     38 	.globl _PPUMASK
+                                     39 	.globl _PPUCTRL
+                                     40 ;--------------------------------------------------------
+                                     41 ; ZP ram data
+                                     42 ;--------------------------------------------------------
+                                     43 	.area _ZP      (PAG)
+                                     44 ;--------------------------------------------------------
+                                     45 ; overlayable items in ram
+                                     46 ;--------------------------------------------------------
+                                     47 ;--------------------------------------------------------
+                                     48 ; uninitialized external ram data
+                                     49 ;--------------------------------------------------------
+                                     50 	.area _BSS
+                         00002000    51 _PPUCTRL	=	0x2000
+                         00002001    52 _PPUMASK	=	0x2001
+                         00002002    53 _PPUSTATUS	=	0x2002
+                         00002003    54 _OAMADDR	=	0x2003
+                         00002004    55 _OAMDATA	=	0x2004
+                         00002005    56 _PPUSCROLL	=	0x2005
+                         00002006    57 _PPUADDR	=	0x2006
+                         00002007    58 _PPUDATA	=	0x2007
+                         00004014    59 _OAMDMA	=	0x4014
+                                     60 ;--------------------------------------------------------
+                                     61 ; absolute external ram data
+                                     62 ;--------------------------------------------------------
+                                     63 	.area _DABS    (ABS)
+                                     64 ;--------------------------------------------------------
+                                     65 ; initialized external ram data
+                                     66 ;--------------------------------------------------------
+                                     67 	.area _DATA
+                                     68 ;--------------------------------------------------------
+                                     69 ; global & static initialisations
+                                     70 ;--------------------------------------------------------
+                                     71 	.area _HOME
+                                     72 	.area _GSINIT
+                                     73 	.area _GSFINAL
+                                     74 	.area _GSINIT
+                                     75 ;--------------------------------------------------------
+                                     76 ; Home
+                                     77 ;--------------------------------------------------------
+                                     78 	.area _HOME
+                                     79 	.area _HOME
+                                     80 ;--------------------------------------------------------
+                                     81 ; code
+                                     82 ;--------------------------------------------------------
+                                     83 	.area _CODE
+                                     84 ;------------------------------------------------------------
+                                     85 ;Allocation info for local variables in function 'main'
+                                     86 ;------------------------------------------------------------
+                                     87 ;__200000006               Allocated to registers 
+                                     88 ;__200000007               Allocated to registers 
+                                     89 ;__200000008               Allocated to registers 
+                                     90 ;__200000009               Allocated to registers 
+                                     91 ;__200000010               Allocated to registers 
+                                     92 ;x                         Allocated to registers 
+                                     93 ;y                         Allocated to registers 
+                                     94 ;w                         Allocated to registers 
+                                     95 ;h                         Allocated to registers 
+                                     96 ;attributes                Allocated to registers 
+                                     97 ;------------------------------------------------------------
+                                     98 ;	src/main.c: 5: void main(void) {
+                                     99 ;	-----------------------------------------
+                                    100 ;	 function main
+                                    101 ;	-----------------------------------------
+                                    102 ;	Register assignment is optimal.
+                                    103 ;	Stack space usage: 0 bytes.
+    00000000                        104 _main:
+                                    105 ;	src/main.c: 6: DISPLAY_OFF;
+    00000000 20r00r00         [ 6]  106 	jsr	_display_off
+                                    107 ;	src/main.c: 7: fill_bkg_rect(0, 0, DEVICE_SCREEN_WIDTH, DEVICE_SCREEN_HEIGHT, 0);
+    00000003 A2 20            [ 2]  108 	ldx	#0x20
+    00000005 8Er00r00         [ 4]  109 	stx	_fill_bkg_rect_PARM_3
+    00000008 A2 1E            [ 2]  110 	ldx	#0x1e
+    0000000A 8Er00r00         [ 4]  111 	stx	_fill_bkg_rect_PARM_4
+    0000000D A2 00            [ 2]  112 	ldx	#0x00
+    0000000F 8Er00r00         [ 4]  113 	stx	_fill_bkg_rect_PARM_5
+    00000012 8A               [ 2]  114 	txa
+    00000013 20r00r00         [ 6]  115 	jsr	_fill_bkg_rect
+                                    116 ;	src/main.c: 16: set_bkg_palette(0, GBDK_2020_logo_PALETTE_COUNT, GBDK_2020_logo_palettes);
+    00000016 A9s00            [ 2]  117 	lda	#>_GBDK_2020_logo_palettes
+    00000018 8Dr01r00         [ 4]  118 	sta	(_set_bkg_palette_PARM_3 + 1)
+    0000001B A9r00            [ 2]  119 	lda	#_GBDK_2020_logo_palettes
+    0000001D 8Dr00r00         [ 4]  120 	sta	_set_bkg_palette_PARM_3
+    00000020 A9 00            [ 2]  121 	lda	#0x00
+    00000022 A2 03            [ 2]  122 	ldx	#0x03
+    00000024 20r00r00         [ 6]  123 	jsr	_set_bkg_palette
+                                    124 ;	src/main.c: 19: set_bkg_native_data(0, GBDK_2020_logo_TILE_COUNT, GBDK_2020_logo_tiles);
+    00000027 A9s00            [ 2]  125 	lda	#>_GBDK_2020_logo_tiles
+    00000029 8Dr01r00         [ 4]  126 	sta	(_set_bkg_native_data_PARM_3 + 1)
+    0000002C A9r00            [ 2]  127 	lda	#_GBDK_2020_logo_tiles
+    0000002E 8Dr00r00         [ 4]  128 	sta	_set_bkg_native_data_PARM_3
+    00000031 A9 00            [ 2]  129 	lda	#0x00
+    00000033 A2 28            [ 2]  130 	ldx	#0x28
+    00000035 20r00r00         [ 6]  131 	jsr	_set_bkg_native_data
+                                    132 ;	src/main.c: 25: GBDK_2020_logo_map_attributes);
+    00000038 A9s00            [ 2]  133 	lda	#>_GBDK_2020_logo_map_attributes
+    0000003A 8Dr01r00         [ 4]  134 	sta	(_set_bkg_attributes_nes16x16_PARM_5 + 1)
+    0000003D A9r00            [ 2]  135 	lda	#_GBDK_2020_logo_map_attributes
+    0000003F 8Dr00r00         [ 4]  136 	sta	_set_bkg_attributes_nes16x16_PARM_5
+                                    137 ;	../../../include/nes/nes.h: 690: set_bkg_attributes_nes16x16(x >> 1, y >> 1, (w + 1) >> 1, (h + 1) >> 1, attributes);
+    00000042 A2 0A            [ 2]  138 	ldx	#0x0a
+    00000044 8Er00r00         [ 4]  139 	stx	_set_bkg_attributes_nes16x16_PARM_3
+    00000047 CA               [ 2]  140 	dex
+    00000048 8Er00r00         [ 4]  141 	stx	_set_bkg_attributes_nes16x16_PARM_4
+    0000004B A9 03            [ 2]  142 	lda	#0x03
+    0000004D AA               [ 2]  143 	tax
+    0000004E 20r00r00         [ 6]  144 	jsr	_set_bkg_attributes_nes16x16
+                                    145 ;	src/main.c: 31: GBDK_2020_logo_map);
+    00000051 A9s00            [ 2]  146 	lda	#>_GBDK_2020_logo_map
+    00000053 8Dr01r00         [ 4]  147 	sta	(_set_bkg_tiles_PARM_5 + 1)
+    00000056 A9r00            [ 2]  148 	lda	#_GBDK_2020_logo_map
+    00000058 8Dr00r00         [ 4]  149 	sta	_set_bkg_tiles_PARM_5
+    0000005B A2 14            [ 2]  150 	ldx	#0x14
+    0000005D 8Er00r00         [ 4]  151 	stx	_set_bkg_tiles_PARM_3
+    00000060 A2 12            [ 2]  152 	ldx	#0x12
+    00000062 8Er00r00         [ 4]  153 	stx	_set_bkg_tiles_PARM_4
+    00000065 A9 06            [ 2]  154 	lda	#0x06
+    00000067 AA               [ 2]  155 	tax
+    00000068 20r00r00         [ 6]  156 	jsr	_set_bkg_tiles
+                                    157 ;	src/main.c: 33: vsync();
+    0000006B 20r00r00         [ 6]  158 	jsr	_vsync
+                                    159 ;	src/main.c: 34: SHOW_BKG;
+    0000006E ADr00r00         [ 4]  160 	lda	_shadow_PPUMASK
+    00000071 09 08            [ 2]  161 	ora	#0x08
+    00000073 8Dr00r00         [ 4]  162 	sta	_shadow_PPUMASK
+                                    163 ;	src/main.c: 35: DISPLAY_ON;
+                                    164 ;	src/main.c: 36: }
+    00000076 4Cr00r00         [ 3]  165 	jmp	_display_on
+                                    166 	.area _CODE
+                                    167 	.area _XINIT
+                                    168 	.area _CABS    (ABS)

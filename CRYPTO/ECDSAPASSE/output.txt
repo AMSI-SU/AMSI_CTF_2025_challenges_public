@@ -1,0 +1,11 @@
+Message 1: Il n’y a que deux façons de dire la vérité complète – de manière anonyme et posthume.
+Message 2: Peu importe que vous soyez intelligent si vous ne vous prenez pas le temps de réfléchir.
+
+Signature 1: (r1=0xa6225480b677fa04a6df61236e8203a0f1ea85a840012101e4f42a7a63b21bdd, s1=0x6397abd18fdb97a47f4dd1369ad91d4c8689e3a0a51f2b783170873dee33d282)
+Signature 2: (r2=0x19a9b0e09d2c2ca2048a1b359895231f186059c09d5d18d30dabdf8e476b1b25, s2=0x290ebb92734346fc68e49e41fcecf31488c0b815f5e9132ed8243ef36f688c4b)
+Hash 1: 0x5f9edd900dc54e3c65734847f40cc3670ba3d4edb158caf85ad30e16f38ed0d7
+Hash 2: 0x3df7756a00990a3e7ad15b52aabdcf3008deab7e4caa932ca7160e1f525a5f18
+
+Clé publique: 3295586472846396e1cda51d6783e272149cb94e8c525dd6a74cf0b3ab1d35667389c163dbc31bd98a57e3327a26a15c96e04772792734f2edc63769919a0052
+Ordre de la courbe: 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
+Paramètres : a=2

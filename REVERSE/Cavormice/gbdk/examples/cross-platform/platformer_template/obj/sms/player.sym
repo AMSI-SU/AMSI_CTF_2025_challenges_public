@@ -1,0 +1,90 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180 / ZX-Next / eZ80 / R800)                          Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _AUDIOCTRL                                                  =   000000F2 
+  4 _DrawPlayer                                                     00000042 GR
+    _FMADDRESS                                                  =   000000F0 
+    _FMDATA                                                     =   000000F1 
+    _GG_EXT_7BIT                                                =   00000001 
+    _GG_EXT_CTL                                                 =   00000002 
+    _GG_SIO_CTL                                                 =   00000005 
+    _GG_SIO_RECV                                                =   00000004 
+    _GG_SIO_SEND                                                =   00000003 
+    _GG_SOUND_PAN                                               =   00000006 
+    _GG_STATE                                                   =   00000000 
+    _GLASSES_3D                                                 =   0000FFF8 
+    _HCOUNTER                                                   =   0000007F 
+    _IsTileSolid                                                    ******** GX
+    _JOY_CTL                                                    =   0000003F 
+    _JOY_PORT1                                                  =   000000DC 
+    _JOY_PORT2                                                  =   000000DD 
+    _MAP_FRAME0                                                 =   0000FFFD 
+    _MAP_FRAME1                                                 =   0000FFFE 
+    _MAP_FRAME2                                                 =   0000FFFF 
+    _MEMORY_CTL                                                 =   0000003E 
+    _PSG                                                        =   0000007F 
+    _PlayerCharacterSprites_metasprites                             ******** GX
+    _PlayerCharacterSprites_tiles                                   ******** GX
+  4 _PlayerPalettesGGSMS                                            0000001C GR
+    _RAM_CONTROL                                                =   0000FFFC 
+  4 _SetPlayerPalettes                                              0000002C GR
+  7 _SetupPlayer                                                    00000000 GR
+  7 _UpdatePlayer                                                   00000018 GR
+  4 _UpdatePlayerVRAMTiles                                          00000000 GR
+    _VCOUNTER                                                   =   0000007E 
+    _VDP_CMD                                                    =   000000BF 
+    _VDP_DATA                                                   =   000000BE 
+    _VDP_STATUS                                                 =   000000BF 
+    ___bank_PlayerCharacterSprites                                  ******** GX
+    ___current_base_tile                                            ******** GX
+    ___current_metasprite                                           ******** GX
+    ___move_metasprite                                              ******** GX
+  8 __xinit__facingRight                                            00000000 R
+  8 __xinit__playerJumpIncrease                                     00000001 R
+  8 __xinit__threeFrameCounter                                      00000002 R
+  4 _baseProp                                                       0000001B GR
+    _camera_x                                                       ******** GX
+    _currentLevelWidth                                              ******** GX
+  2 _facingRight                                                    00000000 GR
+    _joypadCurrent                                                  ******** GX
+    _joypadPrevious                                                 ******** GX
+    _nextLevel                                                      ******** GX
+  2 _playerJumpIncrease                                             00000001 GR
+  1 _playerX                                                        00000000 GR
+  1 _playerXVelocity                                                00000004 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180 / ZX-Next / eZ80 / R800)                          Page 2
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+  1 _playerY                                                        00000002 GR
+  1 _playerYVelocity                                                00000006 GR
+    _set_palette                                                    ******** GX
+    _set_sprite_native_data                                         ******** GX
+  2 _threeFrameCounter                                              00000002 GR
+    b_SetupPlayer                                               =   000000FF G
+    b_UpdatePlayer                                              =   000000FF G
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180 / ZX-Next / eZ80 / R800)                          Page 3
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size        0   flags    0
+   1 _DATA                                      size        8   flags    0
+   2 _INITIALIZED                               size        3   flags    0
+   3 _DABS                                      size        0   flags    8
+   4 _HOME                                      size       94   flags    0
+   5 _GSINIT                                    size        0   flags    0
+   6 _GSFINAL                                   size        0   flags    0
+   7 _CODE_255                                  size      53B   flags    0
+   8 _INITIALIZER                               size        3   flags    0
+   9 _CABS                                      size        0   flags    8
+

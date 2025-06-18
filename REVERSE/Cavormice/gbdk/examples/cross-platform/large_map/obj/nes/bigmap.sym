@@ -1,0 +1,45 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+    ___bank_bigmap                                              =   00000000 G
+  A ___func_bigmap                                                  00000000 GR
+  A _bigmap_map                                                     00000E20 GR
+  A _bigmap_map_attributes                                          00003658 GR
+  A _bigmap_palettes                                                00000000 GR
+  A _bigmap_tiles                                                   00000010 GR
+    b___func_bigmap                                             =   00000000 L
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size        0   flags    0
+   1 _ZP                                        size        0   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size        0   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size        0   flags    0
+   7 _DATA                                      size        0   flags    0
+   8 _BSS                                       size        0   flags    0
+   9 _DABS                                      size        0   flags    8
+   A _CODE_0                                    size     3A00   flags    0
+   B _CABS                                      size        0   flags    8
+

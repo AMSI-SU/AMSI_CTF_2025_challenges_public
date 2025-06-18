@@ -1,0 +1,36 @@
+# OSINT : 03 -  Sur_Les_Traces_Du_Scammer
+
+- **Auteur :** flav-sns
+- **Catégorie :** OSINT
+- **Diffculté :** Moyen
+- **Points :** -
+- **Points dynamiques :** oui
+- **Indice 1 :**
+```
+Pas d'indice 1.
+```
+
+- **Description :**
+```
+A scammer is known for targeting victims through phishing and frequently uses pig butchering tactics to steal their cryptocurrency.
+You’ve spoken with one of the victims, who shared the only piece of evidence they have: an image the scammer consistently sends as a joke once the funds have been drained (apparently, he's an Instagram brainroted).
+
+Your objective is to extract as much information as possible from this image to help locate the scammer and report them to the C3N brigade.
+
+This challenge is divided into two parts.
+
+Flag format: AMSI{Insta_Pseudo}
+```
+
+- **Remarques :**
+```
+Pas de remarque.
+```
+
+- **Dialogues :**
+```
+Pas de dialogue.
+```
+
+
+

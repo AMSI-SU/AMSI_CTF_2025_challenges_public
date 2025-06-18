@@ -1,0 +1,220 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module bcd
+                                      6 	.optsdcc -mz80
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _main
+                                     12 	.globl _bcd2text
+                                     13 	.globl _bcd_sub
+                                     14 	.globl _bcd_add
+                                     15 	.globl _uint2bcd
+                                     16 	.globl _font_set
+                                     17 	.globl _font_load
+                                     18 	.globl _font_init
+                                     19 	.globl _set_tile_map_compat
+                                     20 	.globl _len
+                                     21 	.globl _bcd3
+                                     22 	.globl _bcd2
+                                     23 	.globl _bcd
+                                     24 	.globl _buf
+                                     25 ;--------------------------------------------------------
+                                     26 ; special function registers
+                                     27 ;--------------------------------------------------------
+                         00000000    28 _GG_STATE	=	0x0000
+                         00000001    29 _GG_EXT_7BIT	=	0x0001
+                         00000002    30 _GG_EXT_CTL	=	0x0002
+                         00000003    31 _GG_SIO_SEND	=	0x0003
+                         00000004    32 _GG_SIO_RECV	=	0x0004
+                         00000005    33 _GG_SIO_CTL	=	0x0005
+                         00000006    34 _GG_SOUND_PAN	=	0x0006
+                         0000003E    35 _MEMORY_CTL	=	0x003e
+                         0000003F    36 _JOY_CTL	=	0x003f
+                         0000007E    37 _VCOUNTER	=	0x007e
+                         0000007F    38 _PSG	=	0x007f
+                         0000007F    39 _HCOUNTER	=	0x007f
+                         000000BE    40 _VDP_DATA	=	0x00be
+                         000000BF    41 _VDP_CMD	=	0x00bf
+                         000000BF    42 _VDP_STATUS	=	0x00bf
+                         000000DC    43 _JOY_PORT1	=	0x00dc
+                         000000DD    44 _JOY_PORT2	=	0x00dd
+                         000000F0    45 _FMADDRESS	=	0x00f0
+                         000000F1    46 _FMDATA	=	0x00f1
+                         000000F2    47 _AUDIOCTRL	=	0x00f2
+                                     48 ;--------------------------------------------------------
+                                     49 ; ram data
+                                     50 ;--------------------------------------------------------
+                                     51 	.area _DATA
+                         0000FFFC    52 _RAM_CONTROL	=	0xfffc
+                         0000FFF8    53 _GLASSES_3D	=	0xfff8
+                         0000FFFD    54 _MAP_FRAME0	=	0xfffd
+                         0000FFFE    55 _MAP_FRAME1	=	0xfffe
+                         0000FFFF    56 _MAP_FRAME2	=	0xffff
+    00000000                         57 _buf::
+    00000000                         58 	.ds 10
+                                     59 ;--------------------------------------------------------
+                                     60 ; ram data
+                                     61 ;--------------------------------------------------------
+                                     62 	.area _INITIALIZED
+    00000000                         63 _bcd::
+    00000000                         64 	.ds 4
+    00000004                         65 _bcd2::
+    00000004                         66 	.ds 4
+    00000008                         67 _bcd3::
+    00000008                         68 	.ds 4
+    0000000C                         69 _len::
+    0000000C                         70 	.ds 1
+                                     71 ;--------------------------------------------------------
+                                     72 ; absolute external ram data
+                                     73 ;--------------------------------------------------------
+                                     74 	.area _DABS (ABS)
+                                     75 ;--------------------------------------------------------
+                                     76 ; global & static initialisations
+                                     77 ;--------------------------------------------------------
+                                     78 	.area _HOME
+                                     79 	.area _GSINIT
+                                     80 	.area _GSFINAL
+                                     81 	.area _GSINIT
+                                     82 ;--------------------------------------------------------
+                                     83 ; Home
+                                     84 ;--------------------------------------------------------
+                                     85 	.area _HOME
+                                     86 	.area _HOME
+                                     87 ;--------------------------------------------------------
+                                     88 ; code
+                                     89 ;--------------------------------------------------------
+                                     90 	.area _CODE
+                                     91 ;src/bcd.c:15: void main(void) {
+                                     92 ;	---------------------------------
+                                     93 ; Function main
+                                     94 ; ---------------------------------
+    00000000                         95 _main::
+                                     96 ;src/bcd.c:16: font_init();
+    00000000 CDr00r00         [17]   97 	call	_font_init
+                                     98 ;src/bcd.c:17: font_set(font_load(font_spect));
+    00000003 21r00r00         [10]   99 	ld	hl, #_font_spect
+    00000006 E5               [11]  100 	push	hl
+    00000007 CDr00r00         [17]  101 	call	_font_load
+    0000000A E3               [19]  102 	ex	(sp),hl
+    0000000B CDr00r00         [17]  103 	call	_font_set
+                                    104 ;src/bcd.c:19: len = bcd2text(&bcd, 0x10, buf);
+    0000000E 21r00r00         [10]  105 	ld	hl, #_buf
+    00000011 E3               [19]  106 	ex	(sp),hl
+    00000012 3E 10            [ 7]  107 	ld	a, #0x10
+    00000014 F5               [11]  108 	push	af
+    00000015 33               [ 6]  109 	inc	sp
+    00000016 21r00r00         [10]  110 	ld	hl, #_bcd
+    00000019 CDr00r00         [17]  111 	call	_bcd2text
+    0000001C 32r0Cr00         [13]  112 	ld	(_len+0), a
+                                    113 ;src/bcd.c:20: set_bkg_tiles(5, 5, len, 1, buf);
+    0000001F 21r00r00         [10]  114 	ld	hl, #_buf
+    00000022 E5               [11]  115 	push	hl
+    00000023 3E 01            [ 7]  116 	ld	a, #0x01
+    00000025 F5               [11]  117 	push	af
+    00000026 33               [ 6]  118 	inc	sp
+    00000027 3Ar0Cr00         [13]  119 	ld	a, (_len+0)
+    0000002A 67               [ 4]  120 	ld	h, a
+    0000002B 2E 05            [ 7]  121 	ld	l, #0x05
+    0000002D E5               [11]  122 	push	hl
+    0000002E 3E 05            [ 7]  123 	ld	a, #0x05
+    00000030 F5               [11]  124 	push	af
+    00000031 33               [ 6]  125 	inc	sp
+    00000032 CDr00r00         [17]  126 	call	_set_tile_map_compat
+                                    127 ;src/bcd.c:22: bcd_add(&bcd, &bcd2);
+    00000035 11r04r00         [10]  128 	ld	de, #_bcd2
+    00000038 21r00r00         [10]  129 	ld	hl, #_bcd
+    0000003B CDr00r00         [17]  130 	call	_bcd_add
+                                    131 ;src/bcd.c:24: len = bcd2text(&bcd, 0x10, buf);
+    0000003E 21r00r00         [10]  132 	ld	hl, #_buf
+    00000041 E5               [11]  133 	push	hl
+    00000042 3E 10            [ 7]  134 	ld	a, #0x10
+    00000044 F5               [11]  135 	push	af
+    00000045 33               [ 6]  136 	inc	sp
+    00000046 21r00r00         [10]  137 	ld	hl, #_bcd
+    00000049 CDr00r00         [17]  138 	call	_bcd2text
+    0000004C 32r0Cr00         [13]  139 	ld	(_len+0), a
+                                    140 ;src/bcd.c:25: set_bkg_tiles(5, 6, len, 1, buf);
+    0000004F 21r00r00         [10]  141 	ld	hl, #_buf
+    00000052 E5               [11]  142 	push	hl
+    00000053 3E 01            [ 7]  143 	ld	a, #0x01
+    00000055 F5               [11]  144 	push	af
+    00000056 33               [ 6]  145 	inc	sp
+    00000057 3Ar0Cr00         [13]  146 	ld	a, (_len+0)
+    0000005A 67               [ 4]  147 	ld	h, a
+    0000005B 2E 06            [ 7]  148 	ld	l, #0x06
+    0000005D E5               [11]  149 	push	hl
+    0000005E 3E 05            [ 7]  150 	ld	a, #0x05
+    00000060 F5               [11]  151 	push	af
+    00000061 33               [ 6]  152 	inc	sp
+    00000062 CDr00r00         [17]  153 	call	_set_tile_map_compat
+                                    154 ;src/bcd.c:27: bcd_sub(&bcd, &bcd3);
+    00000065 11r08r00         [10]  155 	ld	de, #_bcd3
+    00000068 21r00r00         [10]  156 	ld	hl, #_bcd
+    0000006B CDr00r00         [17]  157 	call	_bcd_sub
+                                    158 ;src/bcd.c:29: len = bcd2text(&bcd, 0x10, buf);
+    0000006E 21r00r00         [10]  159 	ld	hl, #_buf
+    00000071 E5               [11]  160 	push	hl
+    00000072 3E 10            [ 7]  161 	ld	a, #0x10
+    00000074 F5               [11]  162 	push	af
+    00000075 33               [ 6]  163 	inc	sp
+    00000076 21r00r00         [10]  164 	ld	hl, #_bcd
+    00000079 CDr00r00         [17]  165 	call	_bcd2text
+    0000007C 32r0Cr00         [13]  166 	ld	(_len+0), a
+                                    167 ;src/bcd.c:30: set_bkg_tiles(5, 7, len, 1, buf);
+    0000007F 21r00r00         [10]  168 	ld	hl, #_buf
+    00000082 E5               [11]  169 	push	hl
+    00000083 3E 01            [ 7]  170 	ld	a, #0x01
+    00000085 F5               [11]  171 	push	af
+    00000086 33               [ 6]  172 	inc	sp
+    00000087 3Ar0Cr00         [13]  173 	ld	a, (_len+0)
+    0000008A 67               [ 4]  174 	ld	h, a
+    0000008B 2E 07            [ 7]  175 	ld	l, #0x07
+    0000008D E5               [11]  176 	push	hl
+    0000008E 3E 05            [ 7]  177 	ld	a, #0x05
+    00000090 F5               [11]  178 	push	af
+    00000091 33               [ 6]  179 	inc	sp
+    00000092 CDr00r00         [17]  180 	call	_set_tile_map_compat
+                                    181 ;src/bcd.c:32: uint2bcd(12345, &bcd);
+    00000095 11r00r00         [10]  182 	ld	de, #_bcd
+    00000098 21 39 30         [10]  183 	ld	hl, #0x3039
+    0000009B CDr00r00         [17]  184 	call	_uint2bcd
+                                    185 ;src/bcd.c:34: len = bcd2text(&bcd, 0x10, buf);
+    0000009E 21r00r00         [10]  186 	ld	hl, #_buf
+    000000A1 E5               [11]  187 	push	hl
+    000000A2 3E 10            [ 7]  188 	ld	a, #0x10
+    000000A4 F5               [11]  189 	push	af
+    000000A5 33               [ 6]  190 	inc	sp
+    000000A6 21r00r00         [10]  191 	ld	hl, #_bcd
+    000000A9 CDr00r00         [17]  192 	call	_bcd2text
+    000000AC 32r0Cr00         [13]  193 	ld	(_len+0), a
+                                    194 ;src/bcd.c:35: set_bkg_tiles(5, 8, len, 1, buf);
+    000000AF 21r00r00         [10]  195 	ld	hl, #_buf
+    000000B2 E5               [11]  196 	push	hl
+    000000B3 3E 01            [ 7]  197 	ld	a, #0x01
+    000000B5 F5               [11]  198 	push	af
+    000000B6 33               [ 6]  199 	inc	sp
+    000000B7 3Ar0Cr00         [13]  200 	ld	a, (_len+0)
+    000000BA 67               [ 4]  201 	ld	h, a
+    000000BB 2E 08            [ 7]  202 	ld	l, #0x08
+    000000BD E5               [11]  203 	push	hl
+    000000BE 3E 05            [ 7]  204 	ld	a, #0x05
+    000000C0 F5               [11]  205 	push	af
+    000000C1 33               [ 6]  206 	inc	sp
+    000000C2 CDr00r00         [17]  207 	call	_set_tile_map_compat
+                                    208 ;src/bcd.c:36: }
+    000000C5 C9               [10]  209 	ret
+                                    210 	.area _CODE
+                                    211 	.area _INITIALIZER
+    00000000                        212 __xinit__bcd:
+    00000000 40 30 20 10            213 	.byte #0x40, #0x30, #0x20, #0x10	; 270544960
+    00000004                        214 __xinit__bcd2:
+    00000004 08 07 06 05            215 	.byte #0x08, #0x07, #0x06, #0x05	; 84281096
+    00000008                        216 __xinit__bcd3:
+    00000008 11 11 11 11            217 	.byte #0x11, #0x11, #0x11, #0x11	; 286331153
+    0000000C                        218 __xinit__len:
+    0000000C 00                     219 	.db #0x00	; 0
+                                    220 	.area _CABS (ABS)

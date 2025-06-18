@@ -1,0 +1,31 @@
+XL4
+H C areas B global symbols
+M bank_ba0_bo0
+O -mmos6502
+S _PPUMASK Def00002001
+S _PPUCTRL Def00002000
+S _OAMDMA Def00004014
+S _OAMDATA Def00002004
+S _OAMADDR Def00002003
+S .__.ABS. Def00000000
+S _PPUSCROLL Def00002005
+S _PPUDATA Def00002007
+S _PPUADDR Def00002006
+S _PPUSTATUS Def00002002
+A _CODE size 0 flags 0 addr 0
+A _ZP size 0 flags 10 addr 0
+A _OSEG size 0 flags 14 addr 0
+A _HOME size 0 flags 0 addr 0
+A _GSINIT size 0 flags 0 addr 0
+A _GSFINAL size 0 flags 0 addr 0
+A _XINIT size 0 flags 0 addr 0
+A _DATA size 0 flags 0 addr 0
+A _BSS size 2 flags 0 addr 0
+S _var_0 Def00000000
+A _DABS size 0 flags 8 addr 0
+A _CODE_0 size 0 flags 0 addr 0
+A _CABS size 0 flags 8 addr 0
+T 00 00 00 00
+R 00 00 08 00
+T 00 00 00 00
+R 00 00 08 00

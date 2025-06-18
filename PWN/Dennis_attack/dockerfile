@@ -1,0 +1,33 @@
+FROM debian:bookworm
+RUN echo 'deb http://deb.debian.org/debian bookworm-backports main' > /etc/apt/sources.list.d/backports.list
+
+ENV TIMEZONE=Europe/Paris
+
+# le rm-rf permet de rendre plus léger le container
+RUN apt-get update && apt-get install -y ncat gcc gdb make gcc-multilib grep procps libc6-dev-i386 && rm -rf /var/lib/apt/lists/*
+
+ARG WDIR="/chall/"
+
+COPY ./spoil/passwords.txt ${WDIR}passwords.txt
+COPY ./spoil/flag.txt ${WDIR}flag.txt
+COPY ./spoil/database ${WDIR}database
+COPY ./spoil/main ${WDIR}main
+WORKDIR ${WDIR}
+
+RUN useradd --home=/dennis -U dennis
+
+RUN chmod 505 ${WDIR}database
+RUN chmod 505 ${WDIR}main
+RUN chmod 664 ${WDIR}passwords.txt
+RUN chmod 664 ${WDIR}flag.txt
+RUN chown dennis:dennis ${WDIR}
+RUN chown dennis:dennis ${WDIR}database
+RUN chown dennis:dennis ${WDIR}main
+RUN chown dennis:dennis ${WDIR}passwords.txt
+RUN chown dennis:dennis ${WDIR}flag.txt
+# RUN ls -al & sleep 10
+
+USER dennis
+
+CMD ["sh", "-c", "ncat -l 4004 -k -c \"./database 2>/dev/null 1>/dev/null & ./main\""]
+# CMD ["sh", "-c", "ncat -l 4004 -k -c \"./main\""]

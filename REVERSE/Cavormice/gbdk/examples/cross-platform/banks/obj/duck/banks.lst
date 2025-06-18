@@ -1,0 +1,211 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module banks
+                                      6 	.optsdcc -msm83
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _main
+                                     12 	.globl _bank_fixed
+                                     13 	.globl b_bank_3
+                                     14 	.globl _bank_3
+                                     15 	.globl b_bank_2
+                                     16 	.globl _bank_2
+                                     17 	.globl b_bank_1
+                                     18 	.globl _bank_1
+                                     19 	.globl _puts
+                                     20 	.globl _printf
+                                     21 	.globl _var_internal
+                                     22 ;--------------------------------------------------------
+                                     23 ; special function registers
+                                     24 ;--------------------------------------------------------
+                                     25 ;--------------------------------------------------------
+                                     26 ; ram data
+                                     27 ;--------------------------------------------------------
+                                     28 	.area _DATA
+    00000000                         29 _var_internal::
+    00000000                         30 	.ds 2
+                                     31 ;--------------------------------------------------------
+                                     32 ; ram data
+                                     33 ;--------------------------------------------------------
+                                     34 	.area _INITIALIZED
+                                     35 ;--------------------------------------------------------
+                                     36 ; absolute external ram data
+                                     37 ;--------------------------------------------------------
+                                     38 	.area _DABS (ABS)
+                                     39 ;--------------------------------------------------------
+                                     40 ; global & static initialisations
+                                     41 ;--------------------------------------------------------
+                                     42 	.area _HOME
+                                     43 	.area _GSINIT
+                                     44 	.area _GSFINAL
+                                     45 	.area _GSINIT
+                                     46 ;--------------------------------------------------------
+                                     47 ; Home
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _HOME
+                                     50 ;src/banks.c:18: void bank_fixed(void) NONBANKED
+                                     51 ;	---------------------------------
+                                     52 ; Function bank_fixed
+                                     53 ; ---------------------------------
+    00000000                         54 _bank_fixed::
+                                     55 ;src/banks.c:20: puts("I'm in fixed ROM");
+    00000000 11r06r00         [12]   56 	ld	de, #___str_0
+                                     57 ;src/banks.c:21: }
+    00000003 C3r00r00         [16]   58 	jp	_puts
+    00000006                         59 ___str_0:
+    00000006 49 27 6D 20 69 6E 20    60 	.ascii "I'm in fixed ROM"
+             66 69 78 65 64 20 52
+             4F 4D
+    00000016 00                      61 	.db 0x00
+                                     62 	.area _HOME
+                                     63 ;--------------------------------------------------------
+                                     64 ; code
+                                     65 ;--------------------------------------------------------
+                                     66 	.area _CODE
+                                     67 ;src/banks.c:23: void main(void)
+                                     68 ;	---------------------------------
+                                     69 ; Function main
+                                     70 ; ---------------------------------
+    00000000                         71 _main::
+                                     72 ;src/banks.c:25: puts("Program Start...");
+    00000000 11r9Fr00         [12]   73 	ld	de, #___str_1
+    00000003 CDr00r00         [24]   74 	call	_puts
+                                     75 ;src/banks.c:29: var_internal = 1;
+    00000006 21r00r00         [12]   76 	ld	hl, #_var_internal
+    00000009 3E 01            [ 8]   77 	ld	a, #0x01
+    0000000B 22               [ 8]   78 	ld	(hl+), a
+    0000000C AF               [ 4]   79 	xor	a, a
+    0000000D 77               [ 8]   80 	ld	(hl), a
+                                     81 ;src/banks.c:31: var_0 = 2;
+    0000000E 21r00r00         [12]   82 	ld	hl, #_var_0
+    00000011 3E 02            [ 8]   83 	ld	a, #0x02
+    00000013 22               [ 8]   84 	ld	(hl+), a
+    00000014 AF               [ 4]   85 	xor	a, a
+    00000015 77               [ 8]   86 	ld	(hl), a
+                                     87 ;src/banks.c:33: var_1 = 3;
+    00000016 21r00r00         [12]   88 	ld	hl, #_var_1
+    00000019 3E 03            [ 8]   89 	ld	a, #0x03
+    0000001B 22               [ 8]   90 	ld	(hl+), a
+    0000001C AF               [ 4]   91 	xor	a, a
+    0000001D 77               [ 8]   92 	ld	(hl), a
+                                     93 ;src/banks.c:35: var_2 = 4;
+    0000001E 21r00r00         [12]   94 	ld	hl, #_var_2
+    00000021 3E 04            [ 8]   95 	ld	a, #0x04
+    00000023 22               [ 8]   96 	ld	(hl+), a
+    00000024 AF               [ 4]   97 	xor	a, a
+    00000025 77               [ 8]   98 	ld	(hl), a
+                                     99 ;src/banks.c:37: var_3 = 5;
+    00000026 21r00r00         [12]  100 	ld	hl, #_var_3
+    00000029 3E 05            [ 8]  101 	ld	a, #0x05
+    0000002B 22               [ 8]  102 	ld	(hl+), a
+    0000002C AF               [ 4]  103 	xor	a, a
+    0000002D 77               [ 8]  104 	ld	(hl), a
+                                    105 ;src/banks.c:39: bank_fixed();
+    0000002E CDr00r00         [24]  106 	call	_bank_fixed
+                                    107 ;src/banks.c:40: bank_1();
+    00000031 1Er00            [ 8]  108 	ld	e, #b_bank_1
+    00000033 21r00r00         [12]  109 	ld	hl, #_bank_1
+    00000036 CDr00r00         [24]  110 	call	___sdcc_bcall_ehl
+                                    111 ;src/banks.c:41: bank_2();
+    00000039 1Er00            [ 8]  112 	ld	e, #b_bank_2
+    0000003B 21r00r00         [12]  113 	ld	hl, #_bank_2
+    0000003E CDr00r00         [24]  114 	call	___sdcc_bcall_ehl
+                                    115 ;src/banks.c:42: bank_3();
+    00000041 1Er00            [ 8]  116 	ld	e, #b_bank_3
+    00000043 21r00r00         [12]  117 	ld	hl, #_bank_3
+    00000046 CDr00r00         [24]  118 	call	___sdcc_bcall_ehl
+                                    119 ;src/banks.c:44: printf("Var is %u\n", var_internal);
+    00000049 21r00r00         [12]  120 	ld	hl, #_var_internal
+    0000004C 5E               [ 8]  121 	ld	e, (hl)
+    0000004D 23               [ 8]  122 	inc	hl
+    0000004E 56               [ 8]  123 	ld	d, (hl)
+    0000004F D5               [16]  124 	push	de
+    00000050 11rB0r00         [12]  125 	ld	de, #___str_2
+    00000053 D5               [16]  126 	push	de
+    00000054 CDr00r00         [24]  127 	call	_printf
+    00000057 E8 04            [16]  128 	add	sp, #4
+                                    129 ;src/banks.c:46: printf("Var_0 is %u\n", var_0);
+    00000059 21r00r00         [12]  130 	ld	hl, #_var_0
+    0000005C 5E               [ 8]  131 	ld	e, (hl)
+    0000005D 23               [ 8]  132 	inc	hl
+    0000005E 56               [ 8]  133 	ld	d, (hl)
+    0000005F D5               [16]  134 	push	de
+    00000060 11rBBr00         [12]  135 	ld	de, #___str_3
+    00000063 D5               [16]  136 	push	de
+    00000064 CDr00r00         [24]  137 	call	_printf
+    00000067 E8 04            [16]  138 	add	sp, #4
+                                    139 ;src/banks.c:48: printf("Var_1 is %u\n", var_1);
+    00000069 21r00r00         [12]  140 	ld	hl, #_var_1
+    0000006C 5E               [ 8]  141 	ld	e, (hl)
+    0000006D 23               [ 8]  142 	inc	hl
+    0000006E 56               [ 8]  143 	ld	d, (hl)
+    0000006F D5               [16]  144 	push	de
+    00000070 11rC8r00         [12]  145 	ld	de, #___str_4
+    00000073 D5               [16]  146 	push	de
+    00000074 CDr00r00         [24]  147 	call	_printf
+    00000077 E8 04            [16]  148 	add	sp, #4
+                                    149 ;src/banks.c:50: printf("Var_2 is %u\n", var_2);
+    00000079 21r00r00         [12]  150 	ld	hl, #_var_2
+    0000007C 5E               [ 8]  151 	ld	e, (hl)
+    0000007D 23               [ 8]  152 	inc	hl
+    0000007E 56               [ 8]  153 	ld	d, (hl)
+    0000007F D5               [16]  154 	push	de
+    00000080 11rD5r00         [12]  155 	ld	de, #___str_5
+    00000083 D5               [16]  156 	push	de
+    00000084 CDr00r00         [24]  157 	call	_printf
+    00000087 E8 04            [16]  158 	add	sp, #4
+                                    159 ;src/banks.c:52: printf("Var_3 is %u\n", var_3);
+    00000089 21r00r00         [12]  160 	ld	hl, #_var_3
+    0000008C 5E               [ 8]  161 	ld	e, (hl)
+    0000008D 23               [ 8]  162 	inc	hl
+    0000008E 56               [ 8]  163 	ld	d, (hl)
+    0000008F D5               [16]  164 	push	de
+    00000090 11rE2r00         [12]  165 	ld	de, #___str_6
+    00000093 D5               [16]  166 	push	de
+    00000094 CDr00r00         [24]  167 	call	_printf
+    00000097 E8 04            [16]  168 	add	sp, #4
+                                    169 ;src/banks.c:54: puts("The End...");
+    00000099 11rEFr00         [12]  170 	ld	de, #___str_7
+                                    171 ;src/banks.c:55: }
+    0000009C C3r00r00         [16]  172 	jp	_puts
+    0000009F                        173 ___str_1:
+    0000009F 50 72 6F 67 72 61 6D   174 	.ascii "Program Start..."
+             20 53 74 61 72 74 2E
+             2E 2E
+    000000AF 00                     175 	.db 0x00
+    000000B0                        176 ___str_2:
+    000000B0 56 61 72 20 69 73 20   177 	.ascii "Var is %u"
+             25 75
+    000000B9 0A                     178 	.db 0x0a
+    000000BA 00                     179 	.db 0x00
+    000000BB                        180 ___str_3:
+    000000BB 56 61 72 5F 30 20 69   181 	.ascii "Var_0 is %u"
+             73 20 25 75
+    000000C6 0A                     182 	.db 0x0a
+    000000C7 00                     183 	.db 0x00
+    000000C8                        184 ___str_4:
+    000000C8 56 61 72 5F 31 20 69   185 	.ascii "Var_1 is %u"
+             73 20 25 75
+    000000D3 0A                     186 	.db 0x0a
+    000000D4 00                     187 	.db 0x00
+    000000D5                        188 ___str_5:
+    000000D5 56 61 72 5F 32 20 69   189 	.ascii "Var_2 is %u"
+             73 20 25 75
+    000000E0 0A                     190 	.db 0x0a
+    000000E1 00                     191 	.db 0x00
+    000000E2                        192 ___str_6:
+    000000E2 56 61 72 5F 33 20 69   193 	.ascii "Var_3 is %u"
+             73 20 25 75
+    000000ED 0A                     194 	.db 0x0a
+    000000EE 00                     195 	.db 0x00
+    000000EF                        196 ___str_7:
+    000000EF 54 68 65 20 45 6E 64   197 	.ascii "The End..."
+             2E 2E 2E
+    000000F9 00                     198 	.db 0x00
+                                    199 	.area _CODE
+                                    200 	.area _INITIALIZER
+                                    201 	.area _CABS (ABS)

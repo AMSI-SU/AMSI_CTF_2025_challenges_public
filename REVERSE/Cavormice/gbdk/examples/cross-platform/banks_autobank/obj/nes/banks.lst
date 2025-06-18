@@ -1,0 +1,347 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module banks
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl _some_const_var_0
+                                     23 	.globl _main
+                                     24 	.globl _bank_fixed
+                                     25 	.globl b_func_4
+                                     26 	.globl _func_4
+                                     27 	.globl b_func_3
+                                     28 	.globl _func_3
+                                     29 	.globl b_func_2
+                                     30 	.globl _func_2
+                                     31 	.globl b_func_1
+                                     32 	.globl _func_1
+                                     33 	.globl _puts
+                                     34 	.globl _printf
+                                     35 	.globl __switch_prg0
+                                     36 	.globl _vsync
+                                     37 	.globl _OAMDMA
+                                     38 	.globl _PPUDATA
+                                     39 	.globl _PPUADDR
+                                     40 	.globl _PPUSCROLL
+                                     41 	.globl _OAMDATA
+                                     42 	.globl _OAMADDR
+                                     43 	.globl _PPUSTATUS
+                                     44 	.globl _PPUMASK
+                                     45 	.globl _PPUCTRL
+                                     46 ;--------------------------------------------------------
+                                     47 ; ZP ram data
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _ZP      (PAG)
+    00000000                         50 _main_sloc0_1_0:
+    00000000                         51 	.ds 2
+                                     52 ;--------------------------------------------------------
+                                     53 ; overlayable items in ram
+                                     54 ;--------------------------------------------------------
+                                     55 ;--------------------------------------------------------
+                                     56 ; uninitialized external ram data
+                                     57 ;--------------------------------------------------------
+                                     58 	.area _BSS
+                         00002000    59 _PPUCTRL	=	0x2000
+                         00002001    60 _PPUMASK	=	0x2001
+                         00002002    61 _PPUSTATUS	=	0x2002
+                         00002003    62 _OAMADDR	=	0x2003
+                         00002004    63 _OAMDATA	=	0x2004
+                         00002005    64 _PPUSCROLL	=	0x2005
+                         00002006    65 _PPUADDR	=	0x2006
+                         00002007    66 _PPUDATA	=	0x2007
+                         00004014    67 _OAMDMA	=	0x4014
+    00000000                         68 _main__saved_bank_10000_101:
+    00000000                         69 	.ds 1
+                                     70 ;--------------------------------------------------------
+                                     71 ; absolute external ram data
+                                     72 ;--------------------------------------------------------
+                                     73 	.area _DABS    (ABS)
+                                     74 ;--------------------------------------------------------
+                                     75 ; initialized external ram data
+                                     76 ;--------------------------------------------------------
+                                     77 	.area _DATA
+                                     78 ;--------------------------------------------------------
+                                     79 ; global & static initialisations
+                                     80 ;--------------------------------------------------------
+                                     81 	.area _HOME
+                                     82 	.area _GSINIT
+                                     83 	.area _GSFINAL
+                                     84 	.area _GSINIT
+                                     85 ;--------------------------------------------------------
+                                     86 ; Home
+                                     87 ;--------------------------------------------------------
+                                     88 	.area _HOME
+                                     89 ;	src/banks.c: 17: void bank_fixed(void) NONBANKED
+                                     90 ;	-----------------------------------------
+                                     91 ;	 function bank_fixed
+                                     92 ;	-----------------------------------------
+                                     93 ;	Register assignment is optimal.
+                                     94 ;	Stack space usage: 0 bytes.
+    00000000                         95 _bank_fixed:
+                                     96 ;	src/banks.c: 19: puts("I'm in fixed ROM");
+    00000000 A2s00            [ 2]   97 	ldx	#>___str_0
+    00000002 A9rFC            [ 2]   98 	lda	#___str_0
+                                     99 ;	src/banks.c: 20: }
+    00000004 4Cr00r00         [ 3]  100 	jmp	_puts
+                                    101 	.area _HOME
+                                    102 ;--------------------------------------------------------
+                                    103 ; code
+                                    104 ;--------------------------------------------------------
+                                    105 	.area _CODE
+                                    106 ;------------------------------------------------------------
+                                    107 ;Allocation info for local variables in function 'bank_fixed'
+                                    108 ;------------------------------------------------------------
+                                    109 ;------------------------------------------------------------
+                                    110 ;Allocation info for local variables in function 'main'
+                                    111 ;------------------------------------------------------------
+                                    112 ;sloc0                     Allocated with name '_main_sloc0_1_0'
+                                    113 ;_saved_bank               Allocated with name '_main__saved_bank_10000_101'
+                                    114 ;------------------------------------------------------------
+                                    115 ;	src/banks.c: 22: void main(void)
+                                    116 ;	-----------------------------------------
+                                    117 ;	 function main
+                                    118 ;	-----------------------------------------
+                                    119 ;	Register assignment is optimal.
+                                    120 ;	Stack space usage: 0 bytes.
+    00000000                        121 _main:
+                                    122 ;	src/banks.c: 29: printf("Program Start...\n\n");
+    00000000 A9s01            [ 2]  123 	lda	#>___str_1
+    00000002 48               [ 3]  124 	pha
+    00000003 A9r0D            [ 2]  125 	lda	#___str_1
+    00000005 48               [ 3]  126 	pha
+    00000006 20r00r00         [ 6]  127 	jsr	_printf
+    00000009 68               [ 4]  128 	pla
+    0000000A 68               [ 4]  129 	pla
+                                    130 ;	src/banks.c: 32: bank_fixed();
+    0000000B 20r00r00         [ 6]  131 	jsr	_bank_fixed
+                                    132 ;	src/banks.c: 34: func_1();
+    0000000E 20r00r00         [ 6]  133 	jsr	___sdcc_bcall
+    00000011r00                     134 	.db	b_func_1
+    00000012rFFrFF                  135 	.dw 	_func_1-1
+                                    136 ;	src/banks.c: 35: func_2();
+    00000014 20r00r00         [ 6]  137 	jsr	___sdcc_bcall
+    00000017r00                     138 	.db	b_func_2
+    00000018rFFrFF                  139 	.dw 	_func_2-1
+                                    140 ;	src/banks.c: 36: func_3();
+    0000001A 20r00r00         [ 6]  141 	jsr	___sdcc_bcall
+    0000001Dr00                     142 	.db	b_func_3
+    0000001ErFFrFF                  143 	.dw 	_func_3-1
+                                    144 ;	src/banks.c: 37: func_4();
+    00000020 20r00r00         [ 6]  145 	jsr	___sdcc_bcall
+    00000023r00                     146 	.db	b_func_4
+    00000024rFFrFF                  147 	.dw 	_func_4-1
+                                    148 ;	src/banks.c: 39: printf("\n");
+    00000026 A9s01            [ 2]  149 	lda	#>___str_2
+    00000028 48               [ 3]  150 	pha
+    00000029 A9r20            [ 2]  151 	lda	#___str_2
+    0000002B 48               [ 3]  152 	pha
+    0000002C 20r00r00         [ 6]  153 	jsr	_printf
+    0000002F 68               [ 4]  154 	pla
+    00000030 68               [ 4]  155 	pla
+                                    156 ;	src/banks.c: 43: printf("Const0= %u nonbanked\n", some_const_var_0);
+    00000031 A9 00            [ 2]  157 	lda	#0x00
+    00000033 48               [ 3]  158 	pha
+    00000034 48               [ 3]  159 	pha
+    00000035 A9s01            [ 2]  160 	lda	#>___str_3
+    00000037 48               [ 3]  161 	pha
+    00000038 A9r22            [ 2]  162 	lda	#___str_3
+    0000003A 48               [ 3]  163 	pha
+    0000003B 20r00r00         [ 6]  164 	jsr	_printf
+    0000003E 68               [ 4]  165 	pla
+    0000003F 68               [ 4]  166 	pla
+    00000040 68               [ 4]  167 	pla
+    00000041 68               [ 4]  168 	pla
+                                    169 ;	src/banks.c: 45: SWITCH_ROM(BANK(some_const_var_1));
+    00000042 A9r00            [ 2]  170 	lda	#___bank_some_const_var_1
+    00000044 20r00r00         [ 6]  171 	jsr	__switch_prg0
+                                    172 ;	src/banks.c: 46: printf("Const1= %u in bank %hu\n", some_const_var_1, BANK(some_const_var_1));
+    00000047 A9r00            [ 2]  173 	lda	#___bank_some_const_var_1
+    00000049 AEr00r00         [ 4]  174 	ldx	_some_const_var_1
+    0000004C 86*00            [ 3]  175 	stx	*_main_sloc0_1_0
+    0000004E A2 00            [ 2]  176 	ldx	#0x00
+    00000050 86*01            [ 3]  177 	stx	*(_main_sloc0_1_0 + 1)
+    00000052 48               [ 3]  178 	pha
+    00000053 A5*01            [ 3]  179 	lda	*(_main_sloc0_1_0 + 1)
+    00000055 48               [ 3]  180 	pha
+    00000056 A5*00            [ 3]  181 	lda	*_main_sloc0_1_0
+    00000058 48               [ 3]  182 	pha
+    00000059 A9s01            [ 2]  183 	lda	#>___str_4
+    0000005B 48               [ 3]  184 	pha
+    0000005C A9r38            [ 2]  185 	lda	#___str_4
+    0000005E 48               [ 3]  186 	pha
+    0000005F 20r00r00         [ 6]  187 	jsr	_printf
+    00000062 68               [ 4]  188 	pla
+    00000063 68               [ 4]  189 	pla
+    00000064 68               [ 4]  190 	pla
+    00000065 68               [ 4]  191 	pla
+    00000066 68               [ 4]  192 	pla
+                                    193 ;	src/banks.c: 47: SWITCH_ROM(BANK(some_const_var_2));
+    00000067 A9r00            [ 2]  194 	lda	#___bank_some_const_var_2
+    00000069 20r00r00         [ 6]  195 	jsr	__switch_prg0
+                                    196 ;	src/banks.c: 48: printf("Const2= %u in bank %hu\n", some_const_var_2, BANK(some_const_var_2));
+    0000006C A9r00            [ 2]  197 	lda	#___bank_some_const_var_2
+    0000006E AEr00r00         [ 4]  198 	ldx	_some_const_var_2
+    00000071 86*00            [ 3]  199 	stx	*_main_sloc0_1_0
+    00000073 A2 00            [ 2]  200 	ldx	#0x00
+    00000075 86*01            [ 3]  201 	stx	*(_main_sloc0_1_0 + 1)
+    00000077 48               [ 3]  202 	pha
+    00000078 A5*01            [ 3]  203 	lda	*(_main_sloc0_1_0 + 1)
+    0000007A 48               [ 3]  204 	pha
+    0000007B A5*00            [ 3]  205 	lda	*_main_sloc0_1_0
+    0000007D 48               [ 3]  206 	pha
+    0000007E A9s01            [ 2]  207 	lda	#>___str_5
+    00000080 48               [ 3]  208 	pha
+    00000081 A9r50            [ 2]  209 	lda	#___str_5
+    00000083 48               [ 3]  210 	pha
+    00000084 20r00r00         [ 6]  211 	jsr	_printf
+    00000087 68               [ 4]  212 	pla
+    00000088 68               [ 4]  213 	pla
+    00000089 68               [ 4]  214 	pla
+    0000008A 68               [ 4]  215 	pla
+    0000008B 68               [ 4]  216 	pla
+                                    217 ;	src/banks.c: 49: SWITCH_ROM(BANK(some_const_var_3));
+    0000008C A9r00            [ 2]  218 	lda	#___bank_some_const_var_3
+    0000008E 20r00r00         [ 6]  219 	jsr	__switch_prg0
+                                    220 ;	src/banks.c: 50: printf("Const3= %u in bank %hu\n", some_const_var_3, BANK(some_const_var_3));
+    00000091 A9r00            [ 2]  221 	lda	#___bank_some_const_var_3
+    00000093 AEr00r00         [ 4]  222 	ldx	_some_const_var_3
+    00000096 86*00            [ 3]  223 	stx	*_main_sloc0_1_0
+    00000098 A2 00            [ 2]  224 	ldx	#0x00
+    0000009A 86*01            [ 3]  225 	stx	*(_main_sloc0_1_0 + 1)
+    0000009C 48               [ 3]  226 	pha
+    0000009D A5*01            [ 3]  227 	lda	*(_main_sloc0_1_0 + 1)
+    0000009F 48               [ 3]  228 	pha
+    000000A0 A5*00            [ 3]  229 	lda	*_main_sloc0_1_0
+    000000A2 48               [ 3]  230 	pha
+    000000A3 A9s01            [ 2]  231 	lda	#>___str_6
+    000000A5 48               [ 3]  232 	pha
+    000000A6 A9r68            [ 2]  233 	lda	#___str_6
+    000000A8 48               [ 3]  234 	pha
+    000000A9 20r00r00         [ 6]  235 	jsr	_printf
+    000000AC 68               [ 4]  236 	pla
+    000000AD 68               [ 4]  237 	pla
+    000000AE 68               [ 4]  238 	pla
+    000000AF 68               [ 4]  239 	pla
+    000000B0 68               [ 4]  240 	pla
+                                    241 ;	src/banks.c: 56: _saved_bank = CURRENT_BANK;
+    000000B1 ADr00r00         [ 4]  242 	lda	__current_bank
+    000000B4 8Dr00r00         [ 4]  243 	sta	_main__saved_bank_10000_101
+                                    244 ;	src/banks.c: 59: SWITCH_ROM(BANK(some_const_var_4));
+    000000B7 A9r00            [ 2]  245 	lda	#___bank_some_const_var_4
+    000000B9 20r00r00         [ 6]  246 	jsr	__switch_prg0
+                                    247 ;	src/banks.c: 60: printf("Const4= %u in bank %hu\n", some_const_var_4, BANK(some_const_var_4));
+    000000BC A9r00            [ 2]  248 	lda	#___bank_some_const_var_4
+    000000BE AEr00r00         [ 4]  249 	ldx	_some_const_var_4
+    000000C1 86*00            [ 3]  250 	stx	*_main_sloc0_1_0
+    000000C3 A2 00            [ 2]  251 	ldx	#0x00
+    000000C5 86*01            [ 3]  252 	stx	*(_main_sloc0_1_0 + 1)
+    000000C7 48               [ 3]  253 	pha
+    000000C8 A5*01            [ 3]  254 	lda	*(_main_sloc0_1_0 + 1)
+    000000CA 48               [ 3]  255 	pha
+    000000CB A5*00            [ 3]  256 	lda	*_main_sloc0_1_0
+    000000CD 48               [ 3]  257 	pha
+    000000CE A9s01            [ 2]  258 	lda	#>___str_7
+    000000D0 48               [ 3]  259 	pha
+    000000D1 A9r80            [ 2]  260 	lda	#___str_7
+    000000D3 48               [ 3]  261 	pha
+    000000D4 20r00r00         [ 6]  262 	jsr	_printf
+    000000D7 68               [ 4]  263 	pla
+    000000D8 68               [ 4]  264 	pla
+    000000D9 68               [ 4]  265 	pla
+    000000DA 68               [ 4]  266 	pla
+    000000DB 68               [ 4]  267 	pla
+                                    268 ;	src/banks.c: 63: SWITCH_ROM(_saved_bank);
+    000000DC ADr00r00         [ 4]  269 	lda	_main__saved_bank_10000_101
+    000000DF 20r00r00         [ 6]  270 	jsr	__switch_prg0
+                                    271 ;	src/banks.c: 67: printf("\n");
+    000000E2 A9s01            [ 2]  272 	lda	#>___str_2
+    000000E4 48               [ 3]  273 	pha
+    000000E5 A9r20            [ 2]  274 	lda	#___str_2
+    000000E7 48               [ 3]  275 	pha
+    000000E8 20r00r00         [ 6]  276 	jsr	_printf
+    000000EB 68               [ 4]  277 	pla
+    000000EC 68               [ 4]  278 	pla
+                                    279 ;	src/banks.c: 68: puts("The End...");
+    000000ED A2s01            [ 2]  280 	ldx	#>___str_8
+    000000EF A9r98            [ 2]  281 	lda	#___str_8
+    000000F1 20r00r00         [ 6]  282 	jsr	_puts
+                                    283 ;	src/banks.c: 71: while(1) {
+    000000F4                        284 00102$:
+                                    285 ;	src/banks.c: 74: vsync();
+    000000F4 20r00r00         [ 6]  286 	jsr	_vsync
+    000000F7 4CrF4r00         [ 3]  287 	jmp	00102$
+                                    288 ;	src/banks.c: 76: }
+    000000FA 60               [ 6]  289 	rts
+                                    290 	.area _CODE
+    000000FB                        291 _some_const_var_0:
+    000000FB 00                     292 	.db #0x00	; 0
+    000000FC                        293 ___str_0:
+    000000FC 49 27 6D 20 69 6E 20   294 	.ascii "I'm in fixed ROM"
+             66 69 78 65 64 20 52
+             4F 4D
+    0000010C 00                     295 	.db 0x00
+    0000010D                        296 ___str_1:
+    0000010D 50 72 6F 67 72 61 6D   297 	.ascii "Program Start..."
+             20 53 74 61 72 74 2E
+             2E 2E
+    0000011D 0A                     298 	.db 0x0a
+    0000011E 0A                     299 	.db 0x0a
+    0000011F 00                     300 	.db 0x00
+    00000120                        301 ___str_2:
+    00000120 0A                     302 	.db 0x0a
+    00000121 00                     303 	.db 0x00
+    00000122                        304 ___str_3:
+    00000122 43 6F 6E 73 74 30 3D   305 	.ascii "Const0= %u nonbanked"
+             20 25 75 20 6E 6F 6E
+             62 61 6E 6B 65 64
+    00000136 0A                     306 	.db 0x0a
+    00000137 00                     307 	.db 0x00
+    00000138                        308 ___str_4:
+    00000138 43 6F 6E 73 74 31 3D   309 	.ascii "Const1= %u in bank %hu"
+             20 25 75 20 69 6E 20
+             62 61 6E 6B 20 25 68
+             75
+    0000014E 0A                     310 	.db 0x0a
+    0000014F 00                     311 	.db 0x00
+    00000150                        312 ___str_5:
+    00000150 43 6F 6E 73 74 32 3D   313 	.ascii "Const2= %u in bank %hu"
+             20 25 75 20 69 6E 20
+             62 61 6E 6B 20 25 68
+             75
+    00000166 0A                     314 	.db 0x0a
+    00000167 00                     315 	.db 0x00
+    00000168                        316 ___str_6:
+    00000168 43 6F 6E 73 74 33 3D   317 	.ascii "Const3= %u in bank %hu"
+             20 25 75 20 69 6E 20
+             62 61 6E 6B 20 25 68
+             75
+    0000017E 0A                     318 	.db 0x0a
+    0000017F 00                     319 	.db 0x00
+    00000180                        320 ___str_7:
+    00000180 43 6F 6E 73 74 34 3D   321 	.ascii "Const4= %u in bank %hu"
+             20 25 75 20 69 6E 20
+             62 61 6E 6B 20 25 68
+             75
+    00000196 0A                     322 	.db 0x0a
+    00000197 00                     323 	.db 0x00
+    00000198                        324 ___str_8:
+    00000198 54 68 65 20 45 6E 64   325 	.ascii "The End..."
+             2E 2E 2E
+    000001A2 00                     326 	.db 0x00
+                                    327 	.area _XINIT
+                                    328 	.area _CABS    (ABS)

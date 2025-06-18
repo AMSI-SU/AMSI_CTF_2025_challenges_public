@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>BDE 2019 | Connexion</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>🔥 Bienvenue sur le site officiel du BDE 2019 🔥</h1>
+  <marquee>Les vrais savent. Si t’étais là, t’étais là.</marquee>
+  <form method="POST" action="/login">
+    <input name="username" placeholder="pseudo IUT" required><br>
+    <input name="password" type="password" placeholder="mot de passe" required><br>
+    <button type="submit">Connexion</button>
+  </form>
+    {% if error %}
+  <p style="color: red;">{{ error }}</p>
+  {% endif %}
+  <p><a href="/forgot">Mot de passe oublié ?</a></p>
+</body>
+</html>

@@ -1,0 +1,51 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+  0 _PRN_PKT_CANCEL                                                 0000002C R
+  0 _PRN_PKT_EOF                                                    00000022 R
+  0 _PRN_PKT_INIT                                                   0000000E R
+  2 _PRN_PKT_START                                                  00000000 GR
+  0 _PRN_PKT_STATUS                                                 00000018 R
+    _SB_REG                                                         ******** GX
+    _SC_REG                                                         ******** GX
+    __muluchar                                                      ******** GX
+  7 __xinit__PRN_PKT_START                                          00000000 R
+  0 _gbprinter_detect                                               00000147 GR
+  0 _gbprinter_print_image                                          00000161 GR
+  1 _gbprinter_print_image_error_10000_177                          00000007 R
+  1 _gbprinter_print_image_img_10000_177                            00000005 R
+    _memcpy                                                         ******** GX
+    _memset                                                         ******** GX
+    _printer_check_cancel                                           ******** GX
+  0 _printer_print_tile                                             0000006C GR
+  0 _printer_print_tile_PRINT_TILE_10000_158                        000000F7 R
+  1 _printer_print_tile_printer_CRC_10000_158                       00000003 R
+  0 _printer_send_byte                                              00000036 GR
+  0 _printer_send_command                                           00000049 GR
+  0 _printer_send_receive                                           00000000 GR
+  1 _printer_status                                                 00000000 R
+  1 _printer_tile_num                                               00000002 R
+  0 _printer_wait                                                   000000FD GR
+    _vsync                                                          ******** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (GameBoy)                  Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      3DA   flags    0
+   1 _DATA                                      size        8   flags    0
+   2 _INITIALIZED                               size        E   flags    0
+   3 _DABS                                      size        0   flags    8
+   4 _HOME                                      size        0   flags    0
+   5 _GSINIT                                    size        0   flags    0
+   6 _GSFINAL                                   size        0   flags    0
+   7 _INITIALIZER                               size        E   flags    0
+   8 _CABS                                      size        0   flags    8
+

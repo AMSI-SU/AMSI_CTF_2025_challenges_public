@@ -1,0 +1,76 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _NextLevel_map                                                  ******** GX
+    _NextLevel_palettes                                             ******** GX
+    _NextLevel_tiles                                                ******** GX
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+    _SetCurrentLevelSubmap                                          ******** GX
+    _SetCurrentLevelSubmap_PARM_3                                   ******** GX
+    _SetCurrentLevelSubmap_PARM_4                                   ******** GX
+    _SetupCurrentLevel                                              ******** GX
+    _SetupPlayer                                                    ******** GX
+    _ShowCentered                                                   ******** GX
+    _ShowCentered_PARM_3                                            ******** GX
+    _ShowCentered_PARM_4                                            ******** GX
+    _ShowCentered_PARM_5                                            ******** GX
+    _ShowCentered_PARM_6                                            ******** GX
+    _ShowCentered_PARM_7                                            ******** GX
+    _TitleScreen_map                                                ******** GX
+    _TitleScreen_palettes                                           ******** GX
+    _TitleScreen_tiles                                              ******** GX
+    _UpdateCamera                                                   ******** GX
+    _UpdatePlayer                                                   ******** GX
+    _WaitForStartOrA                                                ******** GX
+    ___bank_NextLevel                                               ******** GX
+    ___bank_TitleScreen                                             ******** GX
+    ___sdcc_bcall                                                   ******** GX
+    _camera_x                                                       ******** GX
+    _currentLevel                                                   ******** GX
+    _display_off                                                    ******** GX
+    _display_on                                                     ******** GX
+    _hide_sprites_range                                             ******** GX
+    _joypad                                                         ******** GX
+    _joypadCurrent                                                  ******** GX
+    _joypadPrevious                                                 ******** GX
+  0 _main                                                           00000000 GR
+    _nextLevel                                                      ******** GX
+    _shadow_PPUCTRL                                                 ******** GX
+    _shadow_PPUMASK                                                 ******** GX
+    _vsync                                                          ******** GX
+    b_SetupPlayer                                                   ******** GX
+    b_UpdateCamera                                                  ******** GX
+    b_UpdatePlayer                                                  ******** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size       ED   flags    0
+   1 _ZP                                        size        0   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size        0   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size        0   flags    0
+   7 _DATA                                      size        0   flags    0
+   8 _BSS                                       size        0   flags    0
+   9 _DABS                                      size        0   flags    8
+   A _CABS                                      size        0   flags    8
+

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>BDE 2019 | Nouveau mot de passe</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>🧠 Réinvente-toi, {{ username }}</h1>
+
+{% if token and username %}
+  <form method="POST">
+    <input type="hidden" name="token" value="{{ token }}">
+    <input name="password" type="password" placeholder="Nouveau mot de passe" required> <br>
+    <button type="submit">Changer le mot de passe</button>
+  </form>
+{% else %}
+  <p style="color: red;">Le lien de réinitialisation est invalide ou expiré. 🥲</p> 
+  <a href="{{ url_for('forgot') }}">🔁 Refaire une demande</a>
+{% endif %}

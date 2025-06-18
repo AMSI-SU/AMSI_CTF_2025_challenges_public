@@ -1,0 +1,83 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180 / ZX-Next / eZ80 / R800)                          Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    _AUDIOCTRL                                                  =   000000F2 
+    _FMADDRESS                                                  =   000000F0 
+    _FMDATA                                                     =   000000F1 
+    _GG_EXT_7BIT                                                =   00000001 
+    _GG_EXT_CTL                                                 =   00000002 
+    _GG_SIO_CTL                                                 =   00000005 
+    _GG_SIO_RECV                                                =   00000004 
+    _GG_SIO_SEND                                                =   00000003 
+    _GG_SOUND_PAN                                               =   00000006 
+    _GG_STATE                                                   =   00000000 
+    _GLASSES_3D                                                 =   0000FFF8 
+    _HCOUNTER                                                   =   0000007F 
+    _JOY_CTL                                                    =   0000003F 
+    _JOY_PORT1                                                  =   000000DC 
+    _JOY_PORT2                                                  =   000000DD 
+    _MAP_FRAME0                                                 =   0000FFFD 
+    _MAP_FRAME1                                                 =   0000FFFE 
+    _MAP_FRAME2                                                 =   0000FFFF 
+    _MEMORY_CTL                                                 =   0000003E 
+    _PSG                                                        =   0000007F 
+    _RAM_CONTROL                                                =   0000FFFC 
+    _VCOUNTER                                                   =   0000007E 
+    _VDP_CMD                                                    =   000000BF 
+    _VDP_DATA                                                   =   000000BE 
+    _VDP_STATUS                                                 =   000000BF 
+  0 ___str_0                                                        000002BB R
+  7 __xinit__scanline_offsets                                       00000000 R
+  7 __xinit__scroller_next_char                                     00000003 R
+  7 __xinit__scroller_x                                             00000002 R
+    _add_LCD                                                        ******** GX
+  1 _base                                                           00000002 GR
+    _fill_rect_compat                                               ******** GX
+    _font_ibm                                                       ******** GX
+    _font_init                                                      ******** GX
+    _font_load                                                      ******** GX
+    _font_set                                                       ******** GX
+    _get_bkg_xy_addr                                                ******** GX
+  1 _limit                                                          00000004 GR
+  0 _main                                                           00000036 GR
+    _printf                                                         ******** GX
+  0 _scanline_isr                                                   00000000 GR
+  2 _scanline_offsets                                               00000000 GR
+  0 _scanline_offsets_tbl                                           00000026 GR
+  2 _scroller_next_char                                             00000003 GR
+  0 _scroller_text                                                  00000152 GR
+  1 _scroller_vram_addr                                             00000000 GR
+  2 _scroller_x                                                     00000002 GR
+    _set_interrupts                                                 ******** GX
+    _set_vram_byte                                                  ******** GX
+    _shadow_VDP_R0                                                  ******** GX
+    _shadow_VDP_R1                                                  ******** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180 / ZX-Next / eZ80 / R800)                          Page 2
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    _shadow_VDP_R10                                                 ******** GX
+    _vsync                                                          ******** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180 / ZX-Next / eZ80 / R800)                          Page 3
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size      2CF   flags    0
+   1 _DATA                                      size        6   flags    0
+   2 _INITIALIZED                               size        5   flags    0
+   3 _DABS                                      size        0   flags    8
+   4 _HOME                                      size        0   flags    0
+   5 _GSINIT                                    size        0   flags    0
+   6 _GSFINAL                                   size        0   flags    0
+   7 _INITIALIZER                               size        5   flags    0
+   8 _CABS                                      size        0   flags    8
+

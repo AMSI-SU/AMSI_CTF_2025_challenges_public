@@ -1,0 +1,3 @@
+Plain text:                        10101010101010101010101010101010
+Ciphered text (AES) without fault: 29831f12d2022d989a434b0f3ace2f38
+Ciphered text (AES) with fault:    985d6ee5ce30145f4a64d94be3463475

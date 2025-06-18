@@ -1,0 +1,295 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module common
+                                      6 	.optsdcc -mz80
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _hide_sprites_range
+                                     12 	.globl _fill_rect_compat
+                                     13 	.globl _set_tile_map_compat
+                                     14 	.globl _set_native_tile_data
+                                     15 	.globl _set_palette
+                                     16 	.globl _joypad
+                                     17 	.globl _vsync
+                                     18 	.globl _joypadPrevious
+                                     19 	.globl _joypadCurrent
+                                     20 	.globl _WaitForStartOrA
+                                     21 	.globl _setBKGPalettes
+                                     22 	.globl _ShowCentered
+                                     23 ;--------------------------------------------------------
+                                     24 ; special function registers
+                                     25 ;--------------------------------------------------------
+                         00000000    26 _GG_STATE	=	0x0000
+                         00000001    27 _GG_EXT_7BIT	=	0x0001
+                         00000002    28 _GG_EXT_CTL	=	0x0002
+                         00000003    29 _GG_SIO_SEND	=	0x0003
+                         00000004    30 _GG_SIO_RECV	=	0x0004
+                         00000005    31 _GG_SIO_CTL	=	0x0005
+                         00000006    32 _GG_SOUND_PAN	=	0x0006
+                         0000003E    33 _MEMORY_CTL	=	0x003e
+                         0000003F    34 _JOY_CTL	=	0x003f
+                         0000007E    35 _VCOUNTER	=	0x007e
+                         0000007F    36 _PSG	=	0x007f
+                         0000007F    37 _HCOUNTER	=	0x007f
+                         000000BE    38 _VDP_DATA	=	0x00be
+                         000000BF    39 _VDP_CMD	=	0x00bf
+                         000000BF    40 _VDP_STATUS	=	0x00bf
+                         000000DC    41 _JOY_PORT1	=	0x00dc
+                         000000DD    42 _JOY_PORT2	=	0x00dd
+                         000000F0    43 _FMADDRESS	=	0x00f0
+                         000000F1    44 _FMDATA	=	0x00f1
+                         000000F2    45 _AUDIOCTRL	=	0x00f2
+                                     46 ;--------------------------------------------------------
+                                     47 ; ram data
+                                     48 ;--------------------------------------------------------
+                                     49 	.area _DATA
+                         0000FFFC    50 _RAM_CONTROL	=	0xfffc
+                         0000FFF8    51 _GLASSES_3D	=	0xfff8
+                         0000FFFD    52 _MAP_FRAME0	=	0xfffd
+                         0000FFFE    53 _MAP_FRAME1	=	0xfffe
+                         0000FFFF    54 _MAP_FRAME2	=	0xffff
+                                     55 ;--------------------------------------------------------
+                                     56 ; ram data
+                                     57 ;--------------------------------------------------------
+                                     58 	.area _INITIALIZED
+    00000000                         59 _joypadCurrent::
+    00000000                         60 	.ds 1
+    00000001                         61 _joypadPrevious::
+    00000001                         62 	.ds 1
+                                     63 ;--------------------------------------------------------
+                                     64 ; absolute external ram data
+                                     65 ;--------------------------------------------------------
+                                     66 	.area _DABS (ABS)
+                                     67 ;--------------------------------------------------------
+                                     68 ; global & static initialisations
+                                     69 ;--------------------------------------------------------
+                                     70 	.area _HOME
+                                     71 	.area _GSINIT
+                                     72 	.area _GSFINAL
+                                     73 	.area _GSINIT
+                                     74 ;--------------------------------------------------------
+                                     75 ; Home
+                                     76 ;--------------------------------------------------------
+                                     77 	.area _HOME
+                                     78 ;src/common.c:24: void setBKGPalettes(uint8_t count, const palette_color_t *palettes) NONBANKED{
+                                     79 ;	---------------------------------
+                                     80 ; Function setBKGPalettes
+                                     81 ; ---------------------------------
+    00000000                         82 _setBKGPalettes::
+                                     83 ;src/common.c:29: set_bkg_palette(0, count, palettes);
+    00000000 D5               [11]   84 	push	de
+    00000001 67               [ 4]   85 	ld	h, a
+    00000002 2E 00            [ 7]   86 	ld	l, #0x00
+    00000004 E5               [11]   87 	push	hl
+    00000005 CDr00r00         [17]   88 	call	_set_palette
+                                     89 ;src/common.c:37: }
+    00000008 C9               [10]   90 	ret
+                                     91 ;src/common.c:40: void ShowCentered(uint8_t width,uint8_t height,uint8_t bank, uint8_t* tileData, uint8_t tileCount, uint8_t* mapData, const palette_color_t* palettes) NONBANKED{
+                                     92 ;	---------------------------------
+                                     93 ; Function ShowCentered
+                                     94 ; ---------------------------------
+    00000009                         95 _ShowCentered::
+    00000009 DD E5            [15]   96 	push	ix
+    0000000B DD 21 00 00      [14]   97 	ld	ix,#0
+    0000000F DD 39            [15]   98 	add	ix,sp
+    00000011 F5               [11]   99 	push	af
+    00000012 F5               [11]  100 	push	af
+    00000013 DD 77 FF         [19]  101 	ld	-1 (ix), a
+                                    102 ;../../../include/sms/sms.h:254: __WRITE_VDP_REG(VDP_R1, __READ_VDP_REG(VDP_R1) &= (~R1_DISP_ON));
+    00000016 3Ar00r00         [13]  103 	ld	a, (_shadow_VDP_R1+0)
+    00000019 E6 BF            [ 7]  104 	and	a, #0xbf
+    0000001B 32r00r00         [13]  105 	ld	(_shadow_VDP_R1+0), a
+    0000001E F3               [ 4]  106 	di
+    0000001F 3Ar00r00         [13]  107 	ld	a, (_shadow_VDP_R1+0)
+    00000022 D3 BF            [11]  108 	out	(_VDP_CMD), a
+    00000024 3E 81            [ 7]  109 	ld	a, #0x81
+    00000026 D3 BF            [11]  110 	out	(_VDP_CMD), a
+    00000028 FB               [ 4]  111 	ei
+                                    112 ;src/common.c:45: uint8_t _previous_bank = CURRENT_BANK;
+    00000029 3A FE FF         [13]  113 	ld	a, (_MAP_FRAME1+0)
+    0000002C DD 77 FC         [19]  114 	ld	-4 (ix), a
+                                    115 ;src/common.c:49: hide_sprites_range(0,MAX_HARDWARE_SPRITES);
+    0000002F E5               [11]  116 	push	hl
+    00000030 2E 40            [ 7]  117 	ld	l, #0x40
+                                    118 ;	spillPairReg hl
+                                    119 ;	spillPairReg hl
+    00000032 AF               [ 4]  120 	xor	a, a
+    00000033 CDr00r00         [17]  121 	call	_hide_sprites_range
+    00000036 E1               [10]  122 	pop	hl
+                                    123 ;../../../include/sms/sms.h:223: __WRITE_VDP_REG(VDP_RSCX, -x);
+    00000037 FD 21r00r00      [14]  124 	ld	iy, #_shadow_VDP_RSCX
+    0000003B FD 36 00 00      [19]  125 	ld	0 (iy), #0x00
+    0000003F F3               [ 4]  126 	di
+    00000040 3E 00            [ 7]  127 	ld	a, #0x00
+    00000042 D3 BF            [11]  128 	out	(_VDP_CMD), a
+    00000044 3E 88            [ 7]  129 	ld	a, #0x88
+    00000046 D3 BF            [11]  130 	out	(_VDP_CMD), a
+    00000048 FB               [ 4]  131 	ei
+                                    132 ;../../../include/sms/sms.h:224: __WRITE_VDP_REG(VDP_RSCY, y);
+    00000049 FD 21r00r00      [14]  133 	ld	iy, #_shadow_VDP_RSCY
+    0000004D FD 36 00 00      [19]  134 	ld	0 (iy), #0x00
+    00000051 F3               [ 4]  135 	di
+    00000052 3E 00            [ 7]  136 	ld	a, #0x00
+    00000054 D3 BF            [11]  137 	out	(_VDP_CMD), a
+    00000056 3E 89            [ 7]  138 	ld	a, #0x89
+    00000058 D3 BF            [11]  139 	out	(_VDP_CMD), a
+    0000005A FB               [ 4]  140 	ei
+                                    141 ;src/common.c:54: uint8_t titleRow = (DEVICE_SCREEN_HEIGHT-(height>>3))/2;
+    0000005B 7D               [ 4]  142 	ld	a, l
+    0000005C 0F               [ 4]  143 	rrca
+    0000005D 0F               [ 4]  144 	rrca
+    0000005E 0F               [ 4]  145 	rrca
+    0000005F E6 1F            [ 7]  146 	and	a, #0x1f
+    00000061 DD 77 FD         [19]  147 	ld	-3 (ix), a
+    00000064 6F               [ 4]  148 	ld	l, a
+                                    149 ;	spillPairReg hl
+                                    150 ;	spillPairReg hl
+    00000065 26 00            [ 7]  151 	ld	h, #0x00
+                                    152 ;	spillPairReg hl
+                                    153 ;	spillPairReg hl
+    00000067 3E 18            [ 7]  154 	ld	a, #0x18
+    00000069 95               [ 4]  155 	sub	a, l
+    0000006A 5F               [ 4]  156 	ld	e, a
+    0000006B 9F               [ 4]  157 	sbc	a, a
+    0000006C 94               [ 4]  158 	sub	a, h
+    0000006D 57               [ 4]  159 	ld	d, a
+    0000006E 4B               [ 4]  160 	ld	c, e
+    0000006F 42               [ 4]  161 	ld	b, d
+    00000070 CB 7A            [ 8]  162 	bit	7, d
+    00000072 28 03            [12]  163 	jr	Z, 00105$
+    00000074 4B               [ 4]  164 	ld	c, e
+    00000075 42               [ 4]  165 	ld	b, d
+    00000076 03               [ 6]  166 	inc	bc
+    00000077                        167 00105$:
+    00000077 CB 28            [ 8]  168 	sra	b
+    00000079 CB 19            [ 8]  169 	rr	c
+                                    170 ;src/common.c:55: uint8_t titleColumn = (DEVICE_SCREEN_WIDTH-(width>>3))/2;
+    0000007B DD 46 FF         [19]  171 	ld	b, -1 (ix)
+    0000007E CB 38            [ 8]  172 	srl	b
+    00000080 CB 38            [ 8]  173 	srl	b
+    00000082 CB 38            [ 8]  174 	srl	b
+    00000084 58               [ 4]  175 	ld	e, b
+    00000085 16 00            [ 7]  176 	ld	d, #0x00
+    00000087 21 20 00         [10]  177 	ld	hl, #0x0020
+    0000008A BF               [ 4]  178 	cp	a, a
+    0000008B ED 52            [15]  179 	sbc	hl, de
+    0000008D CB 2C            [ 8]  180 	sra	h
+    0000008F CB 1D            [ 8]  181 	rr	l
+    00000091 DD 75 FE         [19]  182 	ld	-2 (ix), l
+                                    183 ;src/common.c:57: SWITCH_ROM(bank);
+    00000094 DD 7E 04         [19]  184 	ld	a, 4 (ix)
+    00000097 32 FE FF         [13]  185 	ld	(_MAP_FRAME1+0), a
+                                    186 ;src/common.c:59: setBKGPalettes(1,palettes);
+    0000009A C5               [11]  187 	push	bc
+    0000009B DD 5E 0A         [19]  188 	ld	e, 10 (ix)
+    0000009E DD 56 0B         [19]  189 	ld	d, 11 (ix)
+    000000A1 3E 01            [ 7]  190 	ld	a, #0x01
+    000000A3 CDr00r00         [17]  191 	call	_setBKGPalettes
+    000000A6 C1               [10]  192 	pop	bc
+                                    193 ;src/common.c:61: set_native_tile_data(0,tileCount,tileData);
+    000000A7 DD 6E 05         [19]  194 	ld	l, 5 (ix)
+                                    195 ;	spillPairReg hl
+                                    196 ;	spillPairReg hl
+    000000AA DD 66 06         [19]  197 	ld	h, 6 (ix)
+                                    198 ;	spillPairReg hl
+                                    199 ;	spillPairReg hl
+    000000AD DD 5E 07         [19]  200 	ld	e, 7 (ix)
+    000000B0 16 00            [ 7]  201 	ld	d, #0x00
+    000000B2 C5               [11]  202 	push	bc
+    000000B3 E5               [11]  203 	push	hl
+    000000B4 21 00 00         [10]  204 	ld	hl, #0x0000
+    000000B7 CDr00r00         [17]  205 	call	_set_native_tile_data
+    000000BA 21 00 00         [10]  206 	ld	hl, #0x0000
+    000000BD E5               [11]  207 	push	hl
+    000000BE 21 20 18         [10]  208 	ld	hl, #0x1820
+    000000C1 E5               [11]  209 	push	hl
+    000000C2 21 00 00         [10]  210 	ld	hl, #0x00
+    000000C5 E5               [11]  211 	push	hl
+    000000C6 CDr00r00         [17]  212 	call	_fill_rect_compat
+    000000C9 C1               [10]  213 	pop	bc
+                                    214 ;src/common.c:63: set_bkg_tiles(titleColumn,titleRow,width>>3,height>>3,mapData);
+    000000CA DD 6E 08         [19]  215 	ld	l, 8 (ix)
+                                    216 ;	spillPairReg hl
+                                    217 ;	spillPairReg hl
+    000000CD DD 66 09         [19]  218 	ld	h, 9 (ix)
+                                    219 ;	spillPairReg hl
+                                    220 ;	spillPairReg hl
+    000000D0 E5               [11]  221 	push	hl
+    000000D1 DD 7E FD         [19]  222 	ld	a, -3 (ix)
+    000000D4 F5               [11]  223 	push	af
+    000000D5 33               [ 6]  224 	inc	sp
+    000000D6 C5               [11]  225 	push	bc
+    000000D7 DD 7E FE         [19]  226 	ld	a, -2 (ix)
+    000000DA F5               [11]  227 	push	af
+    000000DB 33               [ 6]  228 	inc	sp
+    000000DC CDr00r00         [17]  229 	call	_set_tile_map_compat
+                                    230 ;src/common.c:64: SWITCH_ROM(_previous_bank);
+    000000DF DD 7E FC         [19]  231 	ld	a, -4 (ix)
+    000000E2 32 FE FF         [13]  232 	ld	(_MAP_FRAME1+0), a
+                                    233 ;src/common.c:66: DISPLAY_ON;
+    000000E5 3Ar00r00         [13]  234 	ld	a, (_shadow_VDP_R1+0)
+    000000E8 F6 40            [ 7]  235 	or	a, #0x40
+    000000EA 32r00r00         [13]  236 	ld	(_shadow_VDP_R1+0), a
+    000000ED F3               [ 4]  237 	di
+    000000EE 3Ar00r00         [13]  238 	ld	a, (_shadow_VDP_R1+0)
+    000000F1 D3 BF            [11]  239 	out	(_VDP_CMD), a
+    000000F3 3E 81            [ 7]  240 	ld	a, #0x81
+    000000F5 D3 BF            [11]  241 	out	(_VDP_CMD), a
+    000000F7 FB               [ 4]  242 	ei
+                                    243 ;src/common.c:67: }
+    000000F8 DD F9            [10]  244 	ld	sp, ix
+    000000FA DD E1            [14]  245 	pop	ix
+    000000FC E1               [10]  246 	pop	hl
+    000000FD F1               [10]  247 	pop	af
+    000000FE F1               [10]  248 	pop	af
+    000000FF F1               [10]  249 	pop	af
+    00000100 F1               [10]  250 	pop	af
+    00000101 E9               [ 4]  251 	jp	(hl)
+                                    252 	.area _HOME
+                                    253 ;--------------------------------------------------------
+                                    254 ; code
+                                    255 ;--------------------------------------------------------
+                                    256 	.area _CODE
+                                    257 ;src/common.c:9: void WaitForStartOrA(void){
+                                    258 ;	---------------------------------
+                                    259 ; Function WaitForStartOrA
+                                    260 ; ---------------------------------
+    00000000                        261 _WaitForStartOrA::
+                                    262 ;src/common.c:10: while(1){
+    00000000                        263 00108$:
+                                    264 ;src/common.c:13: joypadPrevious = joypadCurrent;
+    00000000 3Ar00r00         [13]  265 	ld	a, (_joypadCurrent+0)
+    00000003 32r01r00         [13]  266 	ld	(_joypadPrevious+0), a
+                                    267 ;src/common.c:14: joypadCurrent = joypad();
+    00000006 CDr00r00         [17]  268 	call	_joypad
+    00000009 7D               [ 4]  269 	ld	a, l
+                                    270 ;src/common.c:16: if((joypadCurrent & J_START) && !(joypadPrevious & J_START))break;
+    0000000A 32r00r00         [13]  271 	ld	(_joypadCurrent+0), a
+    0000000D 4F               [ 4]  272 	ld	c, a
+    0000000E 3Ar01r00         [13]  273 	ld	a, (_joypadPrevious+0)
+    00000011 CB 71            [ 8]  274 	bit	6, c
+    00000013 28 03            [12]  275 	jr	Z, 00102$
+    00000015 CB 77            [ 8]  276 	bit	6, a
+    00000017 C8               [11]  277 	ret	Z
+    00000018                        278 00102$:
+                                    279 ;src/common.c:17: if((joypadCurrent & J_A) && !(joypadPrevious & J_A))break;
+    00000018 CB 69            [ 8]  280 	bit	5, c
+    0000001A 28 03            [12]  281 	jr	Z, 00105$
+    0000001C CB 6F            [ 8]  282 	bit	5, a
+    0000001E C8               [11]  283 	ret	Z
+    0000001F                        284 00105$:
+                                    285 ;src/common.c:19: vsync();
+    0000001F CDr00r00         [17]  286 	call	_vsync
+                                    287 ;src/common.c:22: }
+    00000022 18 DC            [12]  288 	jr	00108$
+                                    289 	.area _CODE
+                                    290 	.area _INITIALIZER
+    00000000                        291 __xinit__joypadCurrent:
+    00000000 00                     292 	.db #0x00	; 0
+    00000001                        293 __xinit__joypadPrevious:
+    00000001 00                     294 	.db #0x00	; 0
+                                    295 	.area _CABS (ABS)

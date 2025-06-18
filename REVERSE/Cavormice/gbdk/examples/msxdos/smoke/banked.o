@@ -1,0 +1,21 @@
+XL4
+H A areas 3 global symbols
+M banked
+O -mz80
+S .__.ABS. Def00000000
+S b_banked_func Def00000003
+A _CODE size 0 flags 0 addr 0
+A _DATA size 0 flags 0 addr 0
+A _INITIALIZED size 0 flags 0 addr 0
+A _DABS size 0 flags 8 addr 0
+A _HOME size 0 flags 0 addr 0
+A _GSINIT size 0 flags 0 addr 0
+A _GSFINAL size 0 flags 0 addr 0
+A _CODE_3 size C flags 0 addr 0
+S _banked_func Def00000000
+A _INITIALIZER size 0 flags 0 addr 0
+A _CABS size 0 flags 8 addr 0
+T 00 00 00 00
+R 00 00 07 00
+T 00 00 00 00 DD E5 21 07 00 39 56 23 5E DD E1 C9
+R 00 00 07 00

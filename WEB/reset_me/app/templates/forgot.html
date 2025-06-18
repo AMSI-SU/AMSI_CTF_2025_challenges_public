@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>BDE 2019 | Reset</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>🔑 Réinitialisation du mot de passe 🔑</h1>
+  <p>Mot de passe perdu ? Essaie <strong>vodkaorange</strong>, frère.</p>
+  <form method="POST">
+    <input name="username" placeholder="ton pseudo BDE" required><br>
+    <button type="submit">Envoyer le lien magique</button>
+  </form>
+  {% if error %}
+  <p style="color: red;">{{ error }}</p>
+  {% endif %}
+  <br>
+
+
+{% if reset_link %}
+  <p>Voici ton lien magique :</p>
+  <a href="{{ reset_link }}">{{ reset_link }}</a>
+  <p><em>Ne le montre pas à ton ex du BDE rival.</em></p>
+{% endif %}
+
+  <a href="/">Retour</a>
+</body>
+</html>

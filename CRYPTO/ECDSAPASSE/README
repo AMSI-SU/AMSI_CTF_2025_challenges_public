@@ -1,0 +1,33 @@
+# Crypto : 01 -  ECDSAPASSE
+
+- **Auteur :** flav-sns
+- **Catégorie :** Crypto
+- **Diffculté :** Facile
+- **Points :** -
+- **Points dynamiques :** oui
+- **Indice 1 :**
+```
+Pas d'indice 1.
+```
+
+- **Description :**
+```
+Voici le système ECDSA qui sécurise les transactions de ma blockchain, son coin est déjà valorisé à 1000 balles, bon commencement non ?
+
+Flag format : AMSI{key_recovery_hexa}
+
+Exemple : AMSI{0x3df7756a00990a3e7ad15b52aabdcf3008deab7e4caa932ca7160e1f525a5f18}
+```
+
+- **Remarques :**
+```
+Pas de remarque.
+```
+
+- **Dialogues :**
+```
+Pas de dialogue.
+```
+
+
+

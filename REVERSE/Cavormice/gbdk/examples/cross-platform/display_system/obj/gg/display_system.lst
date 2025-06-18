@@ -1,0 +1,166 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module display_system
+                                      6 	.optsdcc -mz80
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _main
+                                     12 	.globl _get_system_name
+                                     13 	.globl _gotoxy
+                                     14 	.globl _font_load
+                                     15 	.globl _font_init
+                                     16 	.globl _vsync
+                                     17 	.globl _printf
+                                     18 ;--------------------------------------------------------
+                                     19 ; special function registers
+                                     20 ;--------------------------------------------------------
+                         00000000    21 _GG_STATE	=	0x0000
+                         00000001    22 _GG_EXT_7BIT	=	0x0001
+                         00000002    23 _GG_EXT_CTL	=	0x0002
+                         00000003    24 _GG_SIO_SEND	=	0x0003
+                         00000004    25 _GG_SIO_RECV	=	0x0004
+                         00000005    26 _GG_SIO_CTL	=	0x0005
+                         00000006    27 _GG_SOUND_PAN	=	0x0006
+                         0000003E    28 _MEMORY_CTL	=	0x003e
+                         0000003F    29 _JOY_CTL	=	0x003f
+                         0000007E    30 _VCOUNTER	=	0x007e
+                         0000007F    31 _PSG	=	0x007f
+                         0000007F    32 _HCOUNTER	=	0x007f
+                         000000BE    33 _VDP_DATA	=	0x00be
+                         000000BF    34 _VDP_CMD	=	0x00bf
+                         000000BF    35 _VDP_STATUS	=	0x00bf
+                         000000DC    36 _JOY_PORT1	=	0x00dc
+                         000000DD    37 _JOY_PORT2	=	0x00dd
+                         000000F0    38 _FMADDRESS	=	0x00f0
+                         000000F1    39 _FMDATA	=	0x00f1
+                         000000F2    40 _AUDIOCTRL	=	0x00f2
+                                     41 ;--------------------------------------------------------
+                                     42 ; ram data
+                                     43 ;--------------------------------------------------------
+                                     44 	.area _DATA
+                         0000FFFC    45 _RAM_CONTROL	=	0xfffc
+                         0000FFF8    46 _GLASSES_3D	=	0xfff8
+                         0000FFFD    47 _MAP_FRAME0	=	0xfffd
+                         0000FFFE    48 _MAP_FRAME1	=	0xfffe
+                         0000FFFF    49 _MAP_FRAME2	=	0xffff
+                                     50 ;--------------------------------------------------------
+                                     51 ; ram data
+                                     52 ;--------------------------------------------------------
+                                     53 	.area _INITIALIZED
+                                     54 ;--------------------------------------------------------
+                                     55 ; absolute external ram data
+                                     56 ;--------------------------------------------------------
+                                     57 	.area _DABS (ABS)
+                                     58 ;--------------------------------------------------------
+                                     59 ; global & static initialisations
+                                     60 ;--------------------------------------------------------
+                                     61 	.area _HOME
+                                     62 	.area _GSINIT
+                                     63 	.area _GSFINAL
+                                     64 	.area _GSINIT
+                                     65 ;--------------------------------------------------------
+                                     66 ; Home
+                                     67 ;--------------------------------------------------------
+                                     68 	.area _HOME
+                                     69 	.area _HOME
+                                     70 ;--------------------------------------------------------
+                                     71 ; code
+                                     72 ;--------------------------------------------------------
+                                     73 	.area _CODE
+                                     74 ;src/display_system.c:18: const char* get_system_name(uint8_t system)
+                                     75 ;	---------------------------------
+                                     76 ; Function get_system_name
+                                     77 ; ---------------------------------
+    00000000                         78 _get_system_name::
+                                     79 ;src/display_system.c:20: switch(system)
+    00000000 B7               [ 4]   80 	or	a, a
+    00000001 28 05            [12]   81 	jr	Z, 00101$
+    00000003 3D               [ 4]   82 	dec	a
+    00000004 28 06            [12]   83 	jr	Z, 00102$
+    00000006 18 08            [12]   84 	jr	00103$
+                                     85 ;src/display_system.c:22: case SYSTEM_60HZ:
+    00000008                         86 00101$:
+                                     87 ;src/display_system.c:23: return "60 Hz";
+    00000008 11r14r00         [10]   88 	ld	de, #___str_0
+    0000000B C9               [10]   89 	ret
+                                     90 ;src/display_system.c:24: case SYSTEM_50HZ:
+    0000000C                         91 00102$:
+                                     92 ;src/display_system.c:35: return "50 Hz";
+    0000000C 11r1Ar00         [10]   93 	ld	de, #___str_1
+    0000000F C9               [10]   94 	ret
+                                     95 ;src/display_system.c:37: default:
+    00000010                         96 00103$:
+                                     97 ;src/display_system.c:38: return "Unknown";
+    00000010 11r20r00         [10]   98 	ld	de, #___str_2
+                                     99 ;src/display_system.c:39: }
+                                    100 ;src/display_system.c:40: }
+    00000013 C9               [10]  101 	ret
+    00000014                        102 ___str_0:
+    00000014 36 30 20 48 7A         103 	.ascii "60 Hz"
+    00000019 00                     104 	.db 0x00
+    0000001A                        105 ___str_1:
+    0000001A 35 30 20 48 7A         106 	.ascii "50 Hz"
+    0000001F 00                     107 	.db 0x00
+    00000020                        108 ___str_2:
+    00000020 55 6E 6B 6E 6F 77 6E   109 	.ascii "Unknown"
+    00000027 00                     110 	.db 0x00
+                                    111 ;src/display_system.c:42: void main(void)
+                                    112 ;	---------------------------------
+                                    113 ; Function main
+                                    114 ; ---------------------------------
+    00000028                        115 _main::
+    00000028 DD E5            [15]  116 	push	ix
+    0000002A DD 21 00 00      [14]  117 	ld	ix,#0
+    0000002E DD 39            [15]  118 	add	ix,sp
+    00000030 3B               [ 6]  119 	dec	sp
+                                    120 ;src/display_system.c:45: uint8_t system = get_system();
+    00000031 3Ar00r00         [13]  121 	ld	a, (__SYSTEM+0)
+    00000034 DD 77 FF         [19]  122 	ld	-1 (ix), a
+                                    123 ;src/display_system.c:47: font_init();
+    00000037 CDr00r00         [17]  124 	call	_font_init
+                                    125 ;src/display_system.c:48: ibm_font = font_load(font_ibm);
+    0000003A 21r00r00         [10]  126 	ld	hl, #_font_ibm
+    0000003D E5               [11]  127 	push	hl
+    0000003E CDr00r00         [17]  128 	call	_font_load
+    00000041 F1               [10]  129 	pop	af
+                                    130 ;src/display_system.c:49: DISPLAY_ON;
+    00000042 3Ar00r00         [13]  131 	ld	a, (_shadow_VDP_R1+0)
+    00000045 F6 40            [ 7]  132 	or	a, #0x40
+    00000047 32r00r00         [13]  133 	ld	(_shadow_VDP_R1+0), a
+    0000004A F3               [ 4]  134 	di
+    0000004B 3Ar00r00         [13]  135 	ld	a, (_shadow_VDP_R1+0)
+    0000004E D3 BF            [11]  136 	out	(_VDP_CMD), a
+    00000050 3E 81            [ 7]  137 	ld	a, #0x81
+    00000052 D3 BF            [11]  138 	out	(_VDP_CMD), a
+    00000054 FB               [ 4]  139 	ei
+                                    140 ;src/display_system.c:50: gotoxy(4, 4);
+    00000055 21 04 04         [10]  141 	ld	hl, #0x404
+    00000058 E5               [11]  142 	push	hl
+    00000059 CDr00r00         [17]  143 	call	_gotoxy
+    0000005C F1               [10]  144 	pop	af
+                                    145 ;src/display_system.c:51: printf("System: %s", get_system_name(system));
+    0000005D DD 7E FF         [19]  146 	ld	a, -1 (ix)
+    00000060 CDr00r00         [17]  147 	call	_get_system_name
+    00000063 D5               [11]  148 	push	de
+    00000064 21r74r00         [10]  149 	ld	hl, #___str_3
+    00000067 E5               [11]  150 	push	hl
+    00000068 CDr00r00         [17]  151 	call	_printf
+    0000006B F1               [10]  152 	pop	af
+    0000006C F1               [10]  153 	pop	af
+                                    154 ;src/display_system.c:52: vsync();
+    0000006D CDr00r00         [17]  155 	call	_vsync
+                                    156 ;src/display_system.c:53: }
+    00000070 33               [ 6]  157 	inc	sp
+    00000071 DD E1            [14]  158 	pop	ix
+    00000073 C9               [10]  159 	ret
+    00000074                        160 ___str_3:
+    00000074 53 79 73 74 65 6D 3A   161 	.ascii "System: %s"
+             20 25 73
+    0000007E 00                     162 	.db 0x00
+                                    163 	.area _CODE
+                                    164 	.area _INITIALIZER
+                                    165 	.area _CABS (ABS)

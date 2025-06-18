@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Arcade - Community Forum</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      font-family: 'Orbitron', monospace;
+      color: #00ffff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: rgba(0, 0, 0, 0.7);
+      border: 3px solid #ff6b35;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .title {
+      font-size: 2.5em;
+      font-weight: 900;
+      background: linear-gradient(45deg, #ff6b35, #f7931e, #9b59b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #00ffff;
+      font-size: 1.1em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .navigation {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .nav-link {
+      color: #9b59b6;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 700;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: #ff6b35;
+    }
+
+    .post-form {
+      background: rgba(155, 89, 182, 0.1);
+      border: 2px solid #9b59b6;
+      border-radius: 10px;
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+
+    .post-form h2 {
+      color: #9b59b6;
+      margin-bottom: 15px;
+      font-size: 1.5em;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #00ffff;
+      font-weight: 700;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid #ff6b35;
+      border-radius: 5px;
+      color: #00ffff;
+      font-family: 'Orbitron', monospace;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    textarea {
+      min-height: 100px;
+    }
+
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #f7931e;
+      box-shadow: 0 0 10px rgba(247, 147, 30, 0.5);
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      color: white;
+      font-family: 'Orbitron', monospace;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
+    }
+
+    .posts-section {
+      background: rgba(0, 255, 255, 0.05);
+      border: 2px solid #00ffff;
+      border-radius: 10px;
+      padding: 25px;
+    }
+
+    .posts-section h2 {
+      color: #00ffff;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+      text-align: center;
+    }
+
+    .post {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      transition: border-color 0.3s ease;
+    }
+
+    .post:hover {
+      border-color: rgba(255, 107, 53, 0.6);
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+      padding-bottom: 10px;
+    }
+
+    .post-title {
+      color: #ff6b35;
+      font-weight: 700;
+      font-size: 1.2em;
+    }
+
+    .post-time {
+      color: #9b59b6;
+      font-size: 0.9em;
+    }
+
+    .post-content {
+      color: #00ffff;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .post-url {
+      background: rgba(155, 89, 182, 0.2);
+      border: 1px solid #9b59b6;
+      border-radius: 5px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+
+    .post-url a {
+      color: #f7931e;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .post-url a:hover {
+      text-decoration: underline;
+    }
+
+    .bot-status {
+      background: rgba(0, 255, 0, 0.1);
+      border: 1px solid #00ff00;
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-size: 0.8em;
+      color: #00ff00;
+      margin-left: 10px;
+    }
+
+    .loading {
+      text-align: center;
+      color: #9b59b6;
+      font-style: italic;
+    }
+
+    .hint-box {
+      background: rgba(247, 147, 30, 0.1);
+      border: 2px solid #f7931e;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      color: #f7931e;
+    }
+
+    .hint-box h3 {
+      margin-bottom: 10px;
+    }
+
+    .hint-box code {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">COMMUNITY FORUM</h1>
+      <p class="subtitle">Share Your High Score Links!</p>
+    </div>
+
+    <div class="navigation">
+      <a href="/" class="nav-link">🎮 Back to Game</a>
+    </div>
+
+    <div class="post-form">
+      <h2>📝 Submit New Post</h2>
+      <form id="postForm">
+        <div class="form-group">
+          <label for="postTitle">Title:</label>
+          <input type="text" id="postTitle" placeholder="Enter post title..." required>
+        </div>
+        <div class="form-group">
+          <label for="postContent">Content:</label>
+          <textarea id="postContent" placeholder="Share your thoughts, strategies, or links..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="postUrl">Link (Optional):</label>
+          <input type="text" id="postUrl" placeholder="http://localhost:3000/?player=...">
+        </div>
+        <button type="submit" class="btn">Post to Forum</button>
+      </form>
+    </div>
+
+    <div class="posts-section">
+      <h2>🗨️ Recent Posts</h2>
+      <div id="postsContainer">
+        <div class="loading">Loading posts...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let posts = [];
+
+    // Format timestamp
+    function formatTime(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleString();
+    }
+
+    // Render posts
+    function renderPosts() {
+      const container = document.getElementById('postsContainer');
+
+      if (posts.length === 0) {
+        container.innerHTML = '<div class="loading">No posts yet. Be the first to share!</div>';
+        return;
+      }
+
+      container.innerHTML = posts.map(post => `
+<div class="post" id="post-${post.id}">
+<div class="post-header">
+<div class="post-title">${escapeHtml(post.title)}</div>
+<div class="post-time">
+${formatTime(post.timestamp)}
+${post.visited ? '<span class="bot-status">🤖 Visited</span>' : ''}
+</div>
+</div>
+<div class="post-content">${escapeHtml(post.content)}</div>
+${post.url ? `
+<div class="post-url">
+🔗 Link: <a href="${escapeHtml(post.url)}" target="_blank">${escapeHtml(post.url)}</a>
+</div>
+` : ''}
+</div>
+`).join('');
+    }
+
+    // Basic HTML escaping
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Load posts from server
+    async function loadPosts() {
+      try {
+        const response = await fetch('/api/posts');
+        const result = await response.json();
+
+        if (result.success) {
+          posts = result.posts;
+          renderPosts();
+        }
+      } catch (error) {
+        console.error('Error loading posts:', error);
+        document.getElementById('postsContainer').innerHTML =
+          '<div class="loading">Error loading posts. Please try again.</div>';
+      }
+    }
+
+    // Submit new post
+    async function submitPost(event) {
+      event.preventDefault();
+
+      const title = document.getElementById('postTitle').value;
+      const content = document.getElementById('postContent').value;
+      const url = document.getElementById('postUrl').value;
+
+      if (!title || !content) {
+        alert('Please fill in both title and content!');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/posts', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: title,
+            content: content,
+            url: url || null
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          // Clear form
+          document.getElementById('postForm').reset();
+
+          // Add new post to beginning of array
+          posts.unshift(result.post);
+          renderPosts();
+
+          alert('Post submitted successfully!');
+
+          if (url) {
+            alert('Bot will visit your link shortly! 🤖');
+          }
+        } else {
+          alert('Error submitting post: ' + result.error);
+        }
+      } catch (error) {
+        alert('Network error: ' + error.message);
+      }
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('postForm').addEventListener('submit', submitPost);
+      loadPosts();
+
+      // Auto-refresh posts every 10 seconds
+      setInterval(loadPosts, 10000);
+    });
+  </script>
+</body>
+
+</html>

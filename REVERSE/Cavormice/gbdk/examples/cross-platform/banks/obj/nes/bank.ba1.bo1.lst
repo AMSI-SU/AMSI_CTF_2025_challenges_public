@@ -1,0 +1,104 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.4.1 #14650 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module bank_ba1_bo1
+                                      6 	.optsdcc -mmos6502
+                                      7 	
+                                      8 ;; Ordering of segments for the linker.
+                                      9 	.area _ZP      (PAG)
+                                     10 	.area _OSEG    (PAG, OVR)
+                                     11 	.area _HOME
+                                     12 	.area _GSINIT
+                                     13 	.area _GSFINAL
+                                     14 	.area _CODE
+                                     15 	.area _XINIT
+                                     16 	.area _DATA
+                                     17 	.area _DATA
+                                     18 	.area _BSS
+                                     19 ;--------------------------------------------------------
+                                     20 ; Public variables in this module
+                                     21 ;--------------------------------------------------------
+                                     22 	.globl b_bank_1
+                                     23 	.globl _bank_1
+                                     24 	.globl _puts
+                                     25 	.globl _var_1
+                                     26 	.globl _OAMDMA
+                                     27 	.globl _PPUDATA
+                                     28 	.globl _PPUADDR
+                                     29 	.globl _PPUSCROLL
+                                     30 	.globl _OAMDATA
+                                     31 	.globl _OAMADDR
+                                     32 	.globl _PPUSTATUS
+                                     33 	.globl _PPUMASK
+                                     34 	.globl _PPUCTRL
+                                     35 ;--------------------------------------------------------
+                                     36 ; ZP ram data
+                                     37 ;--------------------------------------------------------
+                                     38 	.area _ZP      (PAG)
+                                     39 ;--------------------------------------------------------
+                                     40 ; overlayable items in ram
+                                     41 ;--------------------------------------------------------
+                                     42 ;--------------------------------------------------------
+                                     43 ; uninitialized external ram data
+                                     44 ;--------------------------------------------------------
+                                     45 	.area _BSS
+                         00002000    46 _PPUCTRL	=	0x2000
+                         00002001    47 _PPUMASK	=	0x2001
+                         00002002    48 _PPUSTATUS	=	0x2002
+                         00002003    49 _OAMADDR	=	0x2003
+                         00002004    50 _OAMDATA	=	0x2004
+                         00002005    51 _PPUSCROLL	=	0x2005
+                         00002006    52 _PPUADDR	=	0x2006
+                         00002007    53 _PPUDATA	=	0x2007
+                         00004014    54 _OAMDMA	=	0x4014
+    00000000                         55 _var_1::
+    00000000                         56 	.ds 2
+                                     57 ;--------------------------------------------------------
+                                     58 ; absolute external ram data
+                                     59 ;--------------------------------------------------------
+                                     60 	.area _DABS    (ABS)
+                                     61 ;--------------------------------------------------------
+                                     62 ; initialized external ram data
+                                     63 ;--------------------------------------------------------
+                                     64 	.area _DATA
+                                     65 ;--------------------------------------------------------
+                                     66 ; global & static initialisations
+                                     67 ;--------------------------------------------------------
+                                     68 	.area _HOME
+                                     69 	.area _GSINIT
+                                     70 	.area _GSFINAL
+                                     71 	.area _GSINIT
+                                     72 ;--------------------------------------------------------
+                                     73 ; Home
+                                     74 ;--------------------------------------------------------
+                                     75 	.area _HOME
+                                     76 	.area _HOME
+                                     77 ;--------------------------------------------------------
+                                     78 ; code
+                                     79 ;--------------------------------------------------------
+                                     80 	.area _CODE_1
+                                     81 ;------------------------------------------------------------
+                                     82 ;Allocation info for local variables in function 'bank_1'
+                                     83 ;------------------------------------------------------------
+                                     84 ;	src/bank.ba1.bo1.c: 7: void bank_1(void) BANKED /* In ROM bank 1 */
+                                     85 ;	-----------------------------------------
+                                     86 ;	 function bank_1
+                                     87 ;	-----------------------------------------
+                                     88 ;	Register assignment is optimal.
+                                     89 ;	Stack space usage: 0 bytes.
+                         00000001    90 	b_bank_1	= 1
+    00000000                         91 _bank_1:
+                                     92 ;	src/bank.ba1.bo1.c: 9: puts("I'm in ROM bank 1");
+    00000000 A2s00            [ 2]   93 	ldx	#>___str_0
+    00000002 A9r07            [ 2]   94 	lda	#___str_0
+                                     95 ;	src/bank.ba1.bo1.c: 10: }
+    00000004 4Cr00r00         [ 3]   96 	jmp	_puts
+                                     97 	.area _CODE_1
+    00000007                         98 ___str_0:
+    00000007 49 27 6D 20 69 6E 20    99 	.ascii "I'm in ROM bank 1"
+             52 4F 4D 20 62 61 6E
+             6B 20 31
+    00000018 00                     100 	.db 0x00
+                                    101 	.area _XINIT
+                                    102 	.area _CABS    (ABS)

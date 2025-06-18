@@ -1,0 +1,35 @@
+# OSINT : 04 -  encore_plus_de_traces
+
+- **Auteur :** flav-sns
+- **Catégorie :** OSINT
+- **Diffculté :** Moyen
+- **Points :** -
+- **Points dynamiques :** oui
+- **Indice 1 :**
+```
+Pas d'indice 1.
+```
+
+- **Description :**
+```
+Suite du challenge sur_les_traces_du_scammer.
+
+Trouvez une localisation qui pourrait correspondre à sa planque.
+
+Flag format : AMSI{rue-ville-pays}
+
+Exemple : AMSI{rue_jean_paul-Evry-France}
+```
+
+- **Remarques :**
+```
+Pas de remarque.
+```
+
+- **Dialogues :**
+```
+Pas de dialogue.
+```
+
+
+

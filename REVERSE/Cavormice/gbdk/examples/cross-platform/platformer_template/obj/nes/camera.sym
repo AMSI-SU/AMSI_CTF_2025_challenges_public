@@ -1,0 +1,65 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 1
+Hexadecimal [32-Bits]
+
+Symbol Table
+
+    .__.$$$.                                                    =   00002710 L
+    .__.ABS.                                                    =   00000000 G
+    .__.CPU.                                                    =   00000000 L
+    .__.H$L.                                                    =   00000000 L
+    REGTEMP                                                         ******** GX
+    _OAMADDR                                                    =   00002003 G
+    _OAMDATA                                                    =   00002004 G
+    _OAMDMA                                                     =   00004014 G
+    _PPUADDR                                                    =   00002006 G
+    _PPUCTRL                                                    =   00002000 G
+    _PPUDATA                                                    =   00002007 G
+    _PPUMASK                                                    =   00002001 G
+    _PPUSCROLL                                                  =   00002005 G
+    _PPUSTATUS                                                  =   00002002 G
+  3 _SetCurrentLevelSubmap                                          00000000 GR
+  8 _SetCurrentLevelSubmap_PARM_3                                   00000007 GR
+  8 _SetCurrentLevelSubmap_PARM_4                                   00000008 GR
+  8 _SetCurrentLevelSubmap__previous_bank_10000_91                  0000000A R
+  8 _SetCurrentLevelSubmap_y_10000_90                               00000009 R
+  A _UpdateCamera                                                   00000000 GR
+  1 _UpdateCamera_sloc0_1_0                                         00000000 R
+    __current_bank                                                  ******** GX
+    __switch_prg0                                                   ******** GX
+    _bkg_scroll_x                                                   ******** GX
+    _bkg_scroll_y                                                   ******** GX
+  8 _camera_x                                                       00000000 GR
+    _currentAreaBank                                                ******** GX
+    _currentLevelHeightInTiles                                      ******** GX
+    _currentLevelMap                                                ******** GX
+    _currentLevelWidthInTiles                                       ******** GX
+  8 _map_pos_x                                                      00000004 GR
+  8 _old_camera_x                                                   00000002 GR
+  8 _old_map_pos_x                                                  00000005 GR
+  8 _redraw                                                         00000006 GR
+    _set_bkg_submap                                                 ******** GX
+    _set_bkg_submap_PARM_3                                          ******** GX
+    _set_bkg_submap_PARM_4                                          ******** GX
+    _set_bkg_submap_PARM_5                                          ******** GX
+    _set_bkg_submap_PARM_6                                          ******** GX
+    b_UpdateCamera                                              =   000000FF G
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Rockwell 6502/6510/65C02) Page 2
+Hexadecimal [32-Bits]
+
+Area Table
+
+   0 _CODE                                      size        0   flags    0
+   1 _ZP                                        size        2   flags   10
+   2 _OSEG                                      size        0   flags   14
+   3 _HOME                                      size       3B   flags    0
+   4 _GSINIT                                    size        0   flags    0
+   5 _GSFINAL                                   size        0   flags    0
+   6 _XINIT                                     size        0   flags    0
+   7 _DATA                                      size        0   flags    0
+   8 _BSS                                       size        B   flags    0
+   9 _DABS                                      size        0   flags    8
+   A _CODE_255                                  size       BB   flags    0
+   B _CABS                                      size        0   flags    8
+

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart - Luxe Marketplace</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      min-height: 100vh;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+      color: white;
+      padding: 1rem 0;
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #d4af37;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+
+    .cart-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .cart-header h1 {
+      color: #1a1a1a;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-item {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .item-info h3 {
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+    }
+
+    .item-price {
+      color: #d4af37;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .quantity-controls button {
+      background: #d4af37;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      background: #d4af37;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin: 0.5rem;
+    }
+
+    .btn:hover {
+      background: #b8941f;
+    }
+
+    .checkout-section {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      margin-top: 2rem;
+    }
+
+    .total {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1a1a1a;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .total .amount {
+      color: #d4af37;
+    }
+
+    .empty-cart {
+      text-align: center;
+      color: #666;
+      font-size: 1.2rem;
+      padding: 3rem;
+      background: white;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <nav class="nav">
+      <div class="logo">LUXE</div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/cart">Cart</a></li>
+        <li><a href="/profile">Profile</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="cart-header">
+      <h1>Shopping Cart</h1>
+    </div>
+
+    <div id="cartItems">
+    </div>
+
+    <div id="checkoutSection" class="checkout-section" style="display: none;">
+      <div class="total">
+        Total: <span class="amount" id="totalAmount">$0</span>
+      </div>
+      <div style="text-align: center;">
+        <button class="btn" onclick="checkout()">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let products = new Map();
+    let cart = [];
+
+    async function loadProducts() {
+      try {
+        const response = await fetch('/api/products');
+        const productList = await response.json();
+        productList.forEach(product => {
+          products.set(product.id, product);
+        });
+      } catch (error) {
+        console.error('Failed to load products:', error);
+      }
+    }
+
+    function loadCart() {
+      cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartItemsDiv = document.getElementById('cartItems');
+      const checkoutSection = document.getElementById('checkoutSection');
+
+      if (cart.length === 0) {
+        cartItemsDiv.innerHTML = '<div class="empty-cart">Your cart is empty<br><a href="/" style="color: #d4af37;">Continue Shopping</a></div>';
+        checkoutSection.style.display = 'none';
+        return;
+      }
+
+      let total = 0;
+      cartItemsDiv.innerHTML = cart.map(item => {
+        const product = products.get(item.productId);
+        if (!product) return '';
+
+        const subtotal = product.price * item.quantity;
+        total += subtotal;
+
+        return `
+                    <div class="cart-item">
+                        <div class="item-info">
+                            <h3>${product.name}</h3>
+                            <div class="item-price">${product.price.toLocaleString()}</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button onclick="updateQuantity('${item.productId}', -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button onclick="updateQuantity('${item.productId}', 1)">+</button>
+                            <button onclick="removeItem('${item.productId}')" style="background: #e74c3c; margin-left: 1rem;">Remove</button>
+                        </div>
+                        <div class="item-price">${subtotal.toLocaleString()}</div>
+                    </div>
+                `;
+      }).join('');
+
+      document.getElementById('totalAmount').textContent = `${total.toLocaleString()}`;
+      checkoutSection.style.display = 'block';
+    }
+
+    function updateQuantity(productId, change) {
+      const item = cart.find(item => item.productId === productId);
+      if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) {
+          removeItem(productId);
+        } else {
+          localStorage.setItem('cart', JSON.stringify(cart));
+          renderCart();
+        }
+      }
+    }
+
+    function removeItem(productId) {
+      cart = cart.filter(item => item.productId !== productId);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    async function checkout() {
+      if (cart.length === 0) return;
+
+      try {
+        const response = await fetch('/api/orders', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            items: cart,
+            shippingAddress: {
+              street: "123 Luxury Ave",
+              city: "Beverly Hills",
+              state: "CA",
+              zip: "90210"
+            },
+            paymentMethod: {
+              type: "credit_card",
+              last4: "1234"
+            }
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(`Order placed successfully! Order ID: ${result.order.id}`);
+          localStorage.removeItem('cart');
+          loadCart();
+        } else {
+          alert('Order failed: ' + result.error);
+        }
+      } catch (error) {
+        alert('Network error during checkout');
+      }
+    }
+
+    function logout() {
+      fetch('/api/logout', {method: 'POST'})
+        .then(() => window.location.href = '/');
+    }
+
+    // Initialize
+    loadProducts().then(loadCart);
+  </script>
+</body>
+
+</html>
